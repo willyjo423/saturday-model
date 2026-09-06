@@ -1,0 +1,75 @@
+name: Daily predictions
+
+on:
+  schedule:
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Slate date (YYYY-MM-DD). Blank means today."
+        required: false
+      days:
+        description: "How many days forward to include"
+        required: false
+        default: "1"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-predictions
+  cancel-in-progress: false
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore API cache
+        uses: actions/cache@v4
+        with:
+          path: data/cache
+          key: cfb-cache-${{ github.run_id }}
+          restore-keys: cfb-cache-
+
+      - name: Confirm a trained model exists
+        run: |
+          if [ ! -f models/cfb_model.joblib ]; then
+            echo "::error::No trained model found. Run the 'Bootstrap' workflow once first."
+            exit 1
+          fi
+
+      - name: Generate predictions
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          python -m cfb.daily \
+            ${{ github.event.inputs.date && format('--date {0}', github.event.inputs.date) || '' }} \
+            --days "${{ github.event.inputs.days || '1' }}"
+
+      - name: Archive the slate
+        run: |
+          mkdir -p docs/archive
+          STAMP=$(date -u +%Y-%m-%d)
+          cp docs/predictions.json "docs/archive/$STAMP.json" || true
+
+      - name: Publish
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs
+          if git diff --staged --quiet; then
+            echo "No change in today's slate."
+          else
+            git commit -m "Predictions for $(date -u +%Y-%m-%d)"
+            git push
+          fi
