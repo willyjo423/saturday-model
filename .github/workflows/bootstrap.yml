@@ -50,19 +50,19 @@ jobs:
       - name: Verify API access
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
-        run: python -m cfb.selftest
+        run: python selftest.py
 
       - name: Build dataset
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
         run: |
-          python -m cfb.build \
+          python build.py \
             --start "${{ github.event.inputs.start_year || '2015' }}" \
             --end   "${{ github.event.inputs.end_year   || '2025' }}" \
             ${{ github.event.inputs.skip_weather == 'true' && '--no-weather' || '' }}
 
       - name: Train and backtest
-        run: python -m cfb.train
+        run: python train.py
 
       - name: Commit model and metrics
         run: |
