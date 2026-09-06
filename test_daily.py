@@ -73,14 +73,23 @@ from api import CFBDError as _Unavailable  # noqa: E402
 class StubWeather:
     """Forecast-shaped weather that varies by venue, no network."""
 
+    def __init__(self, budget_seconds: float = 120.0):
+        self.budget_seconds = budget_seconds
+
+    def prefetch(self, games, historical=True):
+        """Matches the real service's interface; nothing to warm."""
+
+    def coverage(self) -> str:
+        return "stub weather"
+
     def at_kickoff(self, lat, lon, kickoff, is_dome=False, historical=None):
         if is_dome:
             return {"temp_f": 70.0, "humidity": 50.0, "precip_in": 0.0,
-                    "wind_mph": 0.0, "gust_mph": 0.0, "is_dome": 1}
+                    "wind_mph": 0.0, "is_dome": 1}
         seed = 0.0 if lat is None or pd.isna(lat) else float(lat)
         return {"temp_f": 40 + (seed % 40), "humidity": 55.0,
                 "precip_in": 0.05 if int(seed) % 7 == 0 else 0.0,
-                "wind_mph": 3 + (seed % 17), "gust_mph": 8 + (seed % 20),
+                "wind_mph": 3 + (seed % 17),
                 "is_dome": 0}
 
 

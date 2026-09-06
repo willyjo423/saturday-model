@@ -139,6 +139,27 @@ def main() -> int:
     check(feat["temp_f"].std() > 5, "weather varies across games",
           f"temp sd {feat['temp_f'].std():.1f}F")
 
+    # A failed weather lookup must leave NaN, not a plausible-looking constant.
+    # Filling it in taught an earlier version that every unfetchable game was a
+    # calm 70F afternoon, which is worse than admitting ignorance - the booster
+    # handles NaN natively.
+    import weather as weather_mod
+
+    class _AlwaysFails:
+        def prefetch(self, games, historical=True):
+            pass
+
+        def at_kickoff(self, *a, **k):
+            return dict(weather_mod.UNKNOWN_CONDITIONS)
+
+    blank = build_features(completed.head(40), engine, _AlwaysFails(),
+                           with_weather=True, historical=True)
+    check(blank["temp_f"].isna().all() and blank["wind_mph"].isna().all(),
+          "unavailable weather stays NaN instead of being filled in")
+    check(weather_mod.describe(dict(weather_mod.UNKNOWN_CONDITIONS))
+          == "Weather unavailable",
+          "dashboard admits when weather is missing")
+
     X, y = training_matrix(feat)
     check("spread" not in X.columns and "over_under" not in X.columns,
           "betting line excluded from model inputs")

@@ -38,8 +38,10 @@ FEATURE_COLUMNS = [
     "home_rest", "away_rest", "rest_diff",
     "home_game_no", "away_game_no",
     "away_travel_mi", "away_alt_change", "elevation",
-    # weather
-    "temp_f", "humidity", "precip_in", "wind_mph", "gust_mph", "is_dome",
+    # weather. Left as NaN when genuinely unavailable - the booster handles
+    # missing values natively, and a real gap must not masquerade as a mild
+    # calm afternoon, which is what a filled-in default would teach it.
+    "temp_f", "humidity", "precip_in", "wind_mph", "is_dome",
 ]
 
 TARGETS = ["margin", "total", "home_win"]
@@ -110,12 +112,11 @@ def build_features(games: pd.DataFrame, engine: RatingsEngine,
             "away_alt_change": _num(g.get("away_alt_change"), 0.0),
             "elevation": _num(g.get("elevation"), 500.0),
 
-            "temp_f": _num(wx.get("temp_f"), 65.0),
-            "humidity": _num(wx.get("humidity"), 60.0),
-            "precip_in": _num(wx.get("precip_in"), 0.0),
-            "wind_mph": _num(wx.get("wind_mph"), 6.0),
-            "gust_mph": _num(wx.get("gust_mph"), 10.0),
-            "is_dome": int(wx.get("is_dome", 0)),
+            "temp_f": _num(wx.get("temp_f")),
+            "humidity": _num(wx.get("humidity")),
+            "precip_in": _num(wx.get("precip_in")),
+            "wind_mph": _num(wx.get("wind_mph")),
+            "is_dome": int(wx.get("is_dome", 0) or 0),
 
             "margin": _num(g.get("margin")),
             "total": _num(g.get("total")),

@@ -187,9 +187,15 @@ class FakeWeather:
                    pd.Timestamp(g["startDate"]).strftime("%Y-%m-%dT%H"))
             self.by_key[key] = g
 
+    def prefetch(self, games, historical=True):
+        """Nothing to warm - the index is built in __init__."""
+
+    def coverage(self) -> str:
+        return f"stub, {len(self.by_key):,} venue-hours"
+
     def at_kickoff(self, lat, lon, kickoff, is_dome=False, historical=None):
         neutral = {"temp_f": 65.0, "humidity": 60.0, "precip_in": 0.0,
-                   "wind_mph": 6.0, "gust_mph": 10.0, "is_dome": int(bool(is_dome))}
+                   "wind_mph": 6.0, "is_dome": int(bool(is_dome))}
         if lat is None or pd.isna(lat) or kickoff is None or pd.isna(kickoff):
             return neutral
         key = (round(float(lat), 3), round(float(lon), 3),
@@ -198,5 +204,4 @@ class FakeWeather:
         if g is None:
             return neutral
         return {"temp_f": g["_temp"], "humidity": 60.0, "precip_in": g["_precip"],
-                "wind_mph": g["_wind"], "gust_mph": g["_wind"] * 1.4,
-                "is_dome": int(bool(is_dome))}
+                "wind_mph": g["_wind"], "is_dome": int(bool(is_dome))}

@@ -87,8 +87,25 @@ def build_dataset(start: int, end: int, with_weather: bool = True,
     log.info("Building features%s...", " with weather" if with_weather else "")
     weather = WeatherService() if with_weather else None
     completed = games[games["completed"]].copy()
+
+    if weather is not None:
+        # One request per game date carrying every venue playing that date,
+        # rather than one heavy request per venue-season. Same data, a small
+        # fraction of the API weight, which is what keeps us inside the free
+        # tier instead of drowning in 429s.
+        weather.prefetch(completed, historical=True)
+        log.info("Weather: %s", weather.coverage())
+
     feat = build_features(completed, engine, weather,
                           with_weather=with_weather, historical=True)
+
+    if with_weather:
+        known = feat["temp_f"].notna().mean()
+        log.info("Weather resolved for %.1f%% of games", known * 100)
+        if known < 0.80:
+            log.warning("Less than 80%% of games have weather - the weather "
+                        "features will carry little signal. Check the log "
+                        "above for rate limiting.")
 
     log.info("Feature table: %d rows x %d cols", *feat.shape)
     return feat

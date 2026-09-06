@@ -46,7 +46,8 @@ def tier_for(edge: float) -> str | None:
     return None
 
 
-def run(target_dates: list[date], api_key: str | None = None) -> dict:
+def run(target_dates: list[date], api_key: str | None = None,
+        with_weather: bool = True, weather_budget: float = 120.0) -> dict:
     client = CFBDClient(api_key=api_key)
     season = current_season(target_dates[0])
     log.info("Season %s; target dates %s", season,
@@ -87,8 +88,14 @@ def run(target_dates: list[date], api_key: str | None = None) -> dict:
              int(slate["spread"].notna().sum()), len(slate))
 
     # --- features with live forecast weather ---
-    weather = WeatherService()
-    feat = build_features(slate, engine, weather, with_weather=True, historical=False)
+    # Capped at two minutes. Weather sharpens a prediction; it must never be
+    # the reason a morning run fails to produce one.
+    weather = WeatherService(budget_seconds=weather_budget) if with_weather else None
+    if weather is not None:
+        weather.prefetch(slate, historical=False)
+        log.info("Weather: %s", weather.coverage())
+    feat = build_features(slate, engine, weather,
+                          with_weather=with_weather, historical=False)
 
     model = joblib.load(MODEL_PATH)
     preds = model.predict(feat)
@@ -107,9 +114,13 @@ def run(target_dates: list[date], api_key: str | None = None) -> dict:
         edge = (margin - market_margin) if market_margin is not None else None
         total_edge = (total - float(ou)) if pd.notna(ou) else None
 
+        # NaN is not valid JSON, so unavailable readings go out as null.
+        def _j(v):
+            return None if v is None or pd.isna(v) else round(float(v), 1)
+
         wx = {
-            "temp_f": r["temp_f"], "wind_mph": r["wind_mph"],
-            "precip_in": r["precip_in"], "humidity": r["humidity"],
+            "temp_f": _j(r["temp_f"]), "wind_mph": _j(r["wind_mph"]),
+            "precip_in": _j(r["precip_in"]), "humidity": _j(r["humidity"]),
             "is_dome": int(r["is_dome"]),
         }
 
@@ -169,6 +180,10 @@ def main(argv=None) -> int:
     p.add_argument("--date", help="YYYY-MM-DD (default: today, US Eastern)")
     p.add_argument("--days", type=int, default=1,
                    help="how many days forward to include")
+    p.add_argument("--no-weather", action="store_true",
+                   help="skip the forecast entirely and predict immediately")
+    p.add_argument("--weather-budget", type=float, default=120.0,
+                   help="seconds to spend on weather before giving up (default 120)")
     p.add_argument("--out", default=str(config.DOCS / "predictions.json"))
     p.add_argument("--html", default=str(config.DOCS / "index.html"))
     args = p.parse_args(argv)
@@ -180,7 +195,8 @@ def main(argv=None) -> int:
     targets = [start + timedelta(days=i) for i in range(max(1, args.days))]
 
     try:
-        payload = run(targets)
+        payload = run(targets, with_weather=not args.no_weather,
+                      weather_budget=args.weather_budget)
     except MissingKeyError as exc:
         print(f"\n{exc}\n")
         return 2
