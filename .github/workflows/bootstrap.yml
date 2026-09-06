@@ -1,0 +1,77 @@
+name: Bootstrap (build dataset and train)
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_year:
+        description: "First season to train on"
+        required: false
+        default: "2015"
+      end_year:
+        description: "Last season to train on"
+        required: false
+        default: "2025"
+      skip_weather:
+        description: "Skip historical weather (much faster, slightly worse)"
+        type: boolean
+        required: false
+        default: false
+  schedule:
+    - cron: "0 9 * * 1"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bootstrap
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Restore API cache
+        uses: actions/cache@v4
+        with:
+          path: data/cache
+          key: cfb-cache-${{ github.run_id }}
+          restore-keys: cfb-cache-
+
+      - name: Verify API access
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: python -m cfb.selftest
+
+      - name: Build dataset
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          python -m cfb.build \
+            --start "${{ github.event.inputs.start_year || '2015' }}" \
+            --end   "${{ github.event.inputs.end_year   || '2025' }}" \
+            ${{ github.event.inputs.skip_weather == 'true' && '--no-weather' || '' }}
+
+      - name: Train and backtest
+        run: python -m cfb.train
+
+      - name: Commit model and metrics
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f models/cfb_model.joblib models/metrics.json data/training.parquet
+          if git diff --staged --quiet; then
+            echo "Model unchanged."
+          else
+            git commit -m "Retrain: dataset and model refreshed $(date -u +%Y-%m-%d)"
+            git push
+          fi
