@@ -1,6 +1,6 @@
 """Train the production models and record honest out-of-sample metrics.
 
-    python -m cfb.train
+    python train.py
 """
 from __future__ import annotations
 
@@ -10,9 +10,9 @@ import logging
 import joblib
 import pandas as pd
 
-from . import config
-from .features import training_matrix
-from .model import CFBModel, evaluate, save_metrics, summarize, walk_forward
+import config
+from features import training_matrix
+from model import CFBModel, evaluate, save_metrics, summarize, walk_forward
 
 log = logging.getLogger(__name__)
 

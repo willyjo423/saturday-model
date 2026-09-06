@@ -11,14 +11,13 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from cfb import dataset, schema  # noqa: E402
-from cfb.dashboard import render  # noqa: E402
-from cfb.features import FEATURE_COLUMNS, build_features, training_matrix  # noqa: E402
-from cfb.model import CFBModel, evaluate, summarize, walk_forward  # noqa: E402
-from cfb.ratings import PreseasonPriors, RatingsEngine  # noqa: E402
-from tests.simulate import FakeWeather, build_world  # noqa: E402
+import dataset, schema  # noqa: E402
+from dashboard import render  # noqa: E402
+from features import FEATURE_COLUMNS, build_features, training_matrix  # noqa: E402
+from model import CFBModel, evaluate, summarize, walk_forward  # noqa: E402
+from ratings import PreseasonPriors, RatingsEngine  # noqa: E402
+from simulate import FakeWeather, build_world  # noqa: E402
 
 PASS, FAIL = "  PASS", "  FAIL"
 results: list[tuple[bool, str]] = []
@@ -249,7 +248,7 @@ def main() -> int:
     check(html.count("<html") == 1 and html.rstrip().endswith("</html>"),
           "dashboard is a complete document")
 
-    out_dir = Path(__file__).resolve().parent.parent / "docs"
+    out_dir = Path(__file__).resolve().parent / "docs"
     out_dir.mkdir(exist_ok=True)
     (out_dir / "sample.html").write_text(html)
     (out_dir / "sample.json").write_text(json.dumps(payload, indent=2, default=str))

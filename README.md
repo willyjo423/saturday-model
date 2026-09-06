@@ -73,19 +73,19 @@ You need a free CollegeFootballData API key: <https://collegefootballdata.com/ke
 pip install -r requirements.txt
 export CFBD_API_KEY=your_key_here
 
-python -m cfb.selftest    # confirm the key and every endpoint work
-python -m cfb.build       # build the training set (slow, once)
-python -m cfb.train       # train + walk-forward backtest
-python -m cfb.daily       # today's slate -> docs/index.html
+python selftest.py    # confirm the key and every endpoint work
+python build.py       # build the training set (slow, once)
+python train.py       # train + walk-forward backtest
+python daily.py       # today's slate -> docs/index.html
 ```
 
 Useful variations:
 
 ```bash
-python -m cfb.daily --date 2026-11-28    # a specific day
-python -m cfb.daily --days 3             # today plus the next two
-python -m cfb.build --no-weather         # much faster, slightly worse
-python -m tests.test_pipeline            # full verification, no API needed
+python daily.py --date 2026-11-28    # a specific day
+python daily.py --days 3             # today plus the next two
+python build.py --no-weather         # much faster, slightly worse
+python test_pipeline.py            # full verification, no API needed
 ```
 
 ## Reading the dashboard
@@ -99,7 +99,7 @@ carry a tier chip; everything else falls into "Rest of the slate".
 
 The honest benchmark is not "does it pick winners" — favourites win most games,
 so a model can look good doing nothing. The benchmark is the **closing line**,
-which is very hard to beat, and `python -m cfb.train` prints exactly how the
+which is very hard to beat, and `python train.py` prints exactly how the
 model does against it: margin MAE versus the market's, and an against-the-spread
 record by confidence tier with 52.4% marked as break-even at −110.
 
@@ -113,24 +113,29 @@ win-probability calibration table.
 
 ## Layout
 
+Every file sits at the repository root, which keeps uploading simple.
+
 ```
-cfb/
-  api.py         CFBD client: caching, retries, tolerant of field renames
-  weather.py     Open-Meteo forecast + archive, keyed to kickoff hour
-  schema.py      canonical field names; degrades instead of crashing
-  dataset.py     game table, venues, rest, travel, consensus lines
-  ratings.py     leak-free ridge power ratings + preseason priors
-  features.py    feature matrix (no betting lines)
-  model.py       margin/total/win-prob models, walk-forward evaluation
-  build.py       one-off dataset construction
-  train.py       training + backtest CLI
-  daily.py       the zero-input daily run
-  dashboard.py   standalone HTML output
-  selftest.py    live API verification
-tests/
-  simulate.py       synthetic universe with known ground truth
-  test_pipeline.py  33 end-to-end checks, no API key needed
+api.py         CFBD client: caching, retries, tolerant of field renames
+weather.py     Open-Meteo forecast + archive, keyed to kickoff hour
+schema.py      canonical field names; degrades instead of crashing
+dataset.py     game table, venues, rest, travel, consensus lines
+ratings.py     leak-free ridge power ratings + preseason priors
+features.py    feature matrix (no betting lines)
+model.py       margin/total/win-prob models, walk-forward evaluation
+config.py      every tunable setting
+build.py       one-off dataset construction
+train.py       training + backtest CLI
+daily.py       the zero-input daily run
+dashboard.py   standalone HTML output
+selftest.py    live API verification
+
+simulate.py       synthetic universe with known ground truth
+test_pipeline.py  33 end-to-end checks, no API key needed
+test_daily.py     16 checks on the daily run, no API key needed
 ```
+
+`data/`, `models/` and `docs/` are created automatically on first run.
 
 ## Notes and limits
 
