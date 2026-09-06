@@ -1,0 +1,105 @@
+{
+  "n_games": 5398,
+  "margin_mae": 13.625801464431577,
+  "total_mae": 13.638977195433199,
+  "win_logloss": 0.5504489347310724,
+  "win_accuracy": 0.7074842534271952,
+  "win_brier": 0.18735658934863,
+  "win_ece": 0.018974862463609913,
+  "calibration_table": [
+    {
+      "bin": "(0.0, 0.1]",
+      "predicted": 0.0366,
+      "observed": 0.1149,
+      "n": 87
+    },
+    {
+      "bin": "(0.1, 0.2]",
+      "predicted": 0.1345,
+      "observed": 0.1724,
+      "n": 203
+    },
+    {
+      "bin": "(0.2, 0.3]",
+      "predicted": 0.2552,
+      "observed": 0.3054,
+      "n": 334
+    },
+    {
+      "bin": "(0.3, 0.4]",
+      "predicted": 0.3266,
+      "observed": 0.3219,
+      "n": 292
+    },
+    {
+      "bin": "(0.4, 0.5]",
+      "predicted": 0.455,
+      "observed": 0.4449,
+      "n": 935
+    },
+    {
+      "bin": "(0.5, 0.6]",
+      "predicted": 0.5566,
+      "observed": 0.5485,
+      "n": 855
+    },
+    {
+      "bin": "(0.6, 0.7]",
+      "predicted": 0.65,
+      "observed": 0.6886,
+      "n": 774
+    },
+    {
+      "bin": "(0.7, 0.8]",
+      "predicted": 0.741,
+      "observed": 0.7287,
+      "n": 494
+    },
+    {
+      "bin": "(0.8, 0.9]",
+      "predicted": 0.8395,
+      "observed": 0.8279,
+      "n": 732
+    },
+    {
+      "bin": "(0.9, 1.0]",
+      "predicted": 0.9625,
+      "observed": 0.9494,
+      "n": 692
+    }
+  ],
+  "market_margin_mae": 12.182869080779945,
+  "model_margin_mae_on_lined": 13.628774326126441,
+  "mae_vs_market": 1.4459052453464967,
+  "ats_n": 5286,
+  "ats_win_pct": 0.4890276201286417,
+  "ats_by_tier": {
+    "Strong": {
+      "threshold": 6.0,
+      "n": 2063,
+      "ats_win_pct": 0.491517207949588
+    },
+    "Lean": {
+      "threshold": 3.5,
+      "n": 3191,
+      "ats_win_pct": 0.48856157944218115
+    },
+    "Slight": {
+      "threshold": 2.0,
+      "n": 4025,
+      "ats_win_pct": 0.49142857142857144
+    }
+  },
+  "breakeven_at_minus_110": 0.5238,
+  "market_total_mae": 12.694697251114412,
+  "model_total_mae_on_lined": 13.635819630481123,
+  "margin_mae_by_season": {
+    "2019": 14.215,
+    "2020": 13.78,
+    "2021": 13.857,
+    "2022": 13.243,
+    "2023": 13.017,
+    "2024": 13.713,
+    "2025": 13.619
+  }
+}
