@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saturday Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root {
+  color-scheme: light dark;
+  --ground:  #F4F5F2;
+  --surface: #FFFFFF;
+  --sunken:  #EBEEE9;
+  --ink:     #131A15;
+  --muted:   #5A6860;
+  --faint:   #8B978F;
+  --line:    #E0E4DD;
+  --field:   #1B5E3F;
+  --field-soft: #E4EFE8;
+  --flag:    #B8790C;
+  --flag-soft:  #FBF1DC;
+  --over:    #0F7B6C;
+  --under:   #A63A2B;
+  --shadow:  0 1px 2px rgba(19,26,21,.06), 0 4px 14px rgba(19,26,21,.05);
+  --radius:  10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:  #0D1210;
+    --surface: #151C18;
+    --sunken:  #1D2620;
+    --ink:     #E9EEE9;
+    --muted:   #94A59A;
+    --faint:   #6C7C72;
+    --line:    #27322C;
+    --field:   #58B183;
+    --field-soft: #1A2B22;
+    --flag:    #E3A93C;
+    --flag-soft:  #2C2415;
+    --over:    #3FBFA8;
+    --under:   #E0705C;
+    --shadow:  0 1px 2px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"] {
+  --ground:  #0D1210;
+  --surface: #151C18;
+  --sunken:  #1D2620;
+  --ink:     #E9EEE9;
+  --muted:   #94A59A;
+  --faint:   #6C7C72;
+  --line:    #27322C;
+  --field:   #58B183;
+  --field-soft: #1A2B22;
+  --flag:    #E3A93C;
+  --flag-soft:  #2C2415;
+  --over:    #3FBFA8;
+  --under:   #E0705C;
+  --shadow:  0 1px 2px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 28px 20px 64px; }
+
+/* ---------- masthead ---------- */
+.masthead {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 18px;
+  padding-bottom: 16px; border-bottom: 2px solid var(--field);
+}
+.masthead h1 {
+  font-family: "Barlow Condensed", ui-sans-serif, sans-serif;
+  font-weight: 700; font-size: clamp(30px, 5vw, 44px);
+  letter-spacing: .01em; text-transform: uppercase;
+  margin: 0; line-height: 1; text-wrap: balance;
+}
+.masthead .date { color: var(--muted); font-size: 14px; }
+.masthead .stamp {
+  margin-left: auto; font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px; color: var(--faint); letter-spacing: .04em;
+}
+
+/* ---------- summary strip ---------- */
+.strip {
+  display: grid; gap: 1px; background: var(--line);
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; margin: 22px 0 26px;
+}
+.strip div { background: var(--surface); padding: 12px 14px; }
+.strip dt {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .09em;
+  color: var(--faint); margin: 0 0 3px;
+}
+.strip dd {
+  margin: 0; font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 19px; font-weight: 500; font-variant-numeric: tabular-nums;
+}
+
+/* ---------- section headings ---------- */
+h2.sec {
+  font-family: "Barlow Condensed", ui-sans-serif, sans-serif;
+  text-transform: uppercase; letter-spacing: .06em; font-size: 17px;
+  font-weight: 600; color: var(--muted);
+  margin: 34px 0 12px; display: flex; align-items: center; gap: 10px;
+}
+h2.sec::after {
+  content: ""; flex: 1; height: 1px; background: var(--line);
+}
+
+/* ---------- game row ---------- */
+.game {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid transparent;
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: minmax(200px, 1.15fr) minmax(220px, 1.35fr) minmax(150px, .9fr);
+  gap: 16px 20px;
+  align-items: center;
+}
+.game.flagged { border-left-color: var(--flag); box-shadow: var(--shadow); }
+
+.matchup .teams {
+  font-family: "Barlow Condensed", ui-sans-serif, sans-serif;
+  font-size: 21px; font-weight: 600; line-height: 1.18;
+  letter-spacing: .005em;
+}
+.matchup .at { color: var(--faint); font-weight: 400; padding: 0 3px; }
+.matchup .meta {
+  font-size: 12px; color: var(--muted); margin-top: 4px;
+  display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center;
+}
+.wx {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11.5px; color: var(--muted);
+  background: var(--sunken); border-radius: 999px; padding: 2px 8px;
+  white-space: nowrap;
+}
+
+/* ---------- spread line ---------- */
+.line-wrap { min-width: 0; }
+.line-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--faint); margin-bottom: 9px;
+}
+/* Model reads above the rule, market below, so the two numbers can never
+   collide however close the marks sit. */
+.axis { position: relative; height: 54px; }
+.axis .rule {
+  position: absolute; top: 26px; left: 0; right: 0; height: 2px;
+  background: var(--line); border-radius: 2px;
+}
+.axis .gap {
+  position: absolute; top: 26px; height: 2px; background: var(--flag);
+  border-radius: 2px;
+}
+.mark { position: absolute; top: 0; height: 54px; }
+.mark .tick {
+  position: absolute; top: 20px; left: 0; width: 2px; height: 14px;
+  border-radius: 2px; transform: translateX(-50%);
+}
+.mark.market .tick { background: var(--faint); }
+.mark.model  .tick { background: var(--field); width: 3px; }
+.mark .val {
+  position: absolute; left: 0; transform: translateX(-50%);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11.5px; font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.mark.model  .val { top: 2px;  color: var(--field); font-weight: 600; }
+.mark.market .val { top: 36px; color: var(--muted); }
+.axis-legend {
+  display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 6px;
+  font-size: 11px; color: var(--faint);
+}
+.axis-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.swatch { width: 9px; height: 3px; border-radius: 2px; display: inline-block; }
+
+/* ---------- right column ---------- */
+.readout { display: flex; flex-direction: column; gap: 9px; }
+.prob-row {
+  display: flex; justify-content: space-between; gap: 10px; font-size: 11.5px;
+  color: var(--muted); font-variant-numeric: tabular-nums;
+}
+.prob-row .pct { font-weight: 600; color: var(--ink); }
+.prob-bar {
+  height: 8px; border-radius: 4px; background: var(--sunken);
+  overflow: hidden; display: flex; margin: 4px 0 3px;
+}
+.prob-bar i { display: block; height: 100%; }
+.prob-bar i.away { background: var(--faint); }
+.prob-bar i.home { background: var(--field); }
+.score {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 13px; font-variant-numeric: tabular-nums; color: var(--ink);
+}
+.score .lbl { color: var(--faint); font-size: 11px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font-size: 11px; font-weight: 600; letter-spacing: .03em;
+  padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+  border: 1px solid transparent;
+}
+.chip.tier   { background: var(--flag-soft); color: var(--flag); border-color: var(--flag); }
+.chip.over   { background: var(--field-soft); color: var(--over); }
+.chip.under  { background: var(--field-soft); color: var(--under); }
+.chip.quiet  { background: var(--sunken); color: var(--muted); }
+
+/* ---------- footer ---------- */
+.note {
+  margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line);
+  font-size: 12.5px; color: var(--muted); max-width: 68ch;
+}
+.note strong { color: var(--ink); }
+.note code {
+  font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11.5px;
+  background: var(--sunken); padding: 1px 5px; border-radius: 4px;
+}
+.empty {
+  background: var(--surface); border: 1px dashed var(--line);
+  border-radius: var(--radius); padding: 32px; text-align: center;
+  color: var(--muted);
+}
+
+@media (max-width: 760px) {
+  .game { grid-template-columns: 1fr; gap: 14px; }
+  .masthead .stamp { margin-left: 0; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+.banner {
+  margin: 20px 0 0; padding: 11px 14px; border-radius: var(--radius);
+  background: var(--flag-soft); border: 1px solid var(--flag);
+  color: var(--flag); font-size: 13px; line-height: 1.45;
+}
+.banner strong { color: var(--flag); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <h1>Saturday Model</h1>
+    <span class="date">Friday, September 11, 2026</span>
+    <span class="stamp">Built Sep 3, 2026 · 7:10 PM ET</span>
+  </header>
+  <div class="banner"><strong>Design preview.</strong> These are simulated teams and simulated games, generated to verify the pipeline end to end. Once the bootstrap job runs against your API key, this same page shows the real slate.</div>
+  <dl class="strip"><div><dt>Games today</dt><dd>14</dd></div><div><dt>Flagged edges</dt><dd>14</dd></div><div><dt>Largest gap</dt><dd>17.3 pts</dd></div></dl>
+  <h2 class="sec">Where the model disagrees</h2>
+    <article class="game flagged">
+      <div class="matchup">
+        <div class="teams">Team 022 <span class="at">at</span> Team 055</div>
+        <div class="meta">Fri 7:00 PM ET<span class="wx">74°F, 3 mph wind</span></div>
+      </div>
+      <div class="line-wrap"><div class="line-head"><span>Spread</span><span>Week 3</span></div><div class="axis"><div class="rule"></div><div class="gap" style="left:36.84%;width:26.32%"></div><div class="mark market" style="left:63.16%"><div class="tick"></div><span class="val">Team 055 −28.5</span></div><div class="mark model" style="left:36.84%"><div class="tick"></div><span class="val">Team 055 −11.2</span></div></div><div class="axis-legend"><span><i class="swatch" style="background:var(--field)"></i>Model</span><span><i class="swatch" style="background:var(--faint)"></i>Market</span><span><i class="swatch" style="background:var(--flag)"></i>17.3 pt gap</span></div></div>
+      <div class="readout">
+        <div>
+          <div class="prob-row"><span>Win probability</span></div>
+          <div class="prob-bar">
+            <i class="away" style="width:18%"></i>
+            <i class="home" style="width:82%"></i>
+          </div>
+          <div class="prob-row">
+            <span><span class="pct">18%</span> Team 022</span>
+            <span>Team 055 <span class="pct">82%</span></span>
+          </div>
+        </div>
+        <div class="score"><span class="lbl">Proj score</span>
+          21–32
+        </div>
+        <div class="score"><span class="lbl">Total</span> 53.3 <span class="lbl">vs</span> 49.5</div>
+        <div class="chips"><span class="chip tier">Strong · Team 022 +28.5</span><span class="chip over">Over 49.5 (+3.8)</span></div>
+      </div>
+    </article>
+    <article class="game flagged">
+      <div class="matchup">
+        <div class="teams">Team 001 <span class="at">at</span> Team 052</div>
+        <div class="meta">Fri 7:00 PM ET<span class="wx">42°F, 11 mph wind</span></div>
+      </div>
+      <div class="line-wrap"><div class="line-head"><span>Spread</span><span>Week 3</span></div><div class="axis"><div class="rule"></div><div class="gap" style="left:36.84%;width:26.32%"></div><div class="mark market" style="left:63.16%"><div class="tick"></div><span class="val">Team 052 −20.5</span></div><div class="mark model" style="left:36.84%"><div class="tick"></div><span class="val">Team 052 −3.6</span></div></div><div class="axis-legend"><span><i class="swatch" style="background:var(--field)"></i>Model</span><span><i class="swatch" style="background:var(--faint)"></i>Market</span><span><i class="swatch" style="background:var(--flag)"></i>16.9 pt gap</span></div></div>
+      <div class="readout">
+        <div>
+          <div class="prob-row"><span>Win probability</span></div>
+          <div class="prob-bar">
+            <i class="away" style="width:37%"></i>
+            <i class="home" style="width:63%"></i>
+          </div>
+          <div class="prob-row">
+            <span><span class="pct">37%</span> Team 001</span>
+            <span>Team 052 <span class="pct">63%</span></span>
+          </div>
+        </div>
+        <div class="score"><span class="lbl">Proj score</span>
+          24–28
+        </div>
+        <div class="score"><span class="lbl">Total</span> 51.7 <span class="lbl">vs</span> 57.5</div>
+        <div class="chips"><span class="chip tier">Strong · Team 001 +20.5</span><span class="chip under">Under 57.5 (-5.8)</span></div>
+      </div>
+    </article>
+    <article class="game flagged">
+      <div class="matchup">
+        <div class="teams">Team 118 <span class="at">at</span> Team 006</div>
+        <div class="meta">Fri 9:00 PM ET<span class="wx">67°F, 13 mph wind</span></div>
+      </div>
+      <div class="line-wrap"><div class="line-head"><span>Spread</span><span>Week 3</span></div><div class="axis"><div class="rule"></div><div class="gap" style="left:36.84%;width:26.32%"></div><div class="mark market" style="left:36.84%"><div class="tick"></div><span class="val">Team 118 −24.0</span></div><div class="mark model" style="left:63.16%"><div class="tick"></div><span class="val">Team 118 −7.8</span></div></div><div class="axis-legend"><span><i class="swatch" style="background:var(--field)"></i>Model</span><span><i class="swatch" style="background:var(--faint)"></i>Market</span><span><i class="swatch" style="background:var(--flag)"></i>16.2 pt gap</span></div></div>
+      <div class="readout">
+        <div>
+          <div class="prob-row"><span>Win probability</span></div>
+          <div class="prob-bar">
+            <i class="away" style="width:77%"></i>
+            <i class="home" style="width:23%"></i>
+          </div>
+          <div class="prob-row">
+            <span><span class="pct">77%</span> Team 118</span>
+            <span>Team 006 <span class="pct">23%</span></span>
+          </div>
+        </div>
+        <div class="score"><span class="lbl">Proj score</span>
+          28–21
+        </div>
+        <div class="score"><span class="lbl">Total</span> 48.9 <span class="lbl">vs</span> 51.0</div>
+        <div class="chips"><span class="chip tier">Strong · Team 006 +24.0</span><span class="chip under">Under 51.0 (-2.1)</span></div>
+      </div>
+    </article>
+    <article class="game flagged">
+      <div class="matchup">
+        <div class="teams">Team 002 <span class="at">at</span> Team 023</div>
+        <div class="meta">Fri 9:00 PM ET<span class="wx">42°F, 11 mph wind</span></div>
+      </div>
+      <div class="line-wrap"><div class="line-head"><span>Spread</span><span>Week 3</span></div><div class="axis"><div class="rule"></div><div class="gap" style="left:36.84%;width:26.32%"></div><div class="mark market" style="left:36.84%"><div class="tick"></div><span class="val">Team 002 −23.0</span></div><div class="mark model" style="left:63.16%"><div class="tick"></div><span class="val">Team 002 −6.8</span></div></div><div class="axis-legend"><span><i class="swatch" style="background:var(--field)"></i>Model</span><span><i class="swatch" style="background:var(--faint)"></i>Market</span><span><i class="swatch" style="background:var(--flag)"></i>16.2 pt gap</span></div></div>
+      <div class="readout">
+        <div>
+          <div class="prob-row"><span>Win probability</span></div>
+          <div class="prob-bar">
+            <i class="away" style="width:70%"></i>
+            <i class="home" style="width:30%"></i>
+          </div>
+          <div class="prob-row">
+            <span><span class="pct">70%</span> Team 002</span>
+            <span>Team 023 <span class="pct">30%</span></span>
+          </div>
+        </div>
+        <div class="score"><span class="lbl">Proj score</span>
+          29–22
+        </div>
+        <div class="score"><span class="lbl">Total</span> 51.8 <span class="lbl">vs</span> 46.5</div>
+        <div class="chips"><span class="chip tier">Strong · Team 023 +23.0</span><span class="chip over">Over 46.5 (+5.3)</span></div>
+      </div>
+    </article>
+    <article class="game flagged">
+      <div class="matchup">
+        <div class="teams">Team 032 <span class="at">at</span> Team 108</div>
+        <div class="meta">Fri 12:00 PM ET<span class="wx">75°F, 4 mph wind, 0.05&quot; precip</span></div>
+      </div>
+      <div class="line-wrap"><div class="line-head"><span>Spread</span><span>Week 3</span></div><div class="axis"><div class="rule"></div><div class="gap" style="left:36.84%;width:26.32%"></div><div class="mark market" style="left:36.84%"><div class="tick"></div><span class="val">Team 032 −31.5</span></div><div class="mark model" style="left:63.16%"><div class="tick"></div><span class="val">Team 032 −17.5</span></div></div><div class="axis-legend"><span><i class="swatch" style="background:var(--field)"></i>Model</span><span><i class="swatch" style="background:var(--faint)"></i>Market</span><span><i class="swatch" style="background:var(--flag)"></i>14.0 pt gap</span></div></div>
+      <div class="readout">
+        <div>
+          <div class="prob-row"><span>Win probability</span></div>
+          <div class="prob-bar">
+            <i class="away" style="width:85%"></i>
+            <i class="home" style="width:15%"></i>
+          </div>
+          <div class="prob-row">
+            <span><span class="pct">85%</span> Team 032</span>
+            <span>Team 108 <span class="pct">15%</span></span>
+          </div>
+        </div>
+        <div class="score"><span class="lbl">Proj score</span>
+          33–16
+        </div>
+        <div class="score"><span class="lbl">Total</span> 49.3 <span class="lbl">vs</span> 49.0</div>
+        <div class="chips"><span class="chip tier">Strong · Team 108 +31.5</span></div>
+      </div>
+    </article>
+    <article class="game flagged">
+      <div class="matchup">
+        <div class="teams">Team 091 <span class="at">at</span> Team 061</div>
+        <div class="meta">Fri 1:00 PM ET<span class="wx">Indoors</span></div>
+      </div>
+      <div class="line-wrap"><div class="line-head"><span>Spread</span><span>Week 3</span></div><div class="axis"><div class="rule"></div><div class="gap" style="left:36.84%;width:26.32%"></div><div class="mark market" style="left:63.16%"><div class="tick"></div><span class="val">Team 061 −19.0</span></div><div class="mark model" style="left:36.84%"><div class="tick"></div><span class="val">Team 061 −5.2</span></div></div><div class="axis-legend"><span><i class="swatch" style="background:var(--field)"></i>Model</span><span><i class="swatch" style="background:var(--faint)"></i>Market</span><span><i class="swatch" style="background:var(--flag)"></i>13.8 pt gap</span></div></div>
+      <div class="readout">
+        <div>
+          <div class="prob-row"><span>Win probability</span></div>
+          <div class="prob-bar">
+            <i class="away" style="width:35%"></i>
+            <i class="home" style="width:65%"></i>
+          </div>
+          <div class="prob-row">
+            <span><span class="pct">35%</span> Team 091</span>
+            <span>Team 061 <span class="pct">65%</span></span>
+          </div>
+        </div>
+        <div class="score"><span class="lbl">Proj score</span>
+          22–28
+        </div>
+        <div class="score"><span class="lbl">Total</span> 49.8 <span class="lbl">vs</span> 51.5</div>
+        <div class="chips"><span class="chip tier">Strong · Team 091 +19.0</span></div>
+      </div>
+    </article>
+    <article class="game flagged">
+      <div class="matchup">
+        <div class="teams">Team 113 <span class="at">at</span> Team 078</div>
+        <div class="meta">Fri 11:00 PM ET<span class="wx">46°F, 15 mph wind</span></div>
+      </div>
+      <div class="line-wrap"><div class="line-head"><span>Spread</span><span>Week 3</span></div><div class="axis"><div class="rule"></div><div class="gap" style="left:36.84%;width:26.32%"></div><div class="mark market" style="left:63.16%"><div class="tick"></div><span class="val">Team 078 −32.0</span></div><div class="mark model" style="left:36.84%"><div class="tick"></div><span class="val">Team 078 −18.4</span></div></div><div class="axis-legend"><span><i class="swatch" style="background:var(--field)"></i>Model</span><span><i class="swatch" style="background:var(--faint)"></i>Market</span><span><i class="swatch" style="background:var(--flag)"></i>13.6 pt gap</span></div></div>
+      <div class="readout">
+        <div>
+          <div class="prob-row"><span>Win probability</span></div>
+          <div class="prob-bar">
+            <i class="away" style="width:11%"></i>
+            <i class="home" style="width:89%"></i>
+          </div>
+          <div class="prob-row">
+            <span><span class="pct">11%</span> Team 113</span>
+            <span>Team 078 <span class="pct">89%</span></span>
+          </div>
+        </div>
+        <div class="score"><span class="lbl">Proj score</span>
+          17–35
+        </div>
+        <div class="score"><span class="lbl">Total</span> 52.5 <span class="lbl">vs</span> 42.5</div>
+        <div class="chips"><span class="chip tier">Strong · Team 113 +32.0</span><span class="chip over">Over 42.5 (+10.0)</span></div>
+      </div>
+    </article>
+    <article class="game flagged">
+      <div class="matchup">
+        <div class="teams">Team 074 <span class="at">at</span> Team 015</div>
+        <div class="meta">Fri 4:00 PM ET<span class="wx">75°F, 4 mph wind, 0.05&quot; precip</span></div>
+      </div>
+      <div class="line-wrap"><div class="line-head"><span>Spread</span><span>Week 3</span></div><div class="axis"><div class="rule"></div><div class="gap" style="left:36.84%;width:26.32%"></div><div class="mark market" style="left:36.84%"><div class="tick"></div><span class="val">Team 074 −26.0</span></div><div class="mark model" style="left:63.16%"><div class="tick"></div><span class="val">Team 074 −13.3</span></div></div><div class="axis-legend"><span><i class="swatch" style="background:var(--field)"></i>Model</span><span><i class="swatch" style="background:var(--faint)"></i>Market</span><span><i class="swatch" style="background:var(--flag)"></i>12.7 pt gap</span></div></div>
+      <div class="readout">
+        <div>
+          <div class="prob-row"><span>Win probability</span></div>
+          <div class="prob-bar">
+            <i class="away" style="width:87%"></i>
+            <i class="home" style="width:13%"></i>
+          </div>
+          <div class="prob-row">
+            <span><span class="pct">87%</span> Team 074</span>
+            <span>Team 015 <span class="pct">13%</span></span>
+          </div>
+        </div>
+        <div class="score"><span class="lbl">Proj score</span>
+          32–19
+        </div>
+        <div class="score"><span class="lbl">Total</span> 51.0 <span class="lbl">vs</span> 52.5</div>
+        <div class="chips"><span class="chip tier">Strong · Team 015 +26.0</span></div>
+      </div>
+    </article>
+    <article class="game flagged">
+      <div class="matchup">
+        <div class="teams">Team 084 <span class="at">at</span> Team 025</div>
+        <div class="meta">Fri 4:00 PM ET<span class="wx">80°F, 9 mph wind</span></div>
+      </div>
+      <div class="line-wrap"><div class="line-head"><span>Spread</span><span>Week 3</span></div><div class="axis"><div class="rule"></div><div class="gap" style="left:36.84%;width:26.32%"></div><div class="mark market" style="left:36.84%"><div class="tick"></div><span class="val">Team 084 −19.0</span></div><div class="mark model" style="left:63.16%"><div class="tick"></div><span class="val">Team 084 −6.5</span></div></div><div class="axis-legend"><span><i class="swatch" style="background:var(--field)"></i>Model</span><span><i class="swatch" style="background:var(--faint)"></i>Market</span><span><i class="swatch" style="background:var(--flag)"></i>12.5 pt gap</span></div></div>
+      <div class="readout">
+        <div>
+          <div class="prob-row"><span>Win probability</span></div>
+          <div class="prob-bar">
+            <i class="away" style="width:72%"></i>
+            <i class="home" style="width:28%"></i>
+          </div>
+          <div class="prob-row">
+            <span><span class="pct">72%</span> Team 084</span>
+            <span>Team 025 <span class="pct">28%</span></span>
+          </div>
+        </div>
+        <div class="score"><span class="lbl">Proj score</span>
+          28–22
+        </div>
+        <div class="score"><span class="lbl">Total</span> 50.3 <span class="lbl">vs</span> 57.0</div>
+        <div class="chips"><span class="chip tier">Strong · Team 025 +19.0</span><span class="chip under">Under 57.0 (-6.7)</span></div>
+      </div>
+    </article>
+    <article class="game flagged">
+      <div class="matchup">
+        <div class="teams">Team 063 <span class="at">at</span> Team 017</div>
+        <div class="meta">Fri 9:00 PM ET<span class="wx">76°F, 5 mph wind, 0.05&quot; precip</span></div>
+      </div>
+      <div class="line-wrap"><div class="line-head"><span>Spread</span><span>Week 3</span></div><div class="axis"><div class="rule"></div><div class="gap" style="left:36.84%;width:26.32%"></div><div class="mark market" style="left:63.16%"><div class="tick"></div><span class="val">Team 017 −12.5</span></div><div class="mark model" style="left:36.84%"><div class="tick"></div><span class="val">Team 017 −0.0</span></div></div><div class="axis-legend"><span><i class="swatch" style="background:var(--field)"></i>Model</span><span><i class="swatch" style="background:var(--faint)"></i>Market</span><span><i class="swatch" style="background:var(--flag)"></i>12.5 pt gap</span></div></div>
+      <div class="readout">
+        <div>
+          <div class="prob-row"><span>Win probability</span></div>
+          <div class="prob-bar">
+            <i class="away" style="width:47%"></i>
+            <i class="home" style="width:53%"></i>
+          </div>
+          <div class="prob-row">
+            <span><span class="pct">47%</span> Team 063</span>
+            <span>Team 017 <span class="pct">53%</span></span>
+          </div>
+        </div>
+        <div class="score"><span class="lbl">Proj score</span>
+          27–27
+        </div>
+        <div class="score"><span class="lbl">Total</span> 53.8 <span class="lbl">vs</span> 46.5</div>
+        <div class="chips"><span class="chip tier">Strong · Team 063 +12.5</span><span class="chip over">Over 46.5 (+7.3)</span></div>
+      </div>
+    </article>
+    <article class="game flagged">
+      <div class="matchup">
+        <div class="teams">Team 089 <span class="at">at</span> Team 114</div>
+        <div class="meta">Fri 5:00 PM ET<span class="wx">41°F, 10 mph wind</span></div>
+      </div>
+      <div class="line-wrap"><div class="line-head"><span>Spread</span><span>Week 3</span></div><div class="axis"><div class="rule"></div><div class="gap" style="left:36.84%;width:26.32%"></div><div class="mark market" style="left:36.84%"><div class="tick"></div><span class="val">Team 089 −18.5</span></div><div class="mark model" style="left:63.16%"><div class="tick"></div><span class="val">Team 089 −6.1</span></div></div><div class="axis-legend"><span><i class="swatch" style="background:var(--field)"></i>Model</span><span><i class="swatch" style="background:var(--faint)"></i>Market</span><span><i class="swatch" style="background:var(--flag)"></i>12.4 pt gap</span></div></div>
+      <div class="readout">
+        <div>
+          <div class="prob-row"><span>Win probability</span></div>
+          <div class="prob-bar">
+            <i class="away" style="width:64%"></i>
+            <i class="home" style="width:36%"></i>
+          </div>
+          <div class="prob-row">
+            <span><span class="pct">64%</span> Team 089</span>
+            <span>Team 114 <span class="pct">36%</span></span>
+          </div>
+        </div>
+        <div class="score"><span class="lbl">Proj score</span>
+          28–22
+        </div>
+        <div class="score"><span class="lbl">Total</span> 49.5 <span class="lbl">vs</span> 55.5</div>
+        <div class="chips"><span class="chip tier">Strong · Team 114 +18.5</span><span class="chip under">Under 55.5 (-6.0)</span></div>
+      </div>
+    </article>
+    <article class="game flagged">
+      <div class="matchup">
+        <div class="teams">Team 106 <span class="at">at</span> Team 101</div>
+        <div class="meta">Fri 10:00 PM ET<span class="wx">47°F, 16 mph wind</span></div>
+      </div>
+      <div class="line-wrap"><div class="line-head"><span>Spread</span><span>Week 3</span></div><div class="axis"><div class="rule"></div><div class="gap" style="left:36.84%;width:26.32%"></div><div class="mark market" style="left:36.84%"><div class="tick"></div><span class="val">Team 106 −1.5</span></div><div class="mark model" style="left:63.16%"><div class="tick"></div><span class="val">Team 101 −10.9</span></div></div><div class="axis-legend"><span><i class="swatch" style="background:var(--field)"></i>Model</span><span><i class="swatch" style="background:var(--faint)"></i>Market</span><span><i class="swatch" style="background:var(--flag)"></i>12.4 pt gap</span></div></div>
+      <div class="readout">
+        <div>
+          <div class="prob-row"><span>Win probability</span></div>
+          <div class="prob-bar">
+            <i class="away" style="width:22%"></i>
+            <i class="home" style="width:78%"></i>
+          </div>
+          <div class="prob-row">
+            <span><span class="pct">22%</span> Team 106</span>
+            <span>Team 101 <span class="pct">78%</span></span>
+          </div>
+        </div>
+        <div class="score"><span class="lbl">Proj score</span>
+          19–30
+        </div>
+        <div class="score"><span class="lbl">Total</span> 49.1 <span class="lbl">vs</span> 51.0</div>
+        <div class="chips"><span class="chip tier">Strong · Team 101 +1.5</span></div>
+      </div>
+    </article>
+    <article class="game flagged">
+      <div class="matchup">
+        <div class="teams">Team 100 <span class="at">at</span> Team 035</div>
+        <div class="meta">Fri 2:00 PM ET<span class="wx">67°F, 13 mph wind</span></div>
+      </div>
+      <div class="line-wrap"><div class="line-head"><span>Spread</span><span>Week 3</span></div><div class="axis"><div class="rule"></div><div class="gap" style="left:36.84%;width:26.32%"></div><div class="mark market" style="left:36.84%"><div class="tick"></div><span class="val">Team 035 −11.0</span></div><div class="mark model" style="left:63.16%"><div class="tick"></div><span class="val">Team 035 −22.4</span></div></div><div class="axis-legend"><span><i class="swatch" style="background:var(--field)"></i>Model</span><span><i class="swatch" style="background:var(--faint)"></i>Market</span><span><i class="swatch" style="background:var(--flag)"></i>11.4 pt gap</span></div></div>
+      <div class="readout">
+        <div>
+          <div class="prob-row"><span>Win probability</span></div>
+          <div class="prob-bar">
+            <i class="away" style="width:12%"></i>
+            <i class="home" style="width:88%"></i>
+          </div>
+          <div class="prob-row">
+            <span><span class="pct">12%</span> Team 100</span>
+            <span>Team 035 <span class="pct">88%</span></span>
+          </div>
+        </div>
+        <div class="score"><span class="lbl">Proj score</span>
+          14–37
+        </div>
+        <div class="score"><span class="lbl">Total</span> 51.3 <span class="lbl">vs</span> 52.0</div>
+        <div class="chips"><span class="chip tier">Strong · Team 035 -11.0</span></div>
+      </div>
+    </article>
+    <article class="game flagged">
+      <div class="matchup">
+        <div class="teams">Team 096 <span class="at">at</span> Team 041</div>
+        <div class="meta">Fri 1:00 PM ET<span class="wx">70°F, 16 mph wind</span></div>
+      </div>
+      <div class="line-wrap"><div class="line-head"><span>Spread</span><span>Week 3</span></div><div class="axis"><div class="rule"></div><div class="gap" style="left:36.84%;width:26.32%"></div><div class="mark market" style="left:36.84%"><div class="tick"></div><span class="val">Team 041 −7.0</span></div><div class="mark model" style="left:63.16%"><div class="tick"></div><span class="val">Team 041 −17.5</span></div></div><div class="axis-legend"><span><i class="swatch" style="background:var(--field)"></i>Model</span><span><i class="swatch" style="background:var(--faint)"></i>Market</span><span><i class="swatch" style="background:var(--flag)"></i>10.5 pt gap</span></div></div>
+      <div class="readout">
+        <div>
+          <div class="prob-row"><span>Win probability</span></div>
+          <div class="prob-bar">
+            <i class="away" style="width:11%"></i>
+            <i class="home" style="width:89%"></i>
+          </div>
+          <div class="prob-row">
+            <span><span class="pct">11%</span> Team 096</span>
+            <span>Team 041 <span class="pct">89%</span></span>
+          </div>
+        </div>
+        <div class="score"><span class="lbl">Proj score</span>
+          16–33
+        </div>
+        <div class="score"><span class="lbl">Total</span> 48.8 <span class="lbl">vs</span> 50.5</div>
+        <div class="chips"><span class="chip tier">Strong · Team 041 -7.0</span></div>
+      </div>
+    </article>
+  <p class="note">Ratings are fit only on games played before each kickoff, and the betting line is never a model input — that is what keeps this comparison meaningful. Weather is the Open-Meteo forecast at each venue's coordinates for the kickoff hour. Generated automatically — nothing was submitted by hand.</p>
+</div>
+</body>
+</html>
