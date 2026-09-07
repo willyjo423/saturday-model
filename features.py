@@ -18,6 +18,7 @@ import numpy as np
 import pandas as pd
 
 import config
+from comps import COMP_FEATURES
 from efficiency import METRICS as EFF_METRICS
 from ratings import RatingsEngine
 from weather import WeatherService
@@ -60,7 +61,8 @@ FEATURE_COLUMNS = [
     # missing values natively, and a real gap must not masquerade as a mild
     # calm afternoon, which is what a filled-in default would teach it.
     "temp_f", "humidity", "precip_in", "wind_mph", "is_dome",
-] + EFF_EDGE_COLUMNS + EFF_RAW_COLUMNS + EFF_PACE_COLUMNS + CONTEXT_COLUMNS
+] + EFF_EDGE_COLUMNS + EFF_RAW_COLUMNS + EFF_PACE_COLUMNS + CONTEXT_COLUMNS \
+  + COMP_FEATURES
 
 TARGETS = ["margin", "total", "home_win"]
 

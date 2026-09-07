@@ -213,6 +213,50 @@ h2.sec::after {
 }
 .score .lbl { color: var(--faint); font-size: 11px; }
 
+/* ---------- historical comparables ---------- */
+.comps {
+  grid-column: 1 / -1;
+  border-top: 1px dashed var(--line);
+  padding-top: 10px;
+  display: flex; flex-wrap: wrap; gap: 6px 20px; align-items: center;
+  font-size: 12px; color: var(--muted);
+}
+.comps .lead {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--faint);
+}
+.comps b {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums;
+}
+.band { position: relative; height: 20px; flex: 1 1 200px; min-width: 160px; }
+.band .track {
+  position: absolute; top: 9px; left: 0; right: 0; height: 3px;
+  background: var(--sunken); border-radius: 2px;
+}
+.band .iqr {
+  position: absolute; top: 7px; height: 7px;
+  background: var(--field-soft); border: 1px solid var(--field);
+  border-radius: 4px;
+}
+.band .med {
+  position: absolute; top: 3px; width: 3px; height: 15px;
+  background: var(--field); border-radius: 2px;
+}
+.band .zero {
+  position: absolute; top: 2px; width: 1px; height: 17px;
+  background: var(--faint); opacity: .5;
+}
+.precedents {
+  grid-column: 1 / -1; margin-top: -4px;
+  font-size: 11px; color: var(--faint);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  display: flex; flex-wrap: wrap; gap: 4px 14px;
+}
+.precedents .lead {
+  text-transform: uppercase; letter-spacing: .08em; font-family: inherit;
+}
+
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip {
   font-size: 11px; font-weight: 600; letter-spacing: .03em;
@@ -330,6 +374,64 @@ def _spread_axis(game: dict) -> str:
     return f'<div class="line-wrap">{head}{"".join(parts)}{"".join(legend)}</div>'
 
 
+def _comps_block(g: dict) -> str:
+    """How games of this shape have actually finished.
+
+    A single predicted margin hides the thing that matters most for acting on
+    it: whether comparable matchups landed in a tight cluster or scattered
+    across four touchdowns. The band shows the middle half of those outcomes,
+    with zero marked so you can see at a glance how often the favourite simply
+    lost outright.
+    """
+    c = g.get("comps")
+    if not c or c.get("margin_p25") is None or c.get("margin_p75") is None:
+        return ""
+
+    p25, p75 = float(c["margin_p25"]), float(c["margin_p75"])
+    med = float(c.get("margin_median") or 0.0)
+    lo = min(p25, med, 0.0) - 6
+    hi = max(p75, med, 0.0) + 6
+    span = max(hi - lo, 1.0)
+
+    def pos(v: float) -> float:
+        return max(0.0, min(100.0, (v - lo) / span * 100.0))
+
+    a, b = pos(p25), pos(p75)
+    agreement = c.get("agreement")
+    agree_txt = (f'<span><span class="lead">Agreement</span> '
+                 f'<b>{agreement * 100:.0f}%</b></span>'
+                 if agreement is not None else "")
+
+    win_rate = c.get("home_win_rate")
+    win_txt = (f'<span><span class="lead">{_e(g["home_team"])} won</span> '
+               f'<b>{win_rate * 100:.0f}%</b></span>'
+               if win_rate is not None else "")
+
+    band = (f'<div class="band" title="Middle half of comparable outcomes">'
+            f'<div class="track"></div>'
+            f'<div class="iqr" style="left:{a:.1f}%;width:{max(b - a, 1.0):.1f}%"></div>'
+            f'<div class="zero" style="left:{pos(0.0):.1f}%"></div>'
+            f'<div class="med" style="left:{pos(med):.1f}%"></div>'
+            f'</div>')
+
+    out = [f'<div class="comps">',
+           f'<span><span class="lead">{c["n"]} similar games</span></span>',
+           band,
+           f'<span><span class="lead">Middle half</span> '
+           f'<b>{p25:+.0f} to {p75:+.0f}</b></span>',
+           win_txt, agree_txt, '</div>']
+
+    examples = g.get("comp_examples") or []
+    if examples:
+        items = "".join(
+            f'<span>{_e(e["season"])} {_e(e["away_team"])}–{_e(e["home_team"])} '
+            f'({e["margin"]:+.0f})</span>' for e in examples[:4])
+        out.append(f'<div class="precedents">'
+                   f'<span class="lead">Closest precedents</span>{items}</div>')
+
+    return "".join(out)
+
+
 def _game_row(g: dict) -> str:
     flagged = bool(g.get("spread_tier") or g.get("total_tier"))
     home_prob = int(round(g["home_win_prob"] * 100))
@@ -381,6 +483,7 @@ def _game_row(g: dict) -> str:
         <div class="score"><span class="lbl">Total</span> {total_line}</div>
         <div class="chips">{"".join(chips)}</div>
       </div>
+      {_comps_block(g)}
     </article>"""
 
 

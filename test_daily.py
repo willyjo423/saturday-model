@@ -141,6 +141,14 @@ def train_stub_model(world) -> None:
                           FakeWeather(world["games"], world["venues"]),
                           with_weather=True, historical=True,
                           efficiency=eff, context=ctx)
+
+    # Attach comparables and persist the table, exactly as the bootstrap job
+    # does - the daily run reads this file to find precedents for today's games.
+    from comps import CompsEngine, attach_comps
+    feat = attach_comps(feat, CompsEngine(feat))
+    from storage import save_table
+    save_table(feat, config.DATA / "training")
+
     X, y = training_matrix(feat)
     model = CFBModel().fit(X, y)
     joblib.dump(model, config.MODELS / "cfb_model.joblib")
@@ -224,6 +232,24 @@ def main() -> int:
           "slate sorted by size of disagreement")
 
     check(all(g["weather_text"] for g in games), "weather attached to every game")
+
+    # Comparables: the distribution and the named precedents the dashboard shows.
+    with_comps = [g for g in games if g.get("comps")]
+    check(len(with_comps) > len(games) * 0.8,
+          "comparables found for today's slate",
+          f"{len(with_comps)}/{len(games)} games")
+    if with_comps:
+        c = with_comps[0]["comps"]
+        check(c["margin_p25"] <= c["margin_median"] <= c["margin_p75"],
+              "comp distribution is ordered",
+              f"p25 {c['margin_p25']} med {c['margin_median']} p75 {c['margin_p75']}")
+        check(0.0 <= c["home_win_rate"] <= 1.0 and c["n"] >= 20,
+              "comp win rate and sample size sane",
+              f"{c['n']} comps, home won {c['home_win_rate']:.0%}")
+        ex = with_comps[0].get("comp_examples") or []
+        check(len(ex) > 0 and all(e["season"] < 2026 for e in ex),
+              "named precedents are all from earlier seasons",
+              f"{len(ex)} precedents")
 
     # Serialisable, which is what the workflow commits.
     blob = json.dumps(payload, default=str)

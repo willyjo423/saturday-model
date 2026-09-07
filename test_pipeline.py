@@ -167,9 +167,13 @@ def main() -> int:
     check(not missing_cols, "all declared features present", str(missing_cols))
     # Core features must always be present. Efficiency is legitimately absent
     # in week 1 (nothing has been played yet), so it is checked separately.
+    from comps import COMP_FEATURES
     from features import CONTEXT_COLUMNS, EFF_EDGE_COLUMNS, EFF_PACE_COLUMNS, EFF_RAW_COLUMNS
-    eff_cols = set(EFF_EDGE_COLUMNS + EFF_RAW_COLUMNS + EFF_PACE_COLUMNS)
-    core = [c for c in FEATURE_COLUMNS if c not in eff_cols]
+    # Efficiency is absent in week 1 and comps are absent in the first season -
+    # both legitimately, and both checked on their own terms below.
+    derived = set(EFF_EDGE_COLUMNS + EFF_RAW_COLUMNS + EFF_PACE_COLUMNS
+                  + COMP_FEATURES)
+    core = [c for c in FEATURE_COLUMNS if c not in derived]
     nan_share = feat[core].isna().mean().max()
     worst = feat[core].isna().mean().idxmax()
     check(nan_share < 0.02, "core features essentially free of NaNs",
@@ -211,6 +215,52 @@ def main() -> int:
           == "Weather unavailable",
           "dashboard admits when weather is missing")
 
+    # ------------------------------------------------------------ comparables
+    section("4b. Historical comparables")
+    from comps import CompsEngine, attach_comps, learn_axis_weights
+
+    X_pre, y_pre = training_matrix(feat)
+    axis_weights = learn_axis_weights(X_pre, y_pre["margin"])
+    check(bool(axis_weights), "axis weights learned from a quick booster",
+          f"top: {sorted(axis_weights.items(), key=lambda kv: -kv[1])[:3]}"
+          if axis_weights else "fell back to defaults")
+
+    comps_engine = CompsEngine(feat, weights=axis_weights)
+    check(comps_engine.available, "comps pool built",
+          f"{len(comps_engine.history):,} games, {len(comps_engine.axes)} axes")
+
+    feat = attach_comps(feat, comps_engine)
+    found = (feat["comp_n"] >= 20).mean()
+    check(found > 0.75, "most games find comparables",
+          f"{found:.1%} (the earliest season has nothing to look back on)")
+
+    # The critical property: a game must never be its own comparable, and must
+    # never draw on anything that happened after it.
+    sample_rows = feat[feat["season"] >= 2021].head(60)
+    idx, _ = comps_engine.neighbours(sample_rows, k=50)
+    pool_time = comps_engine.pool_time
+    target_time = sample_rows["season"].to_numpy() * 100 + sample_rows["week"].to_numpy()
+    violations = 0
+    for i in range(len(sample_rows)):
+        picked = idx[i][idx[i] >= 0]
+        if len(picked) and (pool_time[picked] >= target_time[i]).any():
+            violations += 1
+    check(violations == 0, "comparables only ever come from earlier games",
+          f"{violations} violations across {len(sample_rows)} games")
+
+    ex = comps_engine.examples(feat.iloc[-1], k=3)
+    check(len(ex) > 0 and all("home_team" in e for e in ex),
+          "named precedents available for the dashboard",
+          f"{len(ex)} returned")
+
+    # Comparables should agree with reality more often than a coin flip.
+    graded = feat.dropna(subset=["comp_home_win_rate", "home_win"])
+    if len(graded) > 500:
+        agree = ((graded["comp_home_win_rate"] > 0.5).astype(int)
+                 == graded["home_win"]).mean()
+        check(agree > 0.60, "comps alone pick winners better than chance",
+              f"{agree:.1%} on {len(graded):,} games")
+
     X, y = training_matrix(feat)
     check("spread" not in X.columns and "over_under" not in X.columns,
           "betting line excluded from model inputs")
@@ -237,16 +287,35 @@ def main() -> int:
     m_plain = evaluate(oos_plain)
     gain = m_plain["margin_mae"] - metrics["margin_mae"]
     total_gain = m_plain["total_mae"] - metrics["total_mae"]
-    print(f"  margin MAE  without: {m_plain['margin_mae']:.3f}   "
-          f"with: {metrics['margin_mae']:.3f}   gain: {gain:+.3f} pts")
-    print(f"  total  MAE  without: {m_plain['total_mae']:.3f}   "
-          f"with: {metrics['total_mae']:.3f}   gain: {total_gain:+.3f} pts")
-    print(f"  log loss    without: {m_plain['win_logloss']:.4f}   "
-          f"with: {metrics['win_logloss']:.4f}")
-    check(gain > 0, "efficiency and context improve margin accuracy",
+    print(f"  baseline (ratings + situation + weather only)")
+    print(f"  margin MAE  {m_plain['margin_mae']:.3f}  ->  "
+          f"{metrics['margin_mae']:.3f}   gain {gain:+.3f} pts")
+    print(f"  total  MAE  {m_plain['total_mae']:.3f}  ->  "
+          f"{metrics['total_mae']:.3f}   gain {total_gain:+.3f} pts")
+    print(f"  log loss    {m_plain['win_logloss']:.4f}  ->  "
+          f"{metrics['win_logloss']:.4f}")
+    check(gain > 0, "efficiency, context and comps improve margin accuracy",
           f"{gain:+.3f} pts of MAE")
     check(total_gain > 0, "tempo improves total accuracy",
           f"{total_gain:+.3f} pts of MAE")
+
+    # Isolate the comparables specifically: everything else held constant.
+    no_comps = feat.copy()
+    from comps import COMP_FEATURES as _CF
+    for col in _CF:
+        no_comps[col] = np.nan
+    oos_nc = walk_forward(no_comps, min_train_seasons=3)
+    m_nc = evaluate(oos_nc)
+    comp_gain = m_nc["margin_mae"] - metrics["margin_mae"]
+    print(f"\n  comparables alone: margin MAE {m_nc['margin_mae']:.3f}  ->  "
+          f"{metrics['margin_mae']:.3f}   gain {comp_gain:+.3f} pts")
+    print(f"  comparables alone: log loss   {m_nc['win_logloss']:.4f}  ->  "
+          f"{metrics['win_logloss']:.4f}")
+    # Reported, not asserted. Comps earn their place on the dashboard through
+    # the distributions and precedents they show; any accuracy gain on top is
+    # a bonus, and pretending otherwise would be the kind of number-fitting
+    # this backtest exists to prevent.
+    metrics["comp_margin_gain"] = round(float(comp_gain), 4)
 
     naive_mae = float(np.mean(np.abs(oos["margin"])))
     check(metrics["margin_mae"] < naive_mae * 0.85,

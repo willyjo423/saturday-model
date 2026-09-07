@@ -37,9 +37,32 @@ training weather comes from the same provider's ERA5 archive, so the variables
 are on identical scales at train and predict time. Domes get fixed indoor
 conditions.
 
-**Models.** Gradient-boosted trees on absolute error for margin and total, plus
-a classifier blended with a normal CDF over the predicted margin for win
-probability, then isotonic-calibrated on held-out seasons.
+**Play-level efficiency.** Opponent-adjusted EPA per play, success rate,
+explosiveness, line yards, stuff rate, power success, havoc and tempo, solved
+week by week from per-game advanced stats. Scoring margin alone cannot tell a
+dominant team from a lucky one; this can, and it stabilises by about week 4
+rather than week 8.
+
+**Models.** Gradient-boosted trees predict the *residual* from a rescaled
+ratings baseline rather than the margin outright. That matters: trees can only
+average training leaves, so predicting margin directly meant the model could
+never express a game more lopsided than ones it had already seen, and a
+45-point mismatch came back as a 20-point favourite. The linear baseline
+supplies the level and extrapolates without limit; the trees correct it.
+
+Win probability is a two-parameter logistic in the predicted margin, fitted on
+out-of-sample predictions. Isotonic regression was tried first and was the
+wrong tool - on a few hundred held-out games it produced flat plateaus, so a
+coin flip came out at 61% and a near-certainty was dragged down to 90%.
+
+**Historical comparables.** Every game is matched against the closest matchups
+of the last decade, on a dozen weighted profile axes, drawing only on games
+played before it. This is what puts a *distribution* on the dashboard - the
+middle half of comparable outcomes, how often the favourite actually won, and
+four named precedents you can eyeball. Measured honestly, the comps add almost
+nothing to point accuracy (the booster already partitions the feature space in
+a similar way); they earn their place by showing you the spread of plausible
+outcomes rather than a single confident number.
 
 **The betting line is never a model input.** If it were, the model would mostly
 learn to repeat it and "model vs market" would be meaningless. Lines are used
@@ -117,12 +140,15 @@ Every file sits at the repository root, which keeps uploading simple.
 
 ```
 api.py         CFBD client: caching, retries, tolerant of field renames
-weather.py     Open-Meteo forecast + archive, keyed to kickoff hour
+weather.py     Open-Meteo, batched by date, with a hard time budget
 schema.py      canonical field names; degrades instead of crashing
 dataset.py     game table, venues, rest, travel, consensus lines
-ratings.py     leak-free ridge power ratings + preseason priors
-features.py    feature matrix (no betting lines)
-model.py       margin/total/win-prob models, walk-forward evaluation
+ratings.py     leak-free ridge power ratings, recency-weighted
+efficiency.py  opponent-adjusted play-level efficiency, week by week
+comps.py       nearest historical matchups and their outcome distributions
+features.py    feature matrix (no betting lines, ever)
+model.py       baseline + residual models, walk-forward evaluation
+storage.py     table IO that works with or without pyarrow
 config.py      every tunable setting
 build.py       one-off dataset construction
 train.py       training + backtest CLI
@@ -131,8 +157,8 @@ dashboard.py   standalone HTML output
 selftest.py    live API verification
 
 simulate.py       synthetic universe with known ground truth
-test_pipeline.py  33 end-to-end checks, no API key needed
-test_daily.py     16 checks on the daily run, no API key needed
+test_pipeline.py  54 end-to-end checks, no API key needed
+test_daily.py     20 checks on the daily run, no API key needed
 ```
 
 `data/`, `models/` and `docs/` are created automatically on first run.

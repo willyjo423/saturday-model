@@ -8,6 +8,7 @@ the current week's schedule, lines, and ratings inputs.
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import sys
 
@@ -15,9 +16,11 @@ import pandas as pd
 
 import config, dataset
 from api import CFBDClient, CFBDError, MissingKeyError
+from comps import CompsEngine, attach_comps, learn_axis_weights
 from efficiency import EfficiencyEngine, load_team_game_stats, pool_non_fbs
-from features import SeasonContext, build_features
+from features import SeasonContext, build_features, training_matrix
 from ratings import PreseasonPriors, RatingsEngine
+from storage import save_table
 from weather import WeatherService
 
 log = logging.getLogger(__name__)
@@ -135,6 +138,19 @@ def build_dataset(start: int, end: int, with_weather: bool = True,
     ctx_known = feat["home_talent"].notna().mean()
     log.info("Recruiting talent resolved for %.1f%% of games", ctx_known * 100)
 
+    # --- historical comparables -------------------------------------------
+    # Each game draws its comparables only from games played strictly before
+    # it, so this adds no leakage. Axis weights come from a throwaway booster
+    # that ranks which profile dimensions actually move a scoreline.
+    log.info("Finding historical comparables...")
+    X0, y0 = training_matrix(feat)
+    weights = learn_axis_weights(X0, y0["margin"])
+    comps_engine = CompsEngine(feat, weights=weights)
+    feat = attach_comps(feat, comps_engine)
+
+    if weights:
+        (config.MODELS / "comp_weights.json").write_text(json.dumps(weights, indent=2))
+
     log.info("Feature table: %d rows x %d cols", *feat.shape)
     return feat
 
@@ -145,7 +161,7 @@ def main(argv=None) -> int:
     p.add_argument("--end", type=int, default=config.TRAIN_END_YEAR)
     p.add_argument("--no-weather", action="store_true",
                    help="skip historical weather (much faster, slightly worse)")
-    p.add_argument("--out", default=str(config.DATA / "training.parquet"))
+    p.add_argument("--out", default=str(config.DATA / "training"))
     args = p.parse_args(argv)
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
@@ -156,8 +172,8 @@ def main(argv=None) -> int:
         print(f"\n{exc}\n", file=sys.stderr)
         return 2
 
-    feat.to_parquet(args.out, index=False)
-    print(f"Wrote {args.out}: {len(feat):,} games, "
+    written = save_table(feat, args.out)
+    print(f"Wrote {written}: {len(feat):,} games, "
           f"{feat['season'].min()}-{feat['season'].max()}")
     return 0
 

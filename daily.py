@@ -23,10 +23,12 @@ import pandas as pd
 import config, dataset
 from api import CFBDClient, CFBDError, MissingKeyError
 from build import build_priors
+from comps import CompsEngine, attach_comps
 from efficiency import EfficiencyEngine, load_team_game_stats, pool_non_fbs
 from model import FeatureMismatchError
 from features import SeasonContext, build_features
 from ratings import RatingsEngine
+from storage import load_table
 from weather import WeatherService, describe
 
 log = logging.getLogger(__name__)
@@ -39,6 +41,32 @@ def current_season(today: date) -> int:
     """College football seasons straddle the new year; bowls in January
     belong to the previous season."""
     return today.year if today.month >= 7 else today.year - 1
+
+
+def _comp_summary(r) -> dict | None:
+    """The distribution of outcomes in comparable historical matchups.
+
+    This is the part a single predicted number cannot tell you: how widely
+    games of this shape have actually landed, and how consistently.
+    """
+    n = r.get("comp_n")
+    if n is None or pd.isna(n) or n < 20:
+        return None
+
+    def val(key, digits=1):
+        v = r.get(key)
+        return None if v is None or pd.isna(v) else round(float(v), digits)
+
+    return {
+        "n": int(n),
+        "margin_median": val("comp_margin_median"),
+        "margin_p25": val("comp_margin_p25"),
+        "margin_p75": val("comp_margin_p75"),
+        "margin_sd": val("comp_margin_sd"),
+        "total_median": val("comp_total_median"),
+        "home_win_rate": val("comp_home_win_rate", 3),
+        "agreement": val("comp_agreement", 3),
+    }
 
 
 def tier_for(edge: float) -> str | None:
@@ -108,6 +136,24 @@ def run(target_dates: list[date], api_key: str | None = None,
                           with_weather=with_weather, historical=False,
                           efficiency=efficiency, context=context)
 
+    # --- historical comparables -------------------------------------------
+    # The pool is the committed training table, so today's games are matched
+    # against a decade of finished ones. Absent it, comps go blank and the
+    # model falls back on everything else.
+    comps_engine = None
+    history = load_table(config.DATA / "training")
+    if history is not None:
+        try:
+            weights_path = config.MODELS / "comp_weights.json"
+            weights = (json.loads(weights_path.read_text())
+                       if weights_path.exists() else None)
+            comps_engine = CompsEngine(history, weights=weights)
+            feat = attach_comps(feat, comps_engine)
+        except Exception as exc:  # noqa: BLE001 - comps are enrichment
+            log.warning("comparables unavailable: %s", exc)
+    else:
+        log.info("no training table found; skipping comparables")
+
     model = joblib.load(MODEL_PATH)
     preds = model.predict(feat)
     out = feat.join(preds)
@@ -170,6 +216,10 @@ def run(target_dates: list[date], api_key: str | None = None,
             "home_rating": round(float(r["home_rating"]), 1),
             "away_rating": round(float(r["away_rating"]), 1),
             "games_played": int(min(r["home_played"], r["away_played"])),
+            "comps": _comp_summary(r),
+            "comp_examples": (comps_engine.examples(r, k=4)
+                              if comps_engine is not None
+                              and comps_engine.available else []),
         })
 
     records.sort(key=lambda x: (-(abs(x["spread_edge"]) if x["spread_edge"] is not None else -1),
