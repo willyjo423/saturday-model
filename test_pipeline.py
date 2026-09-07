@@ -215,6 +215,25 @@ def main() -> int:
     out = sample.join(preds)
 
     check(out["home_win_prob"].between(0, 1).all(), "probabilities within [0,1]")
+
+    # A model saved before a feature-set change must say so plainly rather
+    # than dying inside pandas with a bare KeyError.
+    from model import FeatureMismatchError
+    stale = CFBModel(features=list(model.features) + ["a_feature_we_dropped"])
+    stale.margin, stale.total = model.margin, model.total
+    stale.winner, stale.calibrator = model.winner, model.calibrator
+    stale.trained_seasons = list(model.trained_seasons)
+    try:
+        stale.predict(sample)
+        mismatch_ok = False
+        detail = "no error raised"
+    except FeatureMismatchError as exc:
+        mismatch_ok = "Bootstrap" in str(exc) and "a_feature_we_dropped" in str(exc)
+        detail = "names the column and the fix"
+    except Exception as exc:  # noqa: BLE001
+        mismatch_ok = False
+        detail = f"wrong exception: {type(exc).__name__}"
+    check(mismatch_ok, "stale model gives an actionable error", detail)
     check(np.allclose(out["pred_home_points"] + out["pred_away_points"],
                       out["pred_total"]), "score split reconciles with total")
     check(np.allclose(out["pred_home_points"] - out["pred_away_points"],

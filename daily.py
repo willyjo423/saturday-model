@@ -23,6 +23,7 @@ import pandas as pd
 import config, dataset
 from api import CFBDClient, CFBDError, MissingKeyError
 from build import build_priors
+from model import FeatureMismatchError
 from features import build_features
 from ratings import RatingsEngine
 from weather import WeatherService, describe
@@ -200,6 +201,9 @@ def main(argv=None) -> int:
     except MissingKeyError as exc:
         print(f"\n{exc}\n")
         return 2
+    except FeatureMismatchError as exc:
+        print(f"\n::error::{exc}\n")
+        return 3
 
     with open(args.out, "w") as fh:
         json.dump(payload, fh, indent=2)

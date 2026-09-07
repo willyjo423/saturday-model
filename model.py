@@ -19,6 +19,10 @@ from features import FEATURE_COLUMNS
 log = logging.getLogger(__name__)
 
 
+class FeatureMismatchError(RuntimeError):
+    """Saved model was fitted on a different feature set than the code builds."""
+
+
 def _regressor(**kw) -> HistGradientBoostingRegressor:
     params = dict(
         loss="absolute_error",   # margins are heavy-tailed; MAE is the honest loss
@@ -141,7 +145,29 @@ class CFBModel:
         clf_prob = self.winner.predict_proba(X[self.features])[:, 1]
         return 0.5 * cdf_prob + 0.5 * clf_prob
 
+    def check_compatible(self, X: pd.DataFrame) -> None:
+        """Fail loudly if the saved model predates the current feature set.
+
+        A pickled model carries the exact column list it was fitted on. If the
+        feature code has since changed, pandas raises a bare KeyError deep
+        inside a library, which tells you nothing about what to do. The answer
+        is always the same - retrain - so say that.
+        """
+        missing = [c for c in self.features if c not in X.columns]
+        if not missing:
+            return
+        raise FeatureMismatchError(
+            f"The saved model expects features that this code no longer "
+            f"produces: {missing}. The model file is out of date with the "
+            f"feature pipeline.\n\n"
+            f"Fix: re-run the Bootstrap workflow to retrain. "
+            f"(Model was fitted on seasons "
+            f"{min(self.trained_seasons, default='?')}-"
+            f"{max(self.trained_seasons, default='?')}.)"
+        )
+
     def predict(self, X: pd.DataFrame) -> pd.DataFrame:
+        self.check_compatible(X)
         Xf = X[self.features]
         margin = self.margin.predict(Xf)
         total = self.total.predict(Xf)
