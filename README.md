@@ -118,6 +118,40 @@ the model's number placed on it and the disagreement between them shaded amber.
 Games where the model and market disagree meaningfully are sorted to the top and
 carry a tier chip; everything else falls into "Rest of the slate".
 
+## Edge calibration — why big disagreements are usually wrong
+
+Sort games by how far the model sits from the closing line and the biggest
+disagreements tend to go *against* the model. That is arithmetic, not luck.
+Writing model = truth + our error and market = truth + a much smaller error,
+the edge between them is close to *our own error*. Ranking by edge size is
+therefore close to ranking our predictions by how wrong they are, then backing
+the worst ones hardest.
+
+It is worse than that, because large edges cluster on the games where the
+inputs are weakest: a quarterback out that the market knows about and the model
+does not, a team three games into a season, a stale line that has not moved.
+
+So `train.py` measures, on out-of-sample predictions only, what fraction of a
+claimed edge actually materialises at each edge size, and prints it:
+
+```
+|edge|        n     ATS       95% band      keeps
+ 1.5-3.0      333   49.5%   44.2-54.9 %   41.1%
+ 3.0-4.5      321   54.8%   49.4-60.3 %   47.1%
+ 6.0-9.0      421   54.4%   49.6-59.2 %    9.6%
+13.0-99.0     139   54.0%   45.7-62.2 %    9.6%
+```
+
+The daily run then shrinks new edges by that measured relationship, and tiers
+plays by **what each bucket historically did** rather than by assuming bigger
+is better. A large disagreement the backtest does not trust is labelled
+"no play" with the historical rate attached, instead of being promoted.
+
+Each card also carries named reasons to distrust it - few games played, missing
+efficiency, books far apart, a line that has moved a long way since opening.
+Those come from the market metadata (provider dispersion, opening number)
+which is deliberately kept out of the model and used only for confidence.
+
 ## About accuracy
 
 The honest benchmark is not "does it pick winners" — favourites win most games,

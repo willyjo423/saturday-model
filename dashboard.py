@@ -267,6 +267,17 @@ h2.sec::after {
 .chip.over   { background: var(--field-soft); color: var(--over); }
 .chip.under  { background: var(--field-soft); color: var(--under); }
 .chip.quiet  { background: var(--sunken); color: var(--muted); }
+.chip.warn   { background: var(--sunken); color: var(--under);
+               border-color: var(--under); font-weight: 500; }
+.flags {
+  grid-column: 1 / -1; margin-top: -4px;
+  display: flex; flex-wrap: wrap; gap: 4px 14px;
+  font-size: 11px; color: var(--faint);
+}
+.flags .lead {
+  text-transform: uppercase; letter-spacing: .08em;
+}
+.flags i { font-style: normal; color: var(--under); opacity: .9; }
 
 /* ---------- footer ---------- */
 .note {
@@ -374,6 +385,20 @@ def _spread_axis(game: dict) -> str:
     return f'<div class="line-wrap">{head}{"".join(parts)}{"".join(legend)}</div>'
 
 
+def _flags_block(g: dict) -> str:
+    """Named reasons this particular disagreement may be our fault.
+
+    Shown only where it matters - on games with a real gap - because a list of
+    caveats on every card is noise, and noise gets ignored.
+    """
+    flags = g.get("confidence_flags") or []
+    raw_edge = g.get("raw_spread_edge")
+    if not flags or raw_edge is None or abs(raw_edge) < 3.0:
+        return ""
+    items = "".join(f"<span><i>▲</i> {_e(f)}</span>" for f in flags[:3])
+    return f'<div class="flags"><span class="lead">Watch</span>{items}</div>'
+
+
 def _comps_block(g: dict) -> str:
     """How games of this shape have actually finished.
 
@@ -444,9 +469,22 @@ def _game_row(g: dict) -> str:
     meta_html = " · ".join(meta)
 
     chips = []
-    if g.get("spread_tier"):
+    bucket = g.get("edge_bucket") or {}
+    raw_edge = g.get("raw_spread_edge")
+
+    if g.get("spread_tier") and g.get("spread_play"):
+        rate = (f' · {bucket["ats"] * 100:.0f}% ATS'
+                if bucket.get("ats") is not None else "")
         chips.append(f'<span class="chip tier">{_e(g["spread_tier"])} · '
-                     f'{_e(g["spread_play"])}</span>')
+                     f'{_e(g["spread_play"])}{rate}</span>')
+    elif raw_edge is not None and abs(raw_edge) >= 6.0:
+        # A large disagreement the backtest says not to trust. Saying so
+        # plainly is more useful than promoting it for being big.
+        rate = (f' — this size has gone {bucket["ats"] * 100:.0f}% historically'
+                if bucket.get("ats") is not None else "")
+        chips.append(f'<span class="chip warn">{abs(raw_edge):.1f}-pt gap, '
+                     f'no play{rate}</span>')
+
     if g.get("total_tier") and g.get("total_play"):
         cls = "over" if g["total_play"].startswith("Over") else "under"
         chips.append(f'<span class="chip {cls}">{_e(g["total_play"])} '
@@ -483,6 +521,7 @@ def _game_row(g: dict) -> str:
         <div class="score"><span class="lbl">Total</span> {total_line}</div>
         <div class="chips">{"".join(chips)}</div>
       </div>
+      {_flags_block(g)}
       {_comps_block(g)}
     </article>"""
 

@@ -13,6 +13,7 @@ import pandas as pd
 import config
 from storage import load_table, save_table
 from features import training_matrix
+from edges import EdgeCalibration
 from model import CFBModel, evaluate, save_metrics, summarize, walk_forward
 
 log = logging.getLogger(__name__)
@@ -20,6 +21,7 @@ log = logging.getLogger(__name__)
 MODEL_PATH = config.MODELS / "cfb_model.joblib"
 METRICS_PATH = config.MODELS / "metrics.json"
 BACKTEST_PATH = config.DATA / "backtest"
+CALIBRATION_PATH = config.MODELS / "edge_calibration.json"
 
 
 def main(argv=None) -> int:
@@ -39,6 +41,8 @@ def main(argv=None) -> int:
              feat["season"].min(), feat["season"].max())
 
     metrics = {}
+    calibration = EdgeCalibration()
+
     if not args.skip_backtest:
         log.info("Running walk-forward backtest...")
         oos = walk_forward(feat, min_train_seasons=args.min_train_seasons)
@@ -51,15 +55,33 @@ def main(argv=None) -> int:
             print(summarize(metrics))
             print("=" * 62 + "\n")
 
+            # How much of a claimed edge actually shows up? Fitted here, on
+            # out-of-sample predictions only, and applied by the daily run.
+            calibration = EdgeCalibration.fit(oos)
+            print("=" * 62)
+            print("EDGE RELIABILITY")
+            print("=" * 62)
+            print(calibration.summary())
+            print("=" * 62 + "\n")
+            metrics["edge_calibration"] = {
+                "a": calibration.a, "b": calibration.b,
+                "intercept": calibration.intercept,
+                "n_fitted": calibration.n_fitted,
+                "buckets": calibration.buckets,
+            }
+
+    CALIBRATION_PATH.write_text(calibration.to_json())
+
     log.info("Fitting production model on all seasons...")
     X, y = training_matrix(feat)
     model = CFBModel().fit(X, y)
     joblib.dump(model, MODEL_PATH)
     save_metrics(metrics, METRICS_PATH)
 
-    print(f"Saved model  -> {MODEL_PATH}")
-    print(f"Saved metrics-> {METRICS_PATH}")
-    print(f"Margin sigma : {model.margin_sigma:.2f} pts")
+    print(f"Saved model      -> {MODEL_PATH}")
+    print(f"Saved metrics    -> {METRICS_PATH}")
+    print(f"Saved calibration-> {CALIBRATION_PATH}")
+    print(f"Margin sigma     : {model.margin_sigma:.2f} pts")
     return 0
 
 

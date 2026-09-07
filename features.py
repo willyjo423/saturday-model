@@ -263,6 +263,14 @@ def build_features(games: pd.DataFrame, engine: RatingsEngine,
             "total": _num(g.get("total")),
             "spread": _num(g.get("spread")),
             "over_under": _num(g.get("over_under")),
+
+            # Market metadata. Carried through for the confidence layer, and
+            # deliberately absent from FEATURE_COLUMNS so it can never leak
+            # into a prediction that is supposed to be independent of the line.
+            "spread_dispersion": _num(g.get("spread_dispersion")),
+            "spread_open": _num(g.get("spread_open")),
+            "spread_move": _num(g.get("spread_move")),
+            "n_providers": _num(g.get("n_providers"), 0.0),
         }
         row.update(eff)
         row["talent_diff"] = row["home_talent"] - row["away_talent"]

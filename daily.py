@@ -24,6 +24,7 @@ import config, dataset
 from api import CFBDClient, CFBDError, MissingKeyError
 from build import build_priors
 from comps import CompsEngine, attach_comps
+from edges import EdgeCalibration, confidence_flags
 from efficiency import EfficiencyEngine, load_team_game_stats, pool_non_fbs
 from model import FeatureMismatchError
 from features import SeasonContext, build_features
@@ -154,6 +155,16 @@ def run(target_dates: list[date], api_key: str | None = None,
     else:
         log.info("no training table found; skipping comparables")
 
+    # How much of a claimed edge to believe, learned from the backtest.
+    cal_path = config.MODELS / "edge_calibration.json"
+    calibration = (EdgeCalibration.from_json(cal_path.read_text())
+                   if cal_path.exists() else EdgeCalibration())
+    if calibration.fitted:
+        log.info("edge calibration loaded (fitted on %d games)",
+                 calibration.n_fitted)
+    else:
+        log.info("no edge calibration found; edges used unshrunk")
+
     model = joblib.load(MODEL_PATH)
     preds = model.predict(feat)
     out = feat.join(preds)
@@ -171,8 +182,16 @@ def run(target_dates: list[date], api_key: str | None = None,
         # Round before tiering, so the gap shown on the card is the same
         # number that decided the label. Tiering the unrounded value let a
         # game display "3.5 pt gap" while wearing the tier below it.
-        edge = round(margin - market_margin, 1) if market_margin is not None else None
+        raw_edge = round(margin - market_margin, 1) if market_margin is not None else None
         total_edge = round(total - float(ou), 1) if pd.notna(ou) else None
+
+        # The edge worth believing, after shrinking by how much of a claimed
+        # disagreement of this size has historically materialised.
+        edge = (round(float(calibration.shrink(raw_edge)), 1)
+                if raw_edge is not None else None)
+        tier, bucket = (calibration.tier(raw_edge) if raw_edge is not None
+                        else (None, None))
+        flags = confidence_flags(r) if raw_edge is not None else []
 
         # NaN is not valid JSON, so unavailable readings go out as null.
         def _j(v):
@@ -203,11 +222,14 @@ def run(target_dates: list[date], api_key: str | None = None,
             "market_spread": None if market_margin is None else round(float(spread), 1),
             "market_total": None if pd.isna(ou) else round(float(ou), 1),
             "spread_edge": edge,
+            "raw_spread_edge": raw_edge,
             "total_edge": total_edge,
-            "spread_tier": None if edge is None else tier_for(edge),
+            "spread_tier": tier,
+            "edge_bucket": bucket,
+            "confidence_flags": flags,
             "total_tier": None if total_edge is None else tier_for(total_edge),
-            "spread_play": None if edge is None else (
-                f"{r['home_team']} {spread:+.1f}" if edge > 0
+            "spread_play": None if raw_edge is None or tier is None else (
+                f"{r['home_team']} {spread:+.1f}" if raw_edge > 0
                 else f"{r['away_team']} {-float(spread):+.1f}"),
             "total_play": None if total_edge is None else (
                 f"Over {float(ou):.1f}" if total_edge > 0 else f"Under {float(ou):.1f}"),
@@ -222,8 +244,13 @@ def run(target_dates: list[date], api_key: str | None = None,
                               and comps_engine.available else []),
         })
 
-    records.sort(key=lambda x: (-(abs(x["spread_edge"]) if x["spread_edge"] is not None else -1),
-                                x["kickoff_utc"] or ""))
+    def _rank(x):
+        """Tiered plays first, then by trustworthy edge - not by raw gap."""
+        order = {"Strong": 0, "Lean": 1, "Slight": 2}.get(x.get("spread_tier"), 3)
+        size = abs(x["spread_edge"]) if x["spread_edge"] is not None else -1
+        return (order, -size, x["kickoff_utc"] or "")
+
+    records.sort(key=_rank)
 
     metrics = {}
     if (config.MODELS / "metrics.json").exists():

@@ -348,6 +348,58 @@ def main() -> int:
               f"{metrics['market_margin_mae']:.2f} vs "
               f"{metrics['model_margin_mae_on_lined']:.2f}")
 
+    # ------------------------------------------------------- edge calibration
+    section("5c. Edge reliability")
+    from edges import BREAKEVEN, EdgeCalibration, confidence_flags
+
+    cal = EdgeCalibration.fit(oos)
+    check(cal.fitted, "edge calibration fitted on out-of-sample games",
+          f"{cal.n_fitted:,} games, {len(cal.buckets)} buckets")
+    print()
+    print("  " + cal.summary().replace("\n", "\n  "))
+    print()
+
+    # A claimed edge must never be amplified or flipped by the shrinkage.
+    probe = np.array([-25.0, -12.0, -6.0, -2.0, 0.0, 2.0, 6.0, 12.0, 25.0])
+    shrunk = cal.shrink(probe)
+    check(np.all(np.abs(shrunk) <= np.abs(probe) + 1e-9),
+          "shrinkage never amplifies an edge")
+    check(np.all(np.sign(shrunk) * np.sign(probe) >= 0),
+          "shrinkage never flips the side of a play")
+
+    # Does shrinking actually improve the prediction against the line?
+    lined = oos.dropna(subset=["spread", "margin", "pred_margin"]).copy()
+    lined["market"] = -lined["spread"]
+    lined["edge"] = lined["pred_margin"] - lined["market"]
+    lined["shrunk_pred"] = lined["market"] + cal.shrink(lined["edge"].to_numpy())
+    raw_mae = float(np.mean(np.abs(lined["margin"] - lined["pred_margin"])))
+    shr_mae = float(np.mean(np.abs(lined["margin"] - lined["shrunk_pred"])))
+    print(f"  margin MAE  raw {raw_mae:.3f}  ->  shrunk {shr_mae:.3f}   "
+          f"gain {raw_mae - shr_mae:+.3f} pts")
+    check(shr_mae <= raw_mae + 0.02,
+          "shrinking edges toward the market does not hurt accuracy",
+          f"{raw_mae - shr_mae:+.3f} pts")
+
+    # The observation that started this: are big edges worse than small ones?
+    if len(cal.buckets) >= 3:
+        small = cal.buckets[0]
+        large = cal.buckets[-1]
+        print(f"  smallest bucket ({small['lo']:.1f}-{small['hi']:.1f}) "
+              f"ATS {small['ats']*100:.1f}% on {small['n']:,}")
+        print(f"  largest  bucket ({large['lo']:.1f}-{large['hi']:.1f}) "
+              f"ATS {large['ats']*100:.1f}% on {large['n']:,}")
+        keeps_less = large["realized_fraction"] < small["realized_fraction"]
+        print(f"  large edges keep {'less' if keeps_less else 'more'} of "
+              f"themselves than small ones")
+
+    flags = confidence_flags(feat.iloc[0])
+    check(isinstance(flags, list), "confidence flags computed without error",
+          f"{len(flags)} on a sample game")
+
+    round_trip = EdgeCalibration.from_json(cal.to_json())
+    check(abs(round_trip.a - cal.a) < 1e-9 and round_trip.fitted,
+          "calibration survives a save/load round trip")
+
     # ---------------------------------------------------------------- artefacts
     section("6. Prediction payload and dashboard")
     model = CFBModel().fit(X, y)

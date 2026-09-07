@@ -161,28 +161,84 @@ def add_rest_and_travel(games: pd.DataFrame) -> pd.DataFrame:
     return g
 
 
+BLANK_LINE = {
+    "spread": np.nan, "over_under": np.nan, "provider": None,
+    "n_providers": 0.0, "spread_dispersion": np.nan,
+    "spread_open": np.nan, "spread_move": np.nan,
+    "total_dispersion": np.nan,
+}
+
+
 def _best_line(entries) -> dict:
-    """Pick a consensus spread/total from the providers CFBD returns."""
+    """Consensus spread and total, plus what the *disagreement* between books says.
+
+    Taking a median and discarding the rest throws away the most useful thing
+    in this payload. Two numbers matter beyond the consensus:
+
+    * **dispersion** - how far apart the books are. Tight agreement means the
+      market is confident, so a large model disagreement is far more likely to
+      be our error than an opportunity. Wide dispersion means the market itself
+      is unsure.
+    * **movement** - where the line opened versus where it sits now. Money
+      moving toward our number is corroboration; moving away means the market
+      learned something we haven't.
+
+    Neither is a prediction input. Both feed confidence, which is a different
+    question, and keeping them out of the model preserves the honesty of the
+    model-versus-market comparison.
+    """
     if not isinstance(entries, list) or not entries:
-        return {"spread": np.nan, "over_under": np.nan, "provider": None}
-    spreads, totals, providers = [], [], []
+        return dict(BLANK_LINE)
+
+    spreads, totals, opens, providers = [], [], [], []
     preferred = {"consensus", "draftkings", "bovada", "espn bet", "teamrankings"}
+
     for e in entries:
         if not isinstance(e, dict):
             continue
         sp = e.get("spread")
         ou = e.get("overUnder", e.get("over_under"))
-        prov = str(e.get("provider", "")).lower()
+        op = e.get("spreadOpen", e.get("spread_open"))
+        providers.append(str(e.get("provider", "")).lower())
         if sp is not None:
-            spreads.append(float(sp))
+            try:
+                spreads.append(float(sp))
+            except (TypeError, ValueError):
+                pass
         if ou is not None:
-            totals.append(float(ou))
-        providers.append(prov)
-    pick = next((p for p in providers if p in preferred), providers[0] if providers else None)
+            try:
+                totals.append(float(ou))
+            except (TypeError, ValueError):
+                pass
+        if op is not None:
+            try:
+                opens.append(float(op))
+            except (TypeError, ValueError):
+                pass
+
+    if not spreads and not totals:
+        return dict(BLANK_LINE)
+
+    pick = next((p for p in providers if p in preferred),
+                providers[0] if providers else None)
+    consensus = float(np.median(spreads)) if spreads else np.nan
+    open_line = float(np.median(opens)) if opens else np.nan
+
     return {
-        "spread": float(np.median(spreads)) if spreads else np.nan,
+        "spread": consensus,
         "over_under": float(np.median(totals)) if totals else np.nan,
         "provider": pick,
+        "n_providers": float(len(spreads)),
+        # Max-minus-min rather than sd: with two or three books, the range is
+        # the honest description of how far apart they are.
+        "spread_dispersion": (float(max(spreads) - min(spreads))
+                              if len(spreads) > 1 else 0.0),
+        "spread_open": open_line,
+        "spread_move": (consensus - open_line
+                        if not np.isnan(consensus) and not np.isnan(open_line)
+                        else np.nan),
+        "total_dispersion": (float(max(totals) - min(totals))
+                             if len(totals) > 1 else 0.0),
     }
 
 
@@ -202,7 +258,12 @@ def load_lines(client: CFBDClient, years: list[int]) -> pd.DataFrame:
                 best = _best_line(r["lines"])
                 rows.append({"game_id": r["game_id"], **best})
     if not rows:
-        return pd.DataFrame(columns=["game_id", "spread", "over_under", "provider"])
+        return pd.DataFrame(columns=["game_id"] + list(BLANK_LINE))
     df = pd.DataFrame(rows)
     df["game_id"] = pd.to_numeric(df["game_id"], errors="coerce")
-    return df.dropna(subset=["game_id"]).drop_duplicates("game_id")
+    df = df.dropna(subset=["game_id"]).drop_duplicates("game_id")
+    if "spread_open" in df:
+        has_open = df["spread_open"].notna().mean()
+        log.info("lines: %d games, opening number available for %.0f%%",
+                 len(df), has_open * 100)
+    return df

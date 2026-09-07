@@ -119,8 +119,14 @@ def train_stub_model(world) -> None:
 
     g = schema.normalise(pd.json_normalize(world["games"]), schema.GAME_FIELDS)
     games = clean_games(g, v)
-    from dataset import add_rest_and_travel
+    from dataset import _best_line, add_rest_and_travel
     games = add_rest_and_travel(games)
+
+    # Join the simulated market, so the stub can fit an edge calibration the
+    # same way the real training run does.
+    line_rows = [{"game_id": e["id"], **_best_line(e["lines"])}
+                 for e in world["lines"]]
+    games = games.merge(pd.DataFrame(line_rows), on="game_id", how="left")
 
     priors = PreseasonPriors()
     seed = RatingsEngine(games, PreseasonPriors())
@@ -152,6 +158,14 @@ def train_stub_model(world) -> None:
     X, y = training_matrix(feat)
     model = CFBModel().fit(X, y)
     joblib.dump(model, config.MODELS / "cfb_model.joblib")
+
+    # Write an edge calibration so the daily run exercises the shrink-and-tier
+    # path. Fitted in-sample here purely to produce a well-formed artefact -
+    # the real one comes from train.py's walk-forward backtest.
+    from edges import EdgeCalibration
+    graded = y.join(model.predict(X)[["pred_margin"]])
+    cal = EdgeCalibration.fit(graded)
+    (config.MODELS / "edge_calibration.json").write_text(cal.to_json())
 
 
 def main() -> int:
@@ -209,27 +223,36 @@ def main() -> int:
           "totals are plausible",
           f"min {min((g['pred_total'] for g in games), default=0):.1f}")
 
-    # Edge, tier and play text must agree with each other.
+    # The recommended side must always match the sign of the raw disagreement,
+    # and a play is only offered where the tier says the bucket earns it.
     consistent = True
     for g in games:
-        edge = g["spread_edge"]
-        if edge is None:
+        raw = g.get("raw_spread_edge")
+        if raw is None:
             continue
-        expected = None
-        for threshold, label in config.EDGE_TIERS:
-            if abs(edge) >= threshold:
-                expected = label
-                break
-        if g["spread_tier"] != expected:
-            consistent = False
-        side = g["home_team"] if edge > 0 else g["away_team"]
+        side = g["home_team"] if raw > 0 else g["away_team"]
         if g["spread_play"] and not g["spread_play"].startswith(side):
             consistent = False
-    check(consistent, "edge, tier and recommended side agree")
+        if g["spread_play"] and not g["spread_tier"]:
+            consistent = False
+    check(consistent, "recommended side matches the disagreement, "
+                      "and plays only appear with a tier")
 
-    ordered = [abs(g["spread_edge"]) for g in games if g["spread_edge"] is not None]
-    check(ordered == sorted(ordered, reverse=True),
-          "slate sorted by size of disagreement")
+    # Shrunk edges must never exceed, or invert, the raw disagreement.
+    sane = all(
+        abs(g["spread_edge"]) <= abs(g["raw_spread_edge"]) + 1e-6
+        and g["spread_edge"] * g["raw_spread_edge"] >= 0
+        for g in games
+        if g.get("spread_edge") is not None and g.get("raw_spread_edge") is not None)
+    check(sane, "calibrated edge is a shrunk version of the raw one")
+
+    # Tiered plays lead; within a tier, bigger trustworthy edge first.
+    rank = {"Strong": 0, "Lean": 1, "Slight": 2}
+    keys = [(rank.get(g.get("spread_tier"), 3),
+             -(abs(g["spread_edge"]) if g["spread_edge"] is not None else -1))
+            for g in games]
+    check(keys == sorted(keys),
+          "slate ordered by tier, then by trustworthy edge")
 
     check(all(g["weather_text"] for g in games), "weather attached to every game")
 
