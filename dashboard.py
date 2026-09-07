@@ -246,6 +246,20 @@ details.prec[open] > summary::after { content: "  ▴"; }
   font-size: 11.5px; font-variant-numeric: tabular-nums;
 }
 .prec-table td { padding: 3px 18px 3px 0; color: var(--muted); }
+.prec-table tr.hd th {
+  text-align: left; padding: 0 18px 5px 0;
+  font-family: "IBM Plex Sans", ui-sans-serif, sans-serif;
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--faint);
+  border-bottom: 1px solid var(--line); white-space: nowrap;
+}
+.prec-table tr.hd th:first-child { padding-left: 0; }
+.prec-table tr:not(.hd) td:first-child { padding-top: 6px; }
+.prec-key {
+  margin: 8px 0 2px; font-size: 11.5px; color: var(--muted);
+  line-height: 1.5; max-width: 70ch;
+}
+.prec-key b { color: var(--ink); font-weight: 600; }
 .prec-table td.yr { color: var(--faint); width: 3.5em; }
 .prec-table td.gm { color: var(--ink); }
 .prec-table td.sc { color: var(--ink); white-space: nowrap; }
@@ -408,44 +422,73 @@ def _totals_line(g: dict) -> str:
 
 
 def _precedents(g: dict) -> str:
-    """The five nearest real games, coloured by whether they support the pick.
+    """The five nearest real games, with the role mapping spelled out.
 
-    Colouring by "did the home team cover" would read backwards whenever the
-    pick is the away side, so support is judged relative to the side actually
-    being backed.
+    Comparables are built from the home team's point of view, so in every
+    precedent the home team stands in for this game's home team and the
+    visitor stands in for the visitor. Without saying that plainly the table
+    is unreadable - and the spread column is the *home* team's line, which is
+    the other thing nobody can guess.
     """
     rows = g.get("comp_examples") or []
     if not rows:
         return ""
 
-    side = (g.get("comps") or {}).get("side")
+    home, away = g["home_team"], g["away_team"]
+    has_play = bool(g.get("play"))
+    side = (g.get("comps") or {}).get("side") if has_play else None
+    total_n = (g.get("comps") or {}).get("n")
+
     body = []
     for e in rows[:5]:
+        # Winner first and named, so nobody has to work out the orientation.
+        hp, ap = e["home_points"], e["away_points"]
+        if hp > ap:
+            final = f'{_e(e["home_team"])} {hp}–{ap}'
+        elif ap > hp:
+            final = f'{_e(e["away_team"])} {ap}–{hp}'
+
+        else:
+            final = f'tied {hp}–{ap}'
+
         covered = e.get("home_covered")
         if covered is None:
             res, cls = "push", ""
         else:
-            who = e["home_team"] if covered else e["away_team"]
-            res = f"{_e(who)} covered"
+            res = f'{_e(e["home_team"] if covered else e["away_team"])}'
             if side is None:
                 cls = ""
             else:
-                supports = covered if side == "home" else not covered
-                cls = "yes" if supports else "no"
+                cls = "yes" if (covered if side == "home" else not covered) else "no"
+
         body.append(
             f'<tr><td class="yr">{e["season"]}</td>'
             f'<td class="gm">{_e(e["away_team"])} at {_e(e["home_team"])}</td>'
-            f'<td class="sc">{e["away_points"]}–{e["home_points"]}</td>'
+            f'<td class="sc">{final}</td>'
             f'<td class="ln">{e["home_spread"]:+.1f}</td>'
             f'<td class="rs {cls}">{res}</td></tr>')
 
-    legend = ("green = the comparable went the way this pick needs"
-              if side else "")
+    this_line = g.get("market_spread")
+    line_head = ("Home line" if this_line is None
+                 else f"Home line (here {this_line:+.1f})")
+
+    header = ('<tr class="hd"><th>Season</th><th>Game</th><th>Final</th>'
+              f'<th>{_e(line_head)}</th><th>Covered</th></tr>')
+
+    key = (f'<p class="prec-key">In each of these the <b>home team stands in '
+           f'for {_e(home)}</b> and the visitor stands in for {_e(away)}. '
+           f'The line shown is the home team’s.'
+           + (' Green means the game went the way this pick needs.'
+              if side else '')
+           + '</p>')
+
+    label = ("Five closest precedents" if not total_n
+             else f"Five closest of {total_n} comparable games")
+
     return ('<details class="prec">'
-            f'<summary>Five closest precedents{" — " + legend if legend else ""}'
-            '</summary>'
+            f'<summary>{_e(label)}</summary>{key}'
             f'<div class="prec-wrap"><table class="prec-table">'
-            f'{"".join(body)}</table></div></details>')
+            f'{header}{"".join(body)}</table></div></details>')
 
 
 def _flags(g: dict) -> str:

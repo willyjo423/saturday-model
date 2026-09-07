@@ -292,6 +292,25 @@ def main() -> int:
     from dashboard import render
     html = render(payload)
     check(html.count("<article") == len(games), "dashboard renders the whole slate")
+
+    # The precedent table is unreadable without saying which side each
+    # historical team stands in for, and whose line is being shown.
+    check("stands in for" in html and "The line shown is the home team" in html,
+          "precedents explain the role mapping")
+    check(">Season<" in html and ">Final<" in html and ">Covered<" in html,
+          "precedent table has column headers")
+    check("Home line (here" in html,
+          "precedent line column names this game's own number")
+
+    # Colour is only meaningful when there is a side to support.
+    no_play = [g for g in games if not g.get("play")]
+    if no_play:
+        from dashboard import _precedents
+        frag = _precedents(no_play[0])
+        check('class="rs yes"' not in frag and 'class="rs no"' not in frag,
+              "no-play cards leave precedent results uncoloured")
+        check("this pick needs" not in frag,
+              "no-play cards drop the pick-relative legend")
     out = config.DOCS / "sample_daily.html"
     out.write_text(html)
     print(f"\n  wrote {out}")
