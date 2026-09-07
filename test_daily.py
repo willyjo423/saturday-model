@@ -218,61 +218,72 @@ def main() -> int:
     check(len(with_line) == len(games), "market lines joined to the whole slate",
           f"{len(with_line)}/{len(games)}")
 
-    check(all(0 <= g["home_win_prob"] <= 1 for g in games), "probabilities in range")
-    check(bool(games) and all(g["pred_total"] > 10 for g in games),
-          "totals are plausible",
-          f"min {min((g['pred_total'] for g in games), default=0):.1f}")
+    check(all(0 <= g["model"]["home_win_prob"] <= 1 for g in games),
+          "model probabilities still in range (kept in the payload)")
+    check(bool(games) and all(g["model"]["total"] > 10 for g in games),
+          "model totals are plausible",
+          f"min {min((g['model']['total'] for g in games), default=0):.1f}")
 
-    # The recommended side must always match the sign of the raw disagreement,
-    # and a play is only offered where the tier says the bucket earns it.
-    consistent = True
-    for g in games:
-        raw = g.get("raw_spread_edge")
-        if raw is None:
-            continue
-        side = g["home_team"] if raw > 0 else g["away_team"]
-        if g["spread_play"] and not g["spread_play"].startswith(side):
-            consistent = False
-        if g["spread_play"] and not g["spread_tier"]:
-            consistent = False
-    check(consistent, "recommended side matches the disagreement, "
-                      "and plays only appear with a tier")
-
-    # Shrunk edges must never exceed, or invert, the raw disagreement.
-    sane = all(
-        abs(g["spread_edge"]) <= abs(g["raw_spread_edge"]) + 1e-6
-        and g["spread_edge"] * g["raw_spread_edge"] >= 0
-        for g in games
-        if g.get("spread_edge") is not None and g.get("raw_spread_edge") is not None)
-    check(sane, "calibrated edge is a shrunk version of the raw one")
-
-    # Tiered plays lead; within a tier, bigger trustworthy edge first.
-    rank = {"Strong": 0, "Lean": 1, "Slight": 2}
-    keys = [(rank.get(g.get("spread_tier"), 3),
-             -(abs(g["spread_edge"]) if g["spread_edge"] is not None else -1))
-            for g in games]
-    check(keys == sorted(keys),
-          "slate ordered by tier, then by trustworthy edge")
-
-    check(all(g["weather_text"] for g in games), "weather attached to every game")
-
-    # Comparables: the distribution and the named precedents the dashboard shows.
+    # --- comparables are now the headline -------------------------------
     with_comps = [g for g in games if g.get("comps")]
     check(len(with_comps) > len(games) * 0.8,
           "comparables found for today's slate",
           f"{len(with_comps)}/{len(games)} games")
-    if with_comps:
-        c = with_comps[0]["comps"]
-        check(c["margin_p25"] <= c["margin_median"] <= c["margin_p75"],
-              "comp distribution is ordered",
-              f"p25 {c['margin_p25']} med {c['margin_median']} p75 {c['margin_p75']}")
-        check(0.0 <= c["home_win_rate"] <= 1.0 and c["n"] >= 20,
-              "comp win rate and sample size sane",
-              f"{c['n']} comps, home won {c['home_win_rate']:.0%}")
-        ex = with_comps[0].get("comp_examples") or []
-        check(len(ex) > 0 and all(e["season"] < 2026 for e in ex),
-              "named precedents are all from earlier seasons",
-              f"{len(ex)} precedents")
+
+    c = with_comps[0]["comps"]
+    check(c["margin_p25"] <= c["margin_median"] <= c["margin_p75"],
+          "comp distribution is ordered",
+          f"p25 {c['margin_p25']} med {c['margin_median']} p75 {c['margin_p75']}")
+    check(c["cover_rate"] is not None and 0.0 <= c["cover_rate"] <= 1.0,
+          "cover rate present and in range", f"{c['cover_rate']:.0%}")
+    check(c["n"] >= 20, "sample size reported", f"{c['n']} comps")
+
+    # Every offered play must name a real side, at that side's real price,
+    # and must carry a tier.
+    consistent = True
+    for g in games:
+        play = g.get("play")
+        if not play:
+            continue
+        if play["team"] not in (g["home_team"], g["away_team"]):
+            consistent = False
+        if not play.get("tier"):
+            consistent = False
+        # The side must match which way the comparables leaned.
+        side_team = (g["home_team"] if g["comps"]["side"] == "home"
+                     else g["away_team"])
+        if play["team"] != side_team:
+            consistent = False
+        # And the quoted number must be that team's own line.
+        expected = (f'{g["market_spread"]:+.1f}' if play["team"] == g["home_team"]
+                    else f'{-g["market_spread"]:+.1f}')
+        if play["line"] != expected:
+            consistent = False
+    check(consistent, "each play names the right side at the right price")
+
+    # A calibrated rate must never be more confident than the raw one.
+    tamed = all(
+        abs(g["comps"]["calibrated_rate"] - 0.5) <= abs(g["comps"]["cover_rate"] - 0.5) + 1e-6
+        for g in with_comps
+        if g["comps"].get("calibrated_rate") is not None
+        and g["comps"].get("cover_rate") is not None)
+    check(tamed, "calibration never increases confidence beyond the raw rate")
+
+    keys = [({"Strong": 0, "Lean": 1, "Slight": 2}.get(
+                (g.get("play") or {}).get("tier"), 3),
+             -((g.get("comps") or {}).get("confidence") or 0.0))
+            for g in games]
+    check(keys == sorted(keys), "slate ordered by tier, then by confidence")
+
+    check(all(g["weather_text"] for g in games), "weather attached to every game")
+
+    ex = with_comps[0].get("comp_examples") or []
+    check(len(ex) == 5, "five precedents per game", f"{len(ex)} returned")
+    check(all(e["season"] < 2026 for e in ex),
+          "precedents are all from earlier seasons")
+    check(all({"home_points", "away_points", "home_spread", "home_covered"}
+              <= set(e) for e in ex),
+          "precedents carry score, price and result")
 
     # Serialisable, which is what the workflow commits.
     blob = json.dumps(payload, default=str)

@@ -246,6 +246,12 @@ def walk_forward(feat: pd.DataFrame, min_train_seasons: int = 4) -> pd.DataFrame
         model = CFBModel().fit(X_all.loc[train.values], y_all.loc[train])
         preds = model.predict(X_all.loc[test.values])
         block = y_all.loc[test].join(preds)
+        # Carry the comparables through: the comps calibration is fitted on
+        # exactly these out-of-sample rows.
+        carry = [c for c in ("comp_home_cover_rate", "comp_over_rate", "comp_n")
+                 if c in X_all.columns]
+        if carry:
+            block = block.join(X_all.loc[test.values, carry])
         block["season_tested"] = season
         out.append(block)
         log.info("walk-forward %s: trained on %d, tested on %d",

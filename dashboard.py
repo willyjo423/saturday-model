@@ -1,9 +1,16 @@
 """Render the daily slate as a standalone HTML dashboard.
 
-Design notes: the page is scanned, not read. The signature element is the
-spread line - one scale per game with the market's number and the model's
-number placed on it and the gap between them shaded. That is the whole
-argument of the page in one glyph, and it is the thing only this subject has.
+Design notes
+------------
+The page answers one question per game: *when games like this have been played
+before, what happened?* So each card leads with the side and the price, the
+rate at which comparable games covered it, and - crucially - what that rate has
+actually been worth once measured out of sample. Then five real precedents,
+named and scored, so a reader can check the reasoning by eye rather than
+trusting it.
+
+The model still does the work of deciding which games are alike. It just does
+not front the card any more. Its numbers stay in predictions.json.
 """
 from __future__ import annotations
 
@@ -75,7 +82,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
-.wrap { max-width: 1080px; margin: 0 auto; padding: 28px 20px 64px; }
+.wrap { max-width: 940px; margin: 0 auto; padding: 28px 20px 64px; }
 
 /* ---------- masthead ---------- */
 .masthead {
@@ -94,12 +101,18 @@ body {
   font-size: 11px; color: var(--faint); letter-spacing: .04em;
 }
 
+.lede {
+  margin: 18px 0 0; max-width: 62ch;
+  font-size: 13.5px; color: var(--muted); line-height: 1.55;
+}
+.lede b { color: var(--ink); font-weight: 600; }
+
 /* ---------- summary strip ---------- */
 .strip {
   display: grid; gap: 1px; background: var(--line);
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   border: 1px solid var(--line); border-radius: var(--radius);
-  overflow: hidden; margin: 22px 0 26px;
+  overflow: hidden; margin: 20px 0 26px;
 }
 .strip div { background: var(--surface); padding: 12px 14px; }
 .strip dt {
@@ -111,206 +124,176 @@ body {
   font-size: 19px; font-weight: 500; font-variant-numeric: tabular-nums;
 }
 
-/* ---------- section headings ---------- */
 h2.sec {
   font-family: "Barlow Condensed", ui-sans-serif, sans-serif;
   text-transform: uppercase; letter-spacing: .06em; font-size: 17px;
   font-weight: 600; color: var(--muted);
   margin: 34px 0 12px; display: flex; align-items: center; gap: 10px;
 }
-h2.sec::after {
-  content: ""; flex: 1; height: 1px; background: var(--line);
-}
+h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
-/* ---------- game row ---------- */
+/* ---------- game card ---------- */
 .game {
   background: var(--surface);
   border: 1px solid var(--line);
   border-left: 3px solid transparent;
   border-radius: var(--radius);
-  padding: 14px 16px;
-  margin-bottom: 10px;
-  display: grid;
-  grid-template-columns: minmax(200px, 1.15fr) minmax(220px, 1.35fr) minmax(150px, .9fr);
-  gap: 16px 20px;
-  align-items: center;
+  padding: 16px 18px 14px;
+  margin-bottom: 12px;
 }
-.game.flagged { border-left-color: var(--flag); box-shadow: var(--shadow); }
+.game.play { border-left-color: var(--field); box-shadow: var(--shadow); }
 
-.matchup .teams {
+.head {
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 4px 14px; margin-bottom: 12px;
+}
+.head .teams {
   font-family: "Barlow Condensed", ui-sans-serif, sans-serif;
-  font-size: 21px; font-weight: 600; line-height: 1.18;
-  letter-spacing: .005em;
+  font-size: 23px; font-weight: 600; line-height: 1.1; letter-spacing: .005em;
 }
-.matchup .at { color: var(--faint); font-weight: 400; padding: 0 3px; }
-.matchup .meta {
-  font-size: 12px; color: var(--muted); margin-top: 4px;
-  display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center;
-}
-.wx {
+.head .at { color: var(--faint); font-weight: 400; padding: 0 3px; }
+.head .when { font-size: 12.5px; color: var(--muted); }
+.head .wx {
+  margin-left: auto;
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: 11.5px; color: var(--muted);
-  background: var(--sunken); border-radius: 999px; padding: 2px 8px;
+  background: var(--sunken); border-radius: 999px; padding: 2px 9px;
   white-space: nowrap;
 }
 
-/* ---------- spread line ---------- */
-.line-wrap { min-width: 0; }
-.line-head {
-  display: flex; justify-content: space-between; align-items: baseline;
-  font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em;
-  color: var(--faint); margin-bottom: 9px;
+/* ---------- the verdict ---------- */
+.verdict {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px;
+  margin-bottom: 6px;
 }
-/* Model reads above the rule, market below, so the two numbers can never
-   collide however close the marks sit. */
-.axis { position: relative; height: 54px; }
-.axis .rule {
-  position: absolute; top: 26px; left: 0; right: 0; height: 2px;
-  background: var(--line); border-radius: 2px;
+.pick {
+  font-family: "Barlow Condensed", ui-sans-serif, sans-serif;
+  font-size: 30px; font-weight: 700; line-height: 1.05;
+  letter-spacing: .01em; color: var(--field);
 }
-.axis .gap {
-  position: absolute; top: 26px; height: 2px; background: var(--flag);
-  border-radius: 2px;
+.pick .num { font-family: "IBM Plex Mono", ui-monospace, monospace;
+             font-size: 25px; font-weight: 600; }
+.pick.none { color: var(--faint); font-size: 24px; font-weight: 600; }
+.tag {
+  font-size: 11px; font-weight: 600; letter-spacing: .04em;
+  padding: 3px 10px; border-radius: 999px;
+  background: var(--field-soft); color: var(--field);
+  border: 1px solid var(--field);
 }
-.mark { position: absolute; top: 0; height: 54px; }
-.mark .tick {
-  position: absolute; top: 20px; left: 0; width: 2px; height: 14px;
-  border-radius: 2px; transform: translateX(-50%);
-}
-.mark.market .tick { background: var(--faint); }
-.mark.model  .tick { background: var(--field); width: 3px; }
-.mark .val {
-  position: absolute; left: 0; transform: translateX(-50%);
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: 11.5px; font-variant-numeric: tabular-nums; white-space: nowrap;
-}
-.mark.model  .val { top: 2px;  color: var(--field); font-weight: 600; }
-.mark.market .val { top: 36px; color: var(--muted); }
-.axis-legend {
-  display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 6px;
-  font-size: 11px; color: var(--faint);
-}
-.axis-legend span { display: inline-flex; align-items: center; gap: 5px; }
-.swatch { width: 9px; height: 3px; border-radius: 2px; display: inline-block; }
+.tag.lean   { background: var(--flag-soft); color: var(--flag); border-color: var(--flag); }
+.tag.slight { background: var(--sunken); color: var(--muted); border-color: var(--line); }
 
-/* ---------- right column ---------- */
-.readout { display: flex; flex-direction: column; gap: 9px; }
-.prob-row {
-  display: flex; justify-content: space-between; gap: 10px; font-size: 11.5px;
-  color: var(--muted); font-variant-numeric: tabular-nums;
-}
-.prob-row .pct { font-weight: 600; color: var(--ink); }
-.prob-bar {
-  height: 8px; border-radius: 4px; background: var(--sunken);
-  overflow: hidden; display: flex; margin: 4px 0 3px;
-}
-.prob-bar i { display: block; height: 100%; }
-.prob-bar i.away { background: var(--faint); }
-.prob-bar i.home { background: var(--field); }
-.score {
+.because { font-size: 14px; color: var(--ink); margin-bottom: 3px; }
+.because b {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: 13px; font-variant-numeric: tabular-nums; color: var(--ink);
+  font-variant-numeric: tabular-nums; font-weight: 600;
 }
-.score .lbl { color: var(--faint); font-size: 11px; }
+.track-record { font-size: 12.5px; color: var(--muted); }
+.track-record b {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums;
+}
 
-/* ---------- historical comparables ---------- */
-.comps {
-  grid-column: 1 / -1;
-  border-top: 1px dashed var(--line);
-  padding-top: 10px;
-  display: flex; flex-wrap: wrap; gap: 6px 20px; align-items: center;
-  font-size: 12px; color: var(--muted);
+/* ---------- outcome band ---------- */
+.band-row {
+  display: flex; align-items: center; gap: 14px;
+  margin: 14px 0 4px; flex-wrap: wrap;
 }
-.comps .lead {
-  font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em;
-  color: var(--faint);
-}
-.comps b {
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums;
-}
-.band { position: relative; height: 20px; flex: 1 1 200px; min-width: 160px; }
+.band { position: relative; height: 22px; flex: 1 1 240px; min-width: 180px; }
 .band .track {
-  position: absolute; top: 9px; left: 0; right: 0; height: 3px;
+  position: absolute; top: 10px; left: 0; right: 0; height: 3px;
   background: var(--sunken); border-radius: 2px;
 }
 .band .iqr {
-  position: absolute; top: 7px; height: 7px;
+  position: absolute; top: 7px; height: 9px;
   background: var(--field-soft); border: 1px solid var(--field);
-  border-radius: 4px;
+  border-radius: 5px;
 }
 .band .med {
-  position: absolute; top: 3px; width: 3px; height: 15px;
+  position: absolute; top: 3px; width: 3px; height: 17px;
   background: var(--field); border-radius: 2px;
 }
-.band .zero {
-  position: absolute; top: 2px; width: 1px; height: 17px;
-  background: var(--faint); opacity: .5;
+.band .zero { position: absolute; top: 1px; width: 1px; height: 21px;
+              background: var(--faint); opacity: .5; }
+.band-label {
+  font-size: 12px; color: var(--muted); white-space: nowrap;
 }
-.precedents {
-  grid-column: 1 / -1; margin-top: -4px;
-  font-size: 11px; color: var(--faint);
+.band-label b {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
-  display: flex; flex-wrap: wrap; gap: 4px 14px;
-}
-.precedents .lead {
-  text-transform: uppercase; letter-spacing: .08em; font-family: inherit;
+  color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums;
 }
 
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip {
-  font-size: 11px; font-weight: 600; letter-spacing: .03em;
-  padding: 3px 9px; border-radius: 999px; white-space: nowrap;
-  border: 1px solid transparent;
+.market {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px; color: var(--faint);
+  font-variant-numeric: tabular-nums; margin-top: 2px;
 }
-.chip.tier   { background: var(--flag-soft); color: var(--flag); border-color: var(--flag); }
-.chip.over   { background: var(--field-soft); color: var(--over); }
-.chip.under  { background: var(--field-soft); color: var(--under); }
-.chip.quiet  { background: var(--sunken); color: var(--muted); }
-.chip.warn   { background: var(--sunken); color: var(--under);
-               border-color: var(--under); font-weight: 500; }
+
+/* ---------- precedents ---------- */
+details.prec { margin-top: 12px; }
+details.prec > summary {
+  cursor: pointer; list-style: none;
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .09em;
+  color: var(--faint); padding: 6px 0 4px;
+  border-top: 1px dashed var(--line);
+}
+details.prec > summary::-webkit-details-marker { display: none; }
+details.prec > summary::after { content: "  ▾"; }
+details.prec[open] > summary::after { content: "  ▴"; }
+.prec-table {
+  border-collapse: collapse; margin-top: 4px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11.5px; font-variant-numeric: tabular-nums;
+}
+.prec-table td { padding: 3px 18px 3px 0; color: var(--muted); }
+.prec-table td.yr { color: var(--faint); width: 3.5em; }
+.prec-table td.gm { color: var(--ink); }
+.prec-table td.sc { color: var(--ink); white-space: nowrap; }
+.prec-table td.ln { white-space: nowrap; }
+.prec-table td.rs { white-space: nowrap; font-weight: 600; }
+.prec-table td.rs.yes { color: var(--field); }
+.prec-table td.rs.no  { color: var(--under); }
+.prec-wrap { overflow-x: auto; }
+
 .flags {
-  grid-column: 1 / -1; margin-top: -4px;
-  display: flex; flex-wrap: wrap; gap: 4px 14px;
-  font-size: 11px; color: var(--faint);
+  margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px 14px;
+  font-size: 11.5px; color: var(--faint);
 }
-.flags .lead {
-  text-transform: uppercase; letter-spacing: .08em;
-}
+.flags .lead { text-transform: uppercase; letter-spacing: .08em; }
 .flags i { font-style: normal; color: var(--under); opacity: .9; }
 
-/* ---------- footer ---------- */
+.totals {
+  margin-top: 8px; font-size: 12.5px; color: var(--muted);
+}
+.totals b {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  color: var(--ink); font-weight: 600;
+}
+
 .note {
   margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line);
-  font-size: 12.5px; color: var(--muted); max-width: 68ch;
+  font-size: 12.5px; color: var(--muted); max-width: 66ch;
 }
 .note strong { color: var(--ink); }
-.note code {
-  font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11.5px;
-  background: var(--sunken); padding: 1px 5px; border-radius: 4px;
-}
 .empty {
   background: var(--surface); border: 1px dashed var(--line);
   border-radius: var(--radius); padding: 32px; text-align: center;
   color: var(--muted);
 }
-
-@media (max-width: 760px) {
-  .game { grid-template-columns: 1fr; gap: 14px; }
-  .masthead .stamp { margin-left: 0; width: 100%; }
-}
-@media (prefers-reduced-motion: reduce) {
-  * { animation: none !important; transition: none !important; }
-}
-"""
-
-BANNER_CSS = """
 .banner {
   margin: 20px 0 0; padding: 11px 14px; border-radius: var(--radius);
   background: var(--flag-soft); border: 1px solid var(--flag);
   color: var(--flag); font-size: 13px; line-height: 1.45;
 }
 .banner strong { color: var(--flag); }
+
+@media (max-width: 640px) {
+  .head .wx { margin-left: 0; }
+  .pick { font-size: 26px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
 """
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
@@ -325,259 +308,227 @@ def _e(x) -> str:
     return html.escape(str(x if x is not None else ""))
 
 
-def _fmt_signed(v) -> str:
-    return "—" if v is None else f"{v:+.1f}"
+def _pct(v, digits=0) -> str:
+    return "—" if v is None else f"{float(v) * 100:.{digits}f}%"
 
 
-def _spread_axis(game: dict) -> str:
-    """One scale, both numbers on it, the disagreement shaded."""
-    model_margin = game["pred_margin"]
-    market_spread = game.get("market_spread")
+# ---------------------------------------------------------------- card parts
+def _verdict(g: dict) -> str:
+    """The single thing this card is telling you."""
+    play = g.get("play")
+    comps = g.get("comps") or {}
 
-    if market_spread is None:
-        centre, span = model_margin, 10.0
-        market_margin = None
+    if not play:
+        n = comps.get("n")
+        reason = ("comparable games split too evenly to favour a side"
+                  if n else "not enough comparable games")
+        return (f'<div class="verdict"><span class="pick none">No play</span>'
+                f'</div><div class="because">{_e(reason)}.</div>')
+
+    tier = play.get("tier") or "Slight"
+    cls = {"Strong": "", "Lean": "lean", "Slight": "slight"}.get(tier, "slight")
+    tag = f'<span class="tag {cls}">{_e(tier)}</span>'
+
+    pick = (f'<span class="pick">{_e(play["team"])} '
+            f'<span class="num">{_e(play["line"])}</span></span>')
+
+    rate = comps.get("cover_rate")
+    side = comps.get("side")
+    shown = rate if side == "home" else (None if rate is None else 1 - rate)
+    n = comps.get("n")
+
+    because = (f'<div class="because">This side covered in '
+               f'<b>{_pct(shown)}</b> of <b>{n}</b> similar games.</div>')
+
+    hist_rate = play.get("expected_rate")
+    hist_n = play.get("sample")
+    if hist_rate is not None and hist_n:
+        track = (f'<div class="track-record">When the comparables have said '
+                 f'this before, the side actually won <b>{_pct(hist_rate, 1)}</b> '
+                 f'of the time, over <b>{hist_n:,}</b> graded games. '
+                 f'Break-even is 52.4%.</div>')
     else:
-        market_margin = -float(market_spread)
-        centre = (model_margin + market_margin) / 2
-        span = max(7.0, abs(model_margin - market_margin) * 1.9)
+        track = ('<div class="track-record">No measured track record for a '
+                 'signal this strong yet — treat it as untested.</div>')
 
-    lo, hi = centre - span, centre + span
-
-    def pos(v: float) -> float:
-        # Clamped well inside the track so the number labels stay on the page.
-        return max(15.0, min(85.0, (v - lo) / (hi - lo) * 100.0))
-
-    home, away = game["home_team"], game["away_team"]
-
-    def quote(margin: float) -> str:
-        """Express a home-margin as a spread on the favourite."""
-        if margin >= 0:
-            return f"{home} −{abs(margin):.1f}"
-        return f"{away} −{abs(margin):.1f}"
-
-    parts = ['<div class="axis"><div class="rule"></div>']
-
-    if market_margin is not None:
-        a, b = sorted([pos(model_margin), pos(market_margin)])
-        parts.append(f'<div class="gap" style="left:{a:.2f}%;width:{b - a:.2f}%"></div>')
-        parts.append(
-            f'<div class="mark market" style="left:{pos(market_margin):.2f}%">'
-            f'<div class="tick"></div><span class="val">{_e(quote(market_margin))}</span></div>')
-
-    parts.append(
-        f'<div class="mark model" style="left:{pos(model_margin):.2f}%">'
-        f'<div class="tick"></div><span class="val">{_e(quote(model_margin))}</span></div>')
-    parts.append("</div>")
-
-    legend = ['<div class="axis-legend">',
-              '<span><i class="swatch" style="background:var(--field)"></i>Model</span>']
-    if market_margin is not None:
-        legend.append('<span><i class="swatch" style="background:var(--faint)"></i>Market</span>')
-        edge = game.get("spread_edge")
-        if edge is not None:
-            legend.append(f'<span><i class="swatch" style="background:var(--flag)"></i>'
-                          f'{abs(edge):.1f} pt gap</span>')
-    legend.append("</div>")
-
-    head = ('<div class="line-head"><span>Spread</span>'
-            f'<span>Week {_e(game["week"])}</span></div>')
-    return f'<div class="line-wrap">{head}{"".join(parts)}{"".join(legend)}</div>'
+    return f'<div class="verdict">{pick}{tag}</div>{because}{track}'
 
 
-def _flags_block(g: dict) -> str:
-    """Named reasons this particular disagreement may be our fault.
+def _band(g: dict) -> str:
+    """Where comparable games actually finished, on the home team's scale."""
+    c = g.get("comps") or {}
+    p25, p75 = c.get("margin_p25"), c.get("margin_p75")
+    if p25 is None or p75 is None:
+        return ""
+    med = c.get("margin_median") or 0.0
+    lo = min(p25, med, 0.0) - 7
+    hi = max(p75, med, 0.0) + 7
+    span = max(hi - lo, 1.0)
 
-    Shown only where it matters - on games with a real gap - because a list of
-    caveats on every card is noise, and noise gets ignored.
+    def pos(v):
+        return max(0.0, min(100.0, (v - lo) / span * 100.0))
+
+    a, b = pos(p25), pos(p75)
+    home = g["home_team"]
+    win = c.get("home_win_rate")
+    win_txt = (f' · {_e(home)} won <b>{_pct(win)}</b>' if win is not None else "")
+
+    return (
+        '<div class="band-row">'
+        f'<div class="band" title="Middle half of comparable final margins">'
+        f'<div class="track"></div>'
+        f'<div class="iqr" style="left:{a:.1f}%;width:{max(b - a, 1.0):.1f}%"></div>'
+        f'<div class="zero" style="left:{pos(0.0):.1f}%"></div>'
+        f'<div class="med" style="left:{pos(med):.1f}%"></div></div>'
+        f'<div class="band-label">Half finished <b>{p25:+.0f} to {p75:+.0f}</b>'
+        f'{win_txt}</div>'
+        '</div>')
+
+
+def _market_line(g: dict) -> str:
+    bits = []
+    if g.get("market_spread") is not None:
+        bits.append(f'{_e(g["home_team"])} {g["market_spread"]:+.1f}')
+    if g.get("market_total") is not None:
+        bits.append(f'total {g["market_total"]:.1f}')
+    if not bits:
+        return '<div class="market">No market line available</div>'
+    return f'<div class="market">Market &nbsp;{" &nbsp;·&nbsp; ".join(bits)}</div>'
+
+
+def _totals_line(g: dict) -> str:
+    tp = g.get("total_play")
+    if not tp:
+        return ""
+    cls = "over" if tp["side"] == "Over" else "under"
+    return (f'<div class="totals">Total: <b>{_e(tp["side"])} {tp["line"]:.1f}</b> '
+            f'— comparable games went {_e(tp["side"].lower())} '
+            f'<b>{_pct(tp["rate"] if tp["side"] == "Over" else 1 - tp["rate"])}</b> '
+            f'of the time.</div>')
+
+
+def _precedents(g: dict) -> str:
+    """The five nearest real games, coloured by whether they support the pick.
+
+    Colouring by "did the home team cover" would read backwards whenever the
+    pick is the away side, so support is judged relative to the side actually
+    being backed.
     """
+    rows = g.get("comp_examples") or []
+    if not rows:
+        return ""
+
+    side = (g.get("comps") or {}).get("side")
+    body = []
+    for e in rows[:5]:
+        covered = e.get("home_covered")
+        if covered is None:
+            res, cls = "push", ""
+        else:
+            who = e["home_team"] if covered else e["away_team"]
+            res = f"{_e(who)} covered"
+            if side is None:
+                cls = ""
+            else:
+                supports = covered if side == "home" else not covered
+                cls = "yes" if supports else "no"
+        body.append(
+            f'<tr><td class="yr">{e["season"]}</td>'
+            f'<td class="gm">{_e(e["away_team"])} at {_e(e["home_team"])}</td>'
+            f'<td class="sc">{e["away_points"]}–{e["home_points"]}</td>'
+            f'<td class="ln">{e["home_spread"]:+.1f}</td>'
+            f'<td class="rs {cls}">{res}</td></tr>')
+
+    legend = ("green = the comparable went the way this pick needs"
+              if side else "")
+    return ('<details class="prec">'
+            f'<summary>Five closest precedents{" — " + legend if legend else ""}'
+            '</summary>'
+            f'<div class="prec-wrap"><table class="prec-table">'
+            f'{"".join(body)}</table></div></details>')
+
+
+def _flags(g: dict) -> str:
     flags = g.get("confidence_flags") or []
-    raw_edge = g.get("raw_spread_edge")
-    if not flags or raw_edge is None or abs(raw_edge) < 3.0:
+    if not flags or not g.get("play"):
         return ""
     items = "".join(f"<span><i>▲</i> {_e(f)}</span>" for f in flags[:3])
     return f'<div class="flags"><span class="lead">Watch</span>{items}</div>'
 
 
-def _comps_block(g: dict) -> str:
-    """How games of this shape have actually finished.
-
-    A single predicted margin hides the thing that matters most for acting on
-    it: whether comparable matchups landed in a tight cluster or scattered
-    across four touchdowns. The band shows the middle half of those outcomes,
-    with zero marked so you can see at a glance how often the favourite simply
-    lost outright.
-    """
-    c = g.get("comps")
-    if not c or c.get("margin_p25") is None or c.get("margin_p75") is None:
-        return ""
-
-    p25, p75 = float(c["margin_p25"]), float(c["margin_p75"])
-    med = float(c.get("margin_median") or 0.0)
-    lo = min(p25, med, 0.0) - 6
-    hi = max(p75, med, 0.0) + 6
-    span = max(hi - lo, 1.0)
-
-    def pos(v: float) -> float:
-        return max(0.0, min(100.0, (v - lo) / span * 100.0))
-
-    a, b = pos(p25), pos(p75)
-    agreement = c.get("agreement")
-    agree_txt = (f'<span><span class="lead">Agreement</span> '
-                 f'<b>{agreement * 100:.0f}%</b></span>'
-                 if agreement is not None else "")
-
-    win_rate = c.get("home_win_rate")
-    win_txt = (f'<span><span class="lead">{_e(g["home_team"])} won</span> '
-               f'<b>{win_rate * 100:.0f}%</b></span>'
-               if win_rate is not None else "")
-
-    band = (f'<div class="band" title="Middle half of comparable outcomes">'
-            f'<div class="track"></div>'
-            f'<div class="iqr" style="left:{a:.1f}%;width:{max(b - a, 1.0):.1f}%"></div>'
-            f'<div class="zero" style="left:{pos(0.0):.1f}%"></div>'
-            f'<div class="med" style="left:{pos(med):.1f}%"></div>'
-            f'</div>')
-
-    out = [f'<div class="comps">',
-           f'<span><span class="lead">{c["n"]} similar games</span></span>',
-           band,
-           f'<span><span class="lead">Middle half</span> '
-           f'<b>{p25:+.0f} to {p75:+.0f}</b></span>',
-           win_txt, agree_txt, '</div>']
-
-    examples = g.get("comp_examples") or []
-    if examples:
-        items = "".join(
-            f'<span>{_e(e["season"])} {_e(e["away_team"])}–{_e(e["home_team"])} '
-            f'({e["margin"]:+.0f})</span>' for e in examples[:4])
-        out.append(f'<div class="precedents">'
-                   f'<span class="lead">Closest precedents</span>{items}</div>')
-
-    return "".join(out)
-
-
 def _game_row(g: dict) -> str:
-    flagged = bool(g.get("spread_tier") or g.get("total_tier"))
-    home_prob = int(round(g["home_win_prob"] * 100))
-
+    has_play = bool(g.get("play"))
     meta = []
     if g.get("kickoff_et"):
         meta.append(_e(g["kickoff_et"]))
     if g.get("neutral_site"):
         meta.append("Neutral site")
-    meta_html = " · ".join(meta)
-
-    chips = []
-    bucket = g.get("edge_bucket") or {}
-    raw_edge = g.get("raw_spread_edge")
-
-    if g.get("spread_tier") and g.get("spread_play"):
-        rate = (f' · {bucket["ats"] * 100:.0f}% ATS'
-                if bucket.get("ats") is not None else "")
-        chips.append(f'<span class="chip tier">{_e(g["spread_tier"])} · '
-                     f'{_e(g["spread_play"])}{rate}</span>')
-    elif raw_edge is not None and abs(raw_edge) >= 6.0:
-        # A large disagreement the backtest says not to trust. Saying so
-        # plainly is more useful than promoting it for being big.
-        rate = (f' — this size has gone {bucket["ats"] * 100:.0f}% historically'
-                if bucket.get("ats") is not None else "")
-        chips.append(f'<span class="chip warn">{abs(raw_edge):.1f}-pt gap, '
-                     f'no play{rate}</span>')
-
-    if g.get("total_tier") and g.get("total_play"):
-        cls = "over" if g["total_play"].startswith("Over") else "under"
-        chips.append(f'<span class="chip {cls}">{_e(g["total_play"])} '
-                     f'({_fmt_signed(g.get("total_edge"))})</span>')
-    if not chips:
-        chips.append('<span class="chip quiet">No edge</span>')
-
-    market_total = g.get("market_total")
-    total_line = (f'{g["pred_total"]:.1f}' if market_total is None
-                  else f'{g["pred_total"]:.1f} <span class="lbl">vs</span> {market_total:.1f}')
 
     return f"""
-    <article class="game{' flagged' if flagged else ''}">
-      <div class="matchup">
-        <div class="teams">{_e(g["away_team"])} <span class="at">at</span> {_e(g["home_team"])}</div>
-        <div class="meta">{meta_html}<span class="wx">{_e(g.get("weather_text", ""))}</span></div>
+    <article class="game{' play' if has_play else ''}">
+      <div class="head">
+        <span class="teams">{_e(g["away_team"])} <span class="at">at</span> {_e(g["home_team"])}</span>
+        <span class="when">{" · ".join(meta)}</span>
+        <span class="wx">{_e(g.get("weather_text", ""))}</span>
       </div>
-      {_spread_axis(g)}
-      <div class="readout">
-        <div>
-          <div class="prob-row"><span>Win probability</span></div>
-          <div class="prob-bar">
-            <i class="away" style="width:{100 - home_prob}%"></i>
-            <i class="home" style="width:{home_prob}%"></i>
-          </div>
-          <div class="prob-row">
-            <span><span class="pct">{100 - home_prob}%</span> {_e(g["away_team"])}</span>
-            <span>{_e(g["home_team"])} <span class="pct">{home_prob}%</span></span>
-          </div>
-        </div>
-        <div class="score"><span class="lbl">Proj score</span>
-          {g["pred_away_points"]:.0f}–{g["pred_home_points"]:.0f}
-        </div>
-        <div class="score"><span class="lbl">Total</span> {total_line}</div>
-        <div class="chips">{"".join(chips)}</div>
-      </div>
-      {_flags_block(g)}
-      {_comps_block(g)}
+      {_verdict(g)}
+      {_band(g)}
+      {_market_line(g)}
+      {_totals_line(g)}
+      {_flags(g)}
+      {_precedents(g)}
     </article>"""
 
 
+# ---------------------------------------------------------------- page parts
 def _summary_strip(payload: dict) -> str:
     games = payload["games"]
+    plays = [g for g in games if g.get("play")]
+    cells = [("Games", str(len(games))), ("Plays", str(len(plays)))]
+
+    strong = sum(1 for g in plays if (g["play"].get("tier") == "Strong"))
+    if plays:
+        cells.append(("Strong", str(strong)))
+
     m = payload.get("model_metrics") or {}
-    cells = [("Games today", str(len(games)))]
-
-    flagged = [g for g in games if g.get("spread_tier")]
-    cells.append(("Flagged edges", str(len(flagged))))
-
-    if flagged:
-        biggest = max(flagged, key=lambda g: abs(g["spread_edge"]))
-        cells.append(("Largest gap", f'{abs(biggest["spread_edge"]):.1f} pts'))
-
-    if m.get("margin_mae"):
-        cells.append(("Margin MAE", f'{m["margin_mae"]:.1f}'))
+    cc = m.get("comps_calibration") or {}
+    if cc.get("n_fitted"):
+        cells.append(("Signal tested on", f'{cc["n_fitted"]:,}'))
     if m.get("market_margin_mae"):
         cells.append(("Market MAE", f'{m["market_margin_mae"]:.1f}'))
-    if m.get("ats_win_pct"):
-        cells.append(("Backtest ATS", f'{m["ats_win_pct"] * 100:.1f}%'))
 
     inner = "".join(f"<div><dt>{_e(k)}</dt><dd>{_e(v)}</dd></div>" for k, v in cells)
     return f'<dl class="strip">{inner}</dl>'
 
 
+def _lede(payload: dict) -> str:
+    m = payload.get("model_metrics") or {}
+    cc = m.get("comps_calibration") or {}
+    tested = (f' Every rate below was checked against <b>{cc["n_fitted"]:,}</b> '
+              f'games the model had never seen.' if cc.get("n_fitted") else "")
+    return (f'<p class="lede">Each game is matched against the most similar '
+            f'matchups of the last decade — similar teams, and a similar price '
+            f'— and the card reports what those games actually did.{tested}</p>')
+
+
 def _honesty_note(payload: dict) -> str:
     m = payload.get("model_metrics") or {}
     bits = []
-    if "mae_vs_market" in m:
-        d = m["mae_vs_market"]
-        if d < 0:
-            bits.append(f"In walk-forward backtesting the model's margin error was "
-                        f"<strong>{abs(d):.2f} points lower</strong> than the closing line's.")
-        else:
-            bits.append(f"In walk-forward backtesting the model's margin error was "
-                        f"<strong>{d:.2f} points higher</strong> than the closing line's — "
-                        f"the market is still the better estimator overall.")
-    if m.get("ats_win_pct") is not None:
-        bits.append(f"Against the spread it hit {m['ats_win_pct'] * 100:.1f}% on "
-                    f"{m.get('ats_n', 0):,} graded games; 52.4% is break-even at −110.")
-    bits.append("Ratings are fit only on games played before each kickoff, and the "
-                "betting line is never a model input — that is what keeps this "
-                "comparison meaningful.")
-    return (f'<p class="note">{" ".join(bits)} '
-            f'Weather is the Open-Meteo forecast at each venue\'s coordinates for the '
-            f'kickoff hour. Generated automatically — nothing was submitted by hand.</p>')
+    cc = m.get("comps_calibration") or {}
+    if cc.get("slope") is not None and cc.get("n_fitted"):
+        bits.append(
+            f"The raw rate from comparable games overstates its own accuracy — "
+            f"200 nearest neighbours are nowhere near 200 independent games — "
+            f"so it is corrected against {cc['n_fitted']:,} out-of-sample "
+            f"results before anything is called a play.")
+    bits.append("Comparables only ever come from games played earlier than the "
+                "one being predicted, and the betting line is never an input to "
+                "the model that decides which games are alike.")
+    bits.append("This is a forecasting tool, not advice.")
+    return f'<p class="note">{" ".join(bits)}</p>'
 
 
 def render(payload: dict, standalone: bool = True, banner: str = "") -> str:
-    """Render the dashboard.
-
-    `standalone=False` emits just the title, styles and content, for hosts
-    that supply their own document skeleton.
-    """
     games = payload["games"]
     generated = payload.get("generated_at", "")
     try:
@@ -594,17 +545,17 @@ def render(payload: dict, standalone: bool = True, banner: str = "") -> str:
     except (ValueError, IndexError):
         pretty = ", ".join(dates)
 
-    flagged = [g for g in games if g.get("spread_tier") or g.get("total_tier")]
-    quiet = [g for g in games if g not in flagged]
+    plays = [g for g in games if g.get("play")]
+    rest = [g for g in games if not g.get("play")]
 
     if games:
         body = ""
-        if flagged:
-            body += '<h2 class="sec">Where the model disagrees</h2>'
-            body += "".join(_game_row(g) for g in flagged)
-        if quiet:
+        if plays:
+            body += '<h2 class="sec">Where the precedents point somewhere</h2>'
+            body += "".join(_game_row(g) for g in plays)
+        if rest:
             body += '<h2 class="sec">Rest of the slate</h2>'
-            body += "".join(_game_row(g) for g in quiet)
+            body += "".join(_game_row(g) for g in rest)
     else:
         body = ('<div class="empty">No games scheduled for this date. '
                 'The next run will pick up the following slate automatically.</div>')
@@ -618,12 +569,13 @@ def render(payload: dict, standalone: bool = True, banner: str = "") -> str:
     <span class="stamp">Built {_e(stamp)}</span>
   </header>
   {banner_html}
+  {_lede(payload)}
   {_summary_strip(payload)}
   {body}
   {_honesty_note(payload)}
 </div>"""
 
-    head = f"<title>Saturday Model</title>\n{FONTS}\n<style>{CSS}{BANNER_CSS}</style>"
+    head = f"<title>Saturday Model</title>\n{FONTS}\n<style>{CSS}</style>"
 
     if not standalone:
         return f"{head}\n{content}"

@@ -400,6 +400,50 @@ def main() -> int:
     check(abs(round_trip.a - cal.a) < 1e-9 and round_trip.fitted,
           "calibration survives a save/load round trip")
 
+    # -------------------------------------------------- comparables reliability
+    section("5d. Do the comparables actually predict covering?")
+    from edges import CompsCalibration
+
+    ccal = CompsCalibration.fit(oos)
+    check(ccal.fitted, "comparables calibration fitted",
+          f"{ccal.n_fitted:,} graded games")
+    print()
+    print("  " + ccal.summary().replace("\n", "\n  "))
+    print()
+
+    # The calibrated rate must never be more confident than the raw one.
+    probes = [0.30, 0.40, 0.45, 0.50, 0.55, 0.60, 0.70]
+    cals = [ccal.calibrated_rate(p) for p in probes]
+    print("  raw -> calibrated: " +
+          "  ".join(f"{p:.0%}->{c:.0%}" for p, c in zip(probes, cals)))
+    check(all(abs(c - 0.5) <= abs(p - 0.5) + 1e-6
+              for p, c in zip(probes, cals)),
+          "calibration only ever pulls a rate toward a coin flip")
+    check(all(a <= b + 1e-9 for a, b in zip(cals, cals[1:])),
+          "calibrated rate rises with the raw rate")
+
+    # Does the raw rate carry signal at all? Compare the top and bottom bands.
+    if len(ccal.buckets) >= 2:
+        low, high = ccal.buckets[0], ccal.buckets[-1]
+        lift = high["realized"] - low["realized"]
+        print(f"  lowest band said {low['predicted']:.0%}, actually covered "
+              f"{low['realized']:.1%} (n={low['n']:,})")
+        print(f"  highest band said {high['predicted']:.0%}, actually covered "
+              f"{high['realized']:.1%} (n={high['n']:,})")
+        print(f"  lift from bottom band to top: {lift * 100:+.1f} points")
+        # Reported, not asserted. If the comparables carry no signal on real
+        # data, the tiering will simply stop offering plays - which is the
+        # correct behaviour, and better than a test that pretends otherwise.
+        metrics["comps_lift"] = round(float(lift), 4)
+
+    assess = ccal.assess(0.65)
+    check(assess["side"] in ("home", "away") and assess["confidence"] is not None,
+          "assess returns a usable verdict",
+          f"side={assess['side']} conf={assess['confidence']:.0%} "
+          f"tier={assess['tier']}")
+    check(CompsCalibration.from_json(ccal.to_json()).fitted,
+          "comparables calibration survives a round trip")
+
     # ---------------------------------------------------------------- artefacts
     section("6. Prediction payload and dashboard")
     model = CFBModel().fit(X, y)

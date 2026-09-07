@@ -205,6 +205,177 @@ class EdgeCalibration:
         return "\n".join(lines)
 
 
+COMP_BUCKETS = [0.0, 0.40, 0.45, 0.50, 0.55, 0.60, 1.01]
+
+
+@dataclass
+class CompsCalibration:
+    """Does 'the underdog covered 64% of comparable games' mean anything?
+
+    The comparables rate is a nearest-neighbour estimate, and 200 neighbours
+    are nowhere near 200 independent observations - they overlap heavily and
+    were chosen for resembling each other. So the raw rate is almost certainly
+    overconfident, and the only way to know by how much is to check it against
+    games the model had not seen.
+
+    This fits that check: predicted cover rate in, realised cover rate out.
+    Tiers then come from what each band of predicted rates *actually did*.
+    """
+
+    slope: float = 1.0
+    intercept: float = 0.0
+    buckets: list[dict] = field(default_factory=list)
+    n_fitted: int = 0
+    fitted: bool = False
+
+    @classmethod
+    def fit(cls, oos: pd.DataFrame) -> "CompsCalibration":
+        need = {"comp_home_cover_rate", "margin", "spread"}
+        if oos is None or oos.empty or not need.issubset(oos.columns):
+            log.warning("comps calibration: no usable out-of-sample data")
+            return cls()
+
+        d = oos.dropna(subset=["comp_home_cover_rate", "margin", "spread"]).copy()
+        d["market_margin"] = -d["spread"]
+        d = d.loc[~np.isclose(d["margin"], d["market_margin"])]
+        if len(d) < 400:
+            log.warning("comps calibration: only %d graded games", len(d))
+            return cls()
+
+        d["covered"] = (d["margin"] > d["market_margin"]).astype(int)
+        x = (d["comp_home_cover_rate"] - 0.5).to_numpy(dtype=float)
+        y = d["covered"].to_numpy(dtype=int)
+
+        slope, intercept = 1.0, 0.0
+        if 0 < y.mean() < 1:
+            try:
+                from sklearn.linear_model import LogisticRegression
+                clf = LogisticRegression(C=1e6, solver="lbfgs")
+                clf.fit(x.reshape(-1, 1), y)
+                slope = float(clf.coef_[0][0])
+                intercept = float(clf.intercept_[0])
+            except Exception as exc:  # noqa: BLE001
+                log.warning("comps calibration fit failed (%s)", exc)
+
+        obj = cls(slope=slope, intercept=intercept,
+                  n_fitted=int(len(d)), fitted=True)
+        obj.buckets = obj._bucket_stats(d)
+        log.info("comps calibration on %d games: logit(cover) = "
+                 "%.2f*(rate-0.5) %+.3f", len(d), slope, intercept)
+        return obj
+
+    @staticmethod
+    def _bucket_stats(d: pd.DataFrame) -> list[dict]:
+        out = []
+        rate = d["comp_home_cover_rate"]
+        for lo, hi in zip(COMP_BUCKETS, COMP_BUCKETS[1:]):
+            sel = d.loc[(rate >= lo) & (rate < hi)]
+            if len(sel) < MIN_BUCKET:
+                continue
+            realized = float(sel["covered"].mean())
+            n = int(len(sel))
+            out.append({
+                "lo": float(lo), "hi": float(min(hi, 1.0)), "n": n,
+                "predicted": float(sel["comp_home_cover_rate"].mean()),
+                "realized": realized,
+                "se": float(np.sqrt(max(realized * (1 - realized), 1e-6) / n)),
+            })
+        return out
+
+    def calibrated_rate(self, raw_rate: float) -> float:
+        """The comps rate, corrected for how overconfident it has been.
+
+        Deliberately one-directional: this can pull a rate toward a coin flip
+        but never push it further out. A fitted slope above 1 says the
+        neighbours were *under*-confident, and it may well be right - but
+        claiming more certainty than the comparables literally showed is
+        exactly the failure this layer exists to prevent, and the tiering
+        already reads confidence from measured results rather than from here.
+        """
+        if raw_rate is None or (isinstance(raw_rate, float) and np.isnan(raw_rate)):
+            return float("nan")
+        raw = float(raw_rate)
+        if not self.fitted:
+            return raw
+        z = np.clip(self.slope * (raw - 0.5) + self.intercept, -8, 8)
+        cal = float(1.0 / (1.0 + np.exp(-z)))
+        # Never further from 0.5 than the raw rate, and never a different side.
+        if np.sign(cal - 0.5) != np.sign(raw - 0.5) and abs(raw - 0.5) > 1e-9:
+            return 0.5
+        return 0.5 + np.sign(raw - 0.5) * min(abs(cal - 0.5), abs(raw - 0.5))
+
+    def bucket_for(self, raw_rate: float) -> dict | None:
+        if raw_rate is None or np.isnan(raw_rate):
+            return None
+        for bk in self.buckets:
+            if bk["lo"] <= raw_rate < bk["hi"]:
+                return bk
+        return None
+
+    def assess(self, raw_rate: float) -> dict:
+        """Everything the card needs about one game's comparables."""
+        blank = {"raw_rate": None, "calibrated_rate": None, "side": None,
+                 "confidence": None, "tier": None, "bucket": None}
+        if raw_rate is None or (isinstance(raw_rate, float) and np.isnan(raw_rate)):
+            return blank
+
+        cal = self.calibrated_rate(raw_rate)
+        bucket = self.bucket_for(raw_rate)
+        side = "home" if cal >= 0.5 else "away"
+        confidence = cal if side == "home" else 1.0 - cal
+
+        tier = None
+        if bucket is not None:
+            # Judge by what this band of predicted rates actually delivered,
+            # oriented to the side we would be backing.
+            realized = (bucket["realized"] if side == "home"
+                        else 1.0 - bucket["realized"])
+            se = bucket["se"]
+            if realized - se > BREAKEVEN:
+                tier = "Strong"
+            elif realized > BREAKEVEN:
+                tier = "Lean"
+            elif realized > 0.50:
+                tier = "Slight"
+        elif confidence > 0.58:
+            # Unmeasured band: allow a soft lean, never a Strong.
+            tier = "Lean"
+
+        return {"raw_rate": float(raw_rate), "calibrated_rate": cal,
+                "side": side, "confidence": float(confidence),
+                "tier": tier, "bucket": bucket}
+
+    def to_json(self) -> str:
+        return json.dumps(asdict(self), indent=2)
+
+    @classmethod
+    def from_json(cls, text: str) -> "CompsCalibration":
+        try:
+            return cls(**json.loads(text))
+        except Exception as exc:  # noqa: BLE001
+            log.warning("could not read comps calibration (%s)", exc)
+            return cls()
+
+    def summary(self) -> str:
+        if not self.fitted:
+            return "Comps calibration: not fitted (rates shown as-is)."
+        lines = [f"Comparables calibration, {self.n_fitted:,} out-of-sample games:",
+                 f"  logit(covered) = {self.slope:.2f}*(comp rate - 0.5) "
+                 f"{self.intercept:+.3f}",
+                 "  comps said      n     actually covered   95% band"]
+        for bk in self.buckets:
+            band = 1.96 * bk["se"] * 100
+            lines.append(
+                f"  {bk['lo']*100:3.0f}-{bk['hi']*100:<3.0f}% {bk['n']:7d}   "
+                f"{bk['realized']*100:14.1f}%   "
+                f"{bk['realized']*100-band:5.1f}-{bk['realized']*100+band:<5.1f}%")
+        lines.append(f"  break-even at -110 is {BREAKEVEN*100:.1f}%")
+        if abs(self.slope) < 0.6:
+            lines.append("  NOTE: slope well under 1 - the comparables are "
+                         "markedly overconfident and are being shrunk hard.")
+        return "\n".join(lines)
+
+
 # -- why a big disagreement might be our fault, not the market's -------------
 def confidence_flags(row) -> list[str]:
     """Concrete reasons to distrust a large disagreement on this game.

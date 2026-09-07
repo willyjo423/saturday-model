@@ -43,6 +43,7 @@ log = logging.getLogger(__name__)
 # The profile axes. Deliberately few: distance in 50 dimensions is meaningless,
 # and these are the dimensions that actually separate one matchup from another.
 COMP_AXES = [
+    "market_margin",          # the price itself - see note below
     "proj_margin",
     "edge_ppa_home", "edge_ppa_away",
     "edge_success_rate_home", "edge_success_rate_away",
@@ -55,10 +56,13 @@ COMP_AXES = [
     "away_travel_mi",
 ]
 
-# Sensible starting weights, used when no learned importances are supplied.
-# The rating gap dominates because it should; everything else refines it.
+# The market number carries the heaviest weight because the headline question
+# is "how often did a side like this cover a price like this". Blending games
+# where the favourite laid 3 with games where they laid 30 would answer a
+# different question badly.
 DEFAULT_WEIGHTS = {
-    "proj_margin": 3.0,
+    "market_margin": 3.5,
+    "proj_margin": 2.0,
     "edge_ppa_home": 1.5, "edge_ppa_away": 1.5,
     "edge_success_rate_home": 1.0, "edge_success_rate_away": 1.0,
     "edge_explosiveness_home": 0.7, "edge_explosiveness_away": 0.7,
@@ -75,8 +79,21 @@ COMP_FEATURES = [
     "comp_margin_p25", "comp_margin_p75",
     "comp_total_median", "comp_total_sd",
     "comp_home_win_rate", "comp_agreement",
+    "comp_home_cover_rate", "comp_over_rate",
+    "comp_spread_spread",     # how tightly the comps' own prices cluster
     "comp_n", "comp_distance",
 ]
+
+
+def add_market_margin(df: pd.DataFrame) -> pd.DataFrame:
+    """Express the spread as a home-team margin, which is how everything
+    else in this project is oriented."""
+    out = df.copy()
+    if "spread" in out.columns:
+        out["market_margin"] = -pd.to_numeric(out["spread"], errors="coerce")
+    else:
+        out["market_margin"] = np.nan
+    return out
 
 CHUNK = 400
 
@@ -93,6 +110,10 @@ class CompsEngine:
 
     def __init__(self, history: pd.DataFrame, weights: dict | None = None,
                  axes: list[str] | None = None):
+        # Derive market_margin before deciding which axes exist - it is the
+        # heaviest-weighted axis and it is computed, not supplied.
+        history = add_market_margin(history)
+
         self.axes = [a for a in (axes or COMP_AXES) if a in history.columns]
         missing = [a for a in (axes or COMP_AXES) if a not in history.columns]
         if missing:
@@ -101,8 +122,10 @@ class CompsEngine:
         self.weights = dict(DEFAULT_WEIGHTS)
         if weights:
             self.weights.update(weights)
-
-        usable = history["margin"].notna() & history["total"].notna()
+        # A comp has to carry a result *and* the price it was played at, or it
+        # cannot answer the cover question.
+        usable = (history["margin"].notna() & history["total"].notna()
+                  & history["market_margin"].notna())
         self.history = history.loc[usable].reset_index(drop=True)
         self.available = len(self.history) >= 500 and len(self.axes) >= 4
         if not self.available:
@@ -123,7 +146,19 @@ class CompsEngine:
         self.pool_time = _time_index(self.history)
         self.pool_margin = self.history["margin"].to_numpy(dtype=float)
         self.pool_total = self.history["total"].to_numpy(dtype=float)
+        self.pool_market = self.history["market_margin"].to_numpy(dtype=float)
         self.pool_sq = (self.pool ** 2).sum(axis=1)
+
+        # Did the home side beat its own number? A push is neither, and
+        # grading pushes as losses would bias every rate downward.
+        diff = self.pool_margin - self.pool_market
+        self.pool_home_cover = np.where(np.isclose(diff, 0.0), np.nan,
+                                        (diff > 0).astype(float))
+        ou = pd.to_numeric(self.history.get("over_under"), errors="coerce")
+        ou = ou.to_numpy(dtype=float) if ou is not None else np.full(len(self.history), np.nan)
+        tdiff = self.pool_total - ou
+        self.pool_over = np.where(np.isnan(ou) | np.isclose(tdiff, 0.0),
+                                  np.nan, (tdiff > 0).astype(float))
 
         log.info("comps: pool of %d games across %d axes",
                  len(self.history), len(self.axes))
@@ -143,6 +178,10 @@ class CompsEngine:
         Only games strictly earlier than the target are eligible, so a game can
         never be its own comparable and never sees the future.
         """
+        # Derive here rather than at each call site, so every entry point -
+        # summarise, examples, or a direct call - is safe.
+        targets = add_market_margin(targets)
+
         n = len(targets)
         idx_out = np.full((n, k), -1, dtype=np.int64)
         dist_out = np.full((n, k), np.inf, dtype=float)
@@ -180,6 +219,7 @@ class CompsEngine:
 
     def summarise(self, targets: pd.DataFrame, k: int = 200) -> pd.DataFrame:
         """One row of comparable-outcome statistics per target game."""
+        targets = add_market_margin(targets)
         idx, dist = self.neighbours(targets, k=k)
         n = len(targets)
         cols = {c: np.full(n, np.nan) for c in COMP_FEATURES}
@@ -210,26 +250,57 @@ class CompsEngine:
             cols["comp_agreement"][i] = float(np.mean(np.sign(margins) == side))
             cols["comp_distance"][i] = float(np.mean(dist[i][valid]))
 
+            # The headline: how often a home side in this spot beat a price
+            # like this one. Pushes are excluded rather than counted as losses.
+            covers = self.pool_home_cover[take]
+            graded = covers[~np.isnan(covers)]
+            if len(graded) >= 20:
+                cols["comp_home_cover_rate"][i] = float(np.mean(graded))
+
+            overs = self.pool_over[take]
+            graded_ou = overs[~np.isnan(overs)]
+            if len(graded_ou) >= 20:
+                cols["comp_over_rate"][i] = float(np.mean(graded_ou))
+
+            # How tightly the comps' own prices cluster. A wide spread here
+            # means "similar" was loose on the number that matters most.
+            prices = self.pool_market[take]
+            cols["comp_spread_spread"][i] = float(np.std(prices))
+
         return pd.DataFrame(cols, index=targets.index)
 
     def examples(self, target_row: pd.Series, k: int = 5) -> list[dict]:
-        """The closest few comparables, named, for showing on a card."""
+        """The closest few comparables, in enough detail to check by eye.
+
+        Each one carries the final score, the price it was played at, and
+        whether the home side beat that price - so a reader can decide for
+        themselves whether these really are the same kind of game.
+        """
         if not self.available:
             return []
-        frame = target_row.to_frame().T
+        frame = add_market_margin(target_row.to_frame().T)
         idx, dist = self.neighbours(frame, k=max(k, 20))
         out = []
         for pos, d in zip(idx[0], dist[0]):
             if pos < 0 or len(out) >= k:
                 continue
-            g = self.history.iloc[int(pos)]
+            i = int(pos)
+            g = self.history.iloc[i]
+            margin = float(g["margin"])
+            total = float(g["total"])
+            market = float(self.pool_market[i])
+            cover = self.pool_home_cover[i]
             out.append({
                 "season": int(g["season"]),
                 "week": int(g["week"]),
                 "home_team": str(g.get("home_team", "")),
                 "away_team": str(g.get("away_team", "")),
-                "margin": float(g["margin"]),
-                "total": float(g["total"]),
+                # Scores are recoverable exactly from margin and total.
+                "home_points": int(round((total + margin) / 2)),
+                "away_points": int(round((total - margin) / 2)),
+                "margin": margin,
+                "home_spread": round(-market, 1),
+                "home_covered": (None if np.isnan(cover) else bool(cover)),
                 "distance": round(float(d), 3),
             })
         return out

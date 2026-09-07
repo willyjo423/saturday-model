@@ -5,15 +5,22 @@ out which games are being played, pulls each team's current form and the live
 weather at each stadium, predicts a margin, a total and a win probability, and
 publishes a dashboard. You never submit anything.
 
-## What it predicts
+## What each card says
 
-For every game on the slate:
+The dashboard answers one question per game: **when games like this have been
+played before, what happened?**
 
-- **Margin / spread** — predicted points, compared against the market line
-- **Total** — predicted combined score, compared against the posted over/under
-- **Win probability** — calibrated, not just a margin dressed up as a percentage
-- **Confidence tier** — Strong / Lean / Slight, based on how far the model sits
-  from the market
+- **The side and the price** — e.g. `Ohio +23.5`
+- **How often comparable games covered it**, and how many there were
+- **What that signal has actually been worth** — the same reading, measured
+  against out-of-sample results, with its own sample size. Break-even is 52.4%.
+- **Where comparable games finished** — the middle half of final margins
+- **Five named precedents** with scores, prices and results, so the reasoning
+  can be checked by eye rather than taken on faith
+
+The model's own predicted margin, total and win probability still exist and are
+written to `docs/predictions.json`. They just do not front the card: the model's
+job is to decide *which games are alike*, and the history answers the rest.
 
 ## How it works
 

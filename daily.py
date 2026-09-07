@@ -24,7 +24,7 @@ import config, dataset
 from api import CFBDClient, CFBDError, MissingKeyError
 from build import build_priors
 from comps import CompsEngine, attach_comps
-from edges import EdgeCalibration, confidence_flags
+from edges import CompsCalibration, EdgeCalibration, confidence_flags
 from efficiency import EfficiencyEngine, load_team_game_stats, pool_non_fbs
 from model import FeatureMismatchError
 from features import SeasonContext, build_features
@@ -44,11 +44,13 @@ def current_season(today: date) -> int:
     return today.year if today.month >= 7 else today.year - 1
 
 
-def _comp_summary(r) -> dict | None:
-    """The distribution of outcomes in comparable historical matchups.
+def _comp_summary(r, assess: dict) -> dict | None:
+    """What happened in the most similar historical matchups.
 
-    This is the part a single predicted number cannot tell you: how widely
-    games of this shape have actually landed, and how consistently.
+    The card leads with this, so it carries both the raw observed rate and the
+    calibrated one - the raw rate is what the neighbours literally did, and the
+    calibrated rate is what that has been worth in practice, which is lower
+    because 200 overlapping neighbours are nowhere near 200 independent games.
     """
     n = r.get("comp_n")
     if n is None or pd.isna(n) or n < 20:
@@ -58,15 +60,25 @@ def _comp_summary(r) -> dict | None:
         v = r.get(key)
         return None if v is None or pd.isna(v) else round(float(v), digits)
 
+    bucket = assess.get("bucket") or {}
     return {
         "n": int(n),
+        "cover_rate": val("comp_home_cover_rate", 3),
+        "calibrated_rate": (None if assess.get("calibrated_rate") is None
+                            else round(assess["calibrated_rate"], 3)),
+        "side": assess.get("side"),
+        "confidence": (None if assess.get("confidence") is None
+                       else round(assess["confidence"], 3)),
+        "historical_rate": bucket.get("realized"),
+        "historical_n": bucket.get("n"),
         "margin_median": val("comp_margin_median"),
         "margin_p25": val("comp_margin_p25"),
         "margin_p75": val("comp_margin_p75"),
-        "margin_sd": val("comp_margin_sd"),
         "total_median": val("comp_total_median"),
         "home_win_rate": val("comp_home_win_rate", 3),
+        "over_rate": val("comp_over_rate", 3),
         "agreement": val("comp_agreement", 3),
+        "price_spread": val("comp_spread_spread", 1),
     }
 
 
@@ -165,6 +177,15 @@ def run(target_dates: list[date], api_key: str | None = None,
     else:
         log.info("no edge calibration found; edges used unshrunk")
 
+    comps_cal_path = config.MODELS / "comps_calibration.json"
+    comps_cal = (CompsCalibration.from_json(comps_cal_path.read_text())
+                 if comps_cal_path.exists() else CompsCalibration())
+    if comps_cal.fitted:
+        log.info("comparables calibration loaded (fitted on %d games, "
+                 "slope %.2f)", comps_cal.n_fitted, comps_cal.slope)
+    else:
+        log.info("no comparables calibration found; rates shown unadjusted")
+
     model = joblib.load(MODEL_PATH)
     preds = model.predict(feat)
     out = feat.join(preds)
@@ -203,7 +224,33 @@ def run(target_dates: list[date], api_key: str | None = None,
             "is_dome": int(r["is_dome"]),
         }
 
-        favorite = r["home_team"] if margin > 0 else r["away_team"]
+        # --- the headline: what happened in games like this one -------------
+        assess = comps_cal.assess(r.get("comp_home_cover_rate"))
+        comps = _comp_summary(r, assess)
+
+        play = None
+        if assess["side"] and market_margin is not None and assess["tier"]:
+            if assess["side"] == "home":
+                play = {"team": r["home_team"], "line": f"{float(spread):+.1f}"}
+            else:
+                play = {"team": r["away_team"], "line": f"{-float(spread):+.1f}"}
+            play["tier"] = assess["tier"]
+            play["expected_rate"] = (
+                round(assess["bucket"]["realized"] if assess["side"] == "home"
+                      else 1 - assess["bucket"]["realized"], 3)
+                if assess["bucket"] else None)
+            play["sample"] = assess["bucket"]["n"] if assess["bucket"] else None
+
+        over_rate = r.get("comp_over_rate")
+        total_play = None
+        if pd.notna(ou) and over_rate is not None and not pd.isna(over_rate):
+            if abs(float(over_rate) - 0.5) >= 0.06:
+                total_play = {
+                    "side": "Over" if float(over_rate) > 0.5 else "Under",
+                    "line": round(float(ou), 1),
+                    "rate": round(float(over_rate), 3),
+                }
+
         records.append({
             "game_id": None if pd.isna(r["game_id"]) else int(r["game_id"]),
             "kickoff_utc": None if pd.isna(r["kickoff"]) else r["kickoff"].isoformat(),
@@ -212,43 +259,45 @@ def run(target_dates: list[date], api_key: str | None = None,
             "week": int(r["week"]),
             "home_team": r["home_team"], "away_team": r["away_team"],
             "neutral_site": bool(r["neutral_site"]),
-            "pred_margin": round(margin, 1),
-            "pred_total": round(total, 1),
-            "pred_home_points": round(float(r["pred_home_points"]), 1),
-            "pred_away_points": round(float(r["pred_away_points"]), 1),
-            "home_win_prob": round(prob, 4),
-            "favorite": favorite,
-            "model_spread": round(-margin, 1),   # quoted home-team style
-            "market_spread": None if market_margin is None else round(float(spread), 1),
-            "market_total": None if pd.isna(ou) else round(float(ou), 1),
-            "spread_edge": edge,
-            "raw_spread_edge": raw_edge,
-            "total_edge": total_edge,
-            "spread_tier": tier,
-            "edge_bucket": bucket,
-            "confidence_flags": flags,
-            "total_tier": None if total_edge is None else tier_for(total_edge),
-            "spread_play": None if raw_edge is None or tier is None else (
-                f"{r['home_team']} {spread:+.1f}" if raw_edge > 0
-                else f"{r['away_team']} {-float(spread):+.1f}"),
-            "total_play": None if total_edge is None else (
-                f"Over {float(ou):.1f}" if total_edge > 0 else f"Under {float(ou):.1f}"),
-            "weather": wx,
-            "weather_text": describe(wx),
-            "home_rating": round(float(r["home_rating"]), 1),
-            "away_rating": round(float(r["away_rating"]), 1),
-            "games_played": int(min(r["home_played"], r["away_played"])),
-            "comps": _comp_summary(r),
-            "comp_examples": (comps_engine.examples(r, k=4)
+
+            # What the card leads with.
+            "comps": comps,
+            "comp_examples": (comps_engine.examples(r, k=5)
                               if comps_engine is not None
                               and comps_engine.available else []),
+            "play": play,
+            "total_play": total_play,
+            "confidence_flags": flags,
+
+            # The market, for reference.
+            "market_spread": None if market_margin is None else round(float(spread), 1),
+            "market_total": None if pd.isna(ou) else round(float(ou), 1),
+
+            # The model still does the work of describing each team - it is
+            # what makes two games "similar" - but it no longer fronts the
+            # card. Kept here so the numbers stay inspectable.
+            "model": {
+                "margin": round(margin, 1),
+                "total": round(total, 1),
+                "home_win_prob": round(prob, 4),
+                "home_points": round(float(r["pred_home_points"]), 1),
+                "away_points": round(float(r["pred_away_points"]), 1),
+                "raw_edge": raw_edge,
+                "shrunk_edge": edge,
+                "edge_tier": tier,
+            },
+            "weather": wx,
+            "weather_text": describe(wx),
+            "games_played": int(min(r["home_played"], r["away_played"])),
         })
 
     def _rank(x):
-        """Tiered plays first, then by trustworthy edge - not by raw gap."""
-        order = {"Strong": 0, "Lean": 1, "Slight": 2}.get(x.get("spread_tier"), 3)
-        size = abs(x["spread_edge"]) if x["spread_edge"] is not None else -1
-        return (order, -size, x["kickoff_utc"] or "")
+        """Tiered plays first, then by how decisive the comparables were."""
+        p = x.get("play") or {}
+        order = {"Strong": 0, "Lean": 1, "Slight": 2}.get(p.get("tier"), 3)
+        c = x.get("comps") or {}
+        conf = c.get("confidence") or 0.0
+        return (order, -conf, x["kickoff_utc"] or "")
 
     records.sort(key=_rank)
 

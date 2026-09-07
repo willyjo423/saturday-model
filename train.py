@@ -13,7 +13,7 @@ import pandas as pd
 import config
 from storage import load_table, save_table
 from features import training_matrix
-from edges import EdgeCalibration
+from edges import CompsCalibration, EdgeCalibration
 from model import CFBModel, evaluate, save_metrics, summarize, walk_forward
 
 log = logging.getLogger(__name__)
@@ -22,6 +22,7 @@ MODEL_PATH = config.MODELS / "cfb_model.joblib"
 METRICS_PATH = config.MODELS / "metrics.json"
 BACKTEST_PATH = config.DATA / "backtest"
 CALIBRATION_PATH = config.MODELS / "edge_calibration.json"
+COMPS_CAL_PATH = config.MODELS / "comps_calibration.json"
 
 
 def main(argv=None) -> int:
@@ -42,6 +43,7 @@ def main(argv=None) -> int:
 
     metrics = {}
     calibration = EdgeCalibration()
+    comps_cal = CompsCalibration()
 
     if not args.skip_backtest:
         log.info("Running walk-forward backtest...")
@@ -63,6 +65,16 @@ def main(argv=None) -> int:
             print("=" * 62)
             print(calibration.summary())
             print("=" * 62 + "\n")
+            comps_cal = CompsCalibration.fit(oos)
+            print("=" * 62)
+            print("COMPARABLES RELIABILITY")
+            print("=" * 62)
+            print(comps_cal.summary())
+            print("=" * 62 + "\n")
+            metrics["comps_calibration"] = {
+                "slope": comps_cal.slope, "intercept": comps_cal.intercept,
+                "n_fitted": comps_cal.n_fitted, "buckets": comps_cal.buckets,
+            }
             metrics["edge_calibration"] = {
                 "a": calibration.a, "b": calibration.b,
                 "intercept": calibration.intercept,
@@ -71,6 +83,7 @@ def main(argv=None) -> int:
             }
 
     CALIBRATION_PATH.write_text(calibration.to_json())
+    COMPS_CAL_PATH.write_text(comps_cal.to_json())
 
     log.info("Fitting production model on all seasons...")
     X, y = training_matrix(feat)
