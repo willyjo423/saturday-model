@@ -264,12 +264,71 @@ def main() -> int:
           "graded cover count excludes pushes",
           f"{c['cover_n']} graded of {c['n']} comps")
 
+    check(c.get("home_cover_by") is not None and c.get("away_cover_by") is not None,
+          "average cover margin computed for both sides",
+          f"home {c['home_cover_by']:.1f} / away {c['away_cover_by']:.1f}")
+    check(c.get("home_blowout") is not None and c.get("away_blowout") is not None,
+          "blowout rates computed for both sides",
+          f"{c['home_blowout']:.0%} / {c['away_blowout']:.0%}")
+
+    # No signed margin may appear as a bare number in the outcome band - the
+    # minus sign means "lost by" there and "favoured by" on the market row.
+    import re as _re
+    from dashboard import _band
+
+    def _plain(g):
+        return " ".join(_re.sub("<[^>]+>", "", _band(g)).split())
+
+    # The sign convention was genuinely ambiguous: on most cards the home team
+    # is also the favourite, so "negative" reads as both "home lost" and
+    # "underdog" and the two never disagree - until the game where they do.
+    # All three orientations must now be unmistakable without a sign.
+    fav_home = _plain({"home_team": "Alabama", "away_team": "East Carolina",
+                       "comps": {"margin_p25": 14.0, "margin_p75": 35.0,
+                                 "margin_median": 24.0}})
+    check("Alabama winning by 14 to 35" in fav_home,
+          "home favourite: one team, one range", fav_home[-46:])
+
+    dog_home = _plain({"home_team": "Nevada", "away_team": "Western Kentucky",
+                       "comps": {"margin_p25": -14.0, "margin_p75": 7.0,
+                                 "margin_median": -3.0}})
+    check("Western Kentucky winning by 14" in dog_home
+          and "Nevada winning by 7" in dog_home,
+          "straddles zero: both teams named", dog_home[-62:])
+
+    fav_away = _plain({"home_team": "Rice", "away_team": "Texas",
+                       "comps": {"margin_p25": -31.0, "margin_p75": -9.0,
+                                 "margin_median": -20.0}})
+    check("Texas winning by 9 to 31" in fav_away,
+          "away favourite: named correctly, not inverted", fav_away[-44:])
+
+    check(not _re.search(r"[+\u2212-]\d+ to [+-]?\d+", _plain(with_comps[0])),
+          "no signed margin survives anywhere in the band")
+
+    band = _band(with_comps[0])
+    check("wins &#8594;" in band and "&#8592;" in band,
+          "band carries direction labels at both ends")
+
     from dashboard import _comps_table
     tbl = _comps_table(with_comps[0])
     check("Spread" in tbl and "Total" in tbl and "Moneyline" in tbl,
           "summary shows all three markets")
     check(f"Across all {c['n']} comparable games" in tbl,
           "summary states the full sample size")
+    check("Covers came by" in tbl and "Won by 14 or more" in tbl,
+          "summary reports magnitude, not just frequency")
+
+    # A tiny gap must not be reported as an advantage.
+    from dashboard import _magnitude
+    probe = dict(with_comps[0])
+    probe["comps"] = {**probe["comps"], "home_cover_by": 11.7,
+                      "away_cover_by": 11.5}
+    check("neither side" in _magnitude(probe),
+          "a sub-point gap is called even, not an edge")
+    probe["comps"] = {**probe["comps"], "home_cover_by": 14.0,
+                      "away_cover_by": 9.0}
+    check("bigger outcomes belong to" in _magnitude(probe),
+          "a real gap does name the side")
 
     ex = with_comps[0].get("comp_examples") or []
     check(len(ex) == 5, "five precedents per game", f"{len(ex)} returned")

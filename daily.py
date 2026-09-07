@@ -64,6 +64,10 @@ def _comp_summary(r, assess: dict) -> dict | None:
     return {
         "n": int(n),
         "cover_rate": val("comp_home_cover_rate", 3),
+        "home_cover_by": val("comp_home_cover_by"),
+        "away_cover_by": val("comp_away_cover_by"),
+        "home_blowout": val("comp_home_blowout", 3),
+        "away_blowout": val("comp_away_blowout", 3),
         "cover_n": (None if r.get("comp_cover_n") is None
                     or pd.isna(r.get("comp_cover_n"))
                     else int(r["comp_cover_n"])),

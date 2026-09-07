@@ -77,7 +77,14 @@ DEFAULT_WEIGHTS = {
 # Graded counts. Kept OUT of COMP_FEATURES on purpose: they are for display,
 # and adding them to the model's feature list would force a full retrain for
 # what is a presentation detail.
-COMP_EXTRA = ["comp_cover_n", "comp_over_n"]
+COMP_EXTRA = [
+    "comp_cover_n", "comp_over_n",
+    # Magnitude, not just frequency. Two matchups can both cover 52% of the
+    # time while one grinds out narrow wins and the other occasionally buries
+    # you - the cover rate alone cannot tell them apart.
+    "comp_home_cover_by", "comp_away_cover_by",
+    "comp_home_blowout", "comp_away_blowout",
+]
 
 COMP_FEATURES = [
     "comp_margin_median", "comp_margin_mean", "comp_margin_sd",
@@ -264,6 +271,19 @@ class CompsEngine:
             cols["comp_cover_n"][i] = float(len(graded))
             if len(graded) >= 20:
                 cols["comp_home_cover_rate"][i] = float(np.mean(graded))
+
+            # How big each side's covers were, in points past the number.
+            vs_line = self.pool_margin[take] - self.pool_market[take]
+            home_won_ats = vs_line[vs_line > 0]
+            away_won_ats = vs_line[vs_line < 0]
+            if len(home_won_ats) >= 5:
+                cols["comp_home_cover_by"][i] = float(np.mean(home_won_ats))
+            if len(away_won_ats) >= 5:
+                cols["comp_away_cover_by"][i] = float(-np.mean(away_won_ats))
+
+            # Two-touchdown outcomes, each way.
+            cols["comp_home_blowout"][i] = float(np.mean(margins >= 14))
+            cols["comp_away_blowout"][i] = float(np.mean(margins <= -14))
 
             overs = self.pool_over[take]
             graded_ou = overs[~np.isnan(overs)]

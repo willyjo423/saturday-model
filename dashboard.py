@@ -200,7 +200,13 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--line); }
   display: flex; align-items: center; gap: 14px;
   margin: 14px 0 4px; flex-wrap: wrap;
 }
-.band { position: relative; height: 22px; flex: 1 1 240px; min-width: 180px; }
+.band-wrap { flex: 1 1 260px; min-width: 200px; }
+.band { position: relative; height: 22px; }
+.band-ends {
+  display: flex; justify-content: space-between;
+  font-size: 10.5px; color: var(--faint); letter-spacing: .02em;
+  margin-top: 1px;
+}
 .band .track {
   position: absolute; top: 10px; left: 0; right: 0; height: 3px;
   background: var(--sunken); border-radius: 2px;
@@ -217,7 +223,7 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 .band .zero { position: absolute; top: 1px; width: 1px; height: 21px;
               background: var(--faint); opacity: .5; }
 .band-label {
-  font-size: 12px; color: var(--muted); white-space: nowrap;
+  font-size: 12.5px; color: var(--muted); flex: 0 1 auto;
 }
 .band-label b {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
@@ -267,6 +273,14 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--line); }
   text-align: right; width: 3.4em;
 }
 .sum-table td.ct { color: var(--faint); font-size: 11px; white-space: nowrap; }
+.magnitude {
+  margin-top: 7px; font-size: 12.5px; color: var(--muted);
+  line-height: 1.5; max-width: 74ch;
+}
+.magnitude b {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums;
+}
 
 .market {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
@@ -424,15 +438,39 @@ def _band(g: dict) -> str:
         return max(0.0, min(100.0, (v - lo) / span * 100.0))
 
     a, b = pos(p25), pos(p75)
+    home, away = g["home_team"], g["away_team"]
+
+    # Never a signed number. A minus sign means "the home team lost by" here,
+    # and "is favoured by" on the market row three lines below - the same
+    # symbol with opposite meanings. And when the home team happens to be the
+    # favourite, as it usually is, the two readings agree and the ambiguity
+    # stays invisible until the one game where they don't.
+    if p25 >= 0 and p75 >= 0:
+        label = (f'Half finished with <b>{_e(home)}</b> winning by '
+                 f'<b>{p25:.0f} to {p75:.0f}</b>')
+    elif p25 < 0 and p75 < 0:
+        label = (f'Half finished with <b>{_e(away)}</b> winning by '
+                 f'<b>{abs(p75):.0f} to {abs(p25):.0f}</b>')
+    else:
+        label = (f'Half finished from <b>{_e(away)} winning by '
+                 f'{abs(p25):.0f}</b> to <b>{_e(home)} winning by '
+                 f'{p75:.0f}</b>')
+
+    # End labels, so the direction of the bar is readable without the sentence.
+    ends = (f'<div class="band-ends">'
+            f'<span>&#8592; {_e(away)} wins</span>'
+            f'<span>{_e(home)} wins &#8594;</span></div>')
+
     return (
         '<div class="band-row">'
+        f'<div class="band-wrap">'
         f'<div class="band" title="Middle half of comparable final margins">'
         f'<div class="track"></div>'
         f'<div class="iqr" style="left:{a:.1f}%;width:{max(b - a, 1.0):.1f}%"></div>'
         f'<div class="zero" style="left:{pos(0.0):.1f}%"></div>'
         f'<div class="med" style="left:{pos(med):.1f}%"></div></div>'
-        f'<div class="band-label">Half of them finished '
-        f'<b>{p25:+.0f} to {p75:+.0f}</b></div>'
+        f'{ends}</div>'
+        f'<div class="band-label">{label}</div>'
         '</div>')
 
 
@@ -482,7 +520,43 @@ def _comps_table(g: dict) -> str:
 
     return ('<div class="comps-sum">'
             f'<div class="comps-hd">Across all {n} comparable games</div>'
-            f'<table class="sum-table">{body}</table></div>')
+            f'<table class="sum-table">{body}</table>'
+            f'{_magnitude(g)}</div>')
+
+
+def _magnitude(g: dict) -> str:
+    """Size of the outcomes, not just how often they happened.
+
+    Two matchups can both cover 52% of the time while one wins narrowly and
+    the other occasionally runs away with it. The cover rate is blind to that
+    difference; this is where it shows up.
+    """
+    c = g.get("comps") or {}
+    home, away = g["home_team"], g["away_team"]
+    lines = []
+
+    hb, ab = c.get("home_cover_by"), c.get("away_cover_by")
+    if hb is not None and ab is not None:
+        # Only name a side when the gap is big enough to mean something.
+        # Calling 11.7 against 11.5 an advantage is reporting noise.
+        if abs(hb - ab) >= 1.5:
+            verdict = (f' — the bigger outcomes belong to '
+                       f'<b>{_e(home if hb > ab else away)}</b>.')
+        else:
+            verdict = " — neither side's wins were notably larger."
+        lines.append(
+            f'Covers came by <b>{hb:.1f}</b> for {_e(home)} and '
+            f'<b>{ab:.1f}</b> for {_e(away)} on average{verdict}')
+
+    hbl, abl = c.get("home_blowout"), c.get("away_blowout")
+    if hbl is not None and abl is not None:
+        lines.append(
+            f'Won by 14 or more: {_e(home)} <b>{_pct(hbl)}</b>, '
+            f'{_e(away)} <b>{_pct(abl)}</b>.')
+
+    if not lines:
+        return ""
+    return '<div class="magnitude">' + " ".join(lines) + '</div>' 
 
 
 def _market_line(g: dict) -> str:
