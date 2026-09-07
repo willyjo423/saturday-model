@@ -15,7 +15,8 @@ import pandas as pd
 
 import config, dataset
 from api import CFBDClient, CFBDError, MissingKeyError
-from features import build_features
+from efficiency import EfficiencyEngine, load_team_game_stats, pool_non_fbs
+from features import SeasonContext, build_features
 from ratings import PreseasonPriors, RatingsEngine
 from weather import WeatherService
 
@@ -23,8 +24,14 @@ log = logging.getLogger(__name__)
 
 
 def build_priors(client: CFBDClient, years: list[int],
-                 engine_games: pd.DataFrame) -> PreseasonPriors:
-    """Preseason priors for each season, using only prior-season information."""
+                 engine_games: pd.DataFrame,
+                 context: SeasonContext | None = None) -> PreseasonPriors:
+    """Preseason priors for each season, using only prior-season information.
+
+    Also fills `context` with the same preseason inputs (recruiting talent and
+    returning production) so they can be used directly as features rather than
+    only as a rating prior.
+    """
     priors = PreseasonPriors()
     # A throwaway engine to compute each season's final ratings, which feed the
     # next season's prior. Its own priors are empty, which is fine: end-of-season
@@ -50,6 +57,9 @@ def build_priors(client: CFBDClient, years: list[int],
         prior_final = None
         if (engine_games["season"] == prev).any():
             prior_final = seed_engine.final_ratings(prev)
+
+        if context is not None:
+            context.add_season(year, talent, returning)
 
         priors.build(year, prior_sp, talent, returning, prior_final)
         log.info("priors %s: %d teams", year, len(priors.by_year.get(year, [])))
@@ -81,8 +91,16 @@ def build_dataset(start: int, end: int, with_weather: bool = True,
     log.info("  %d games with a line", int(games["spread"].notna().sum()))
 
     log.info("Building preseason priors...")
-    priors = build_priors(client, years, games)
+    context = SeasonContext()
+    priors = build_priors(client, years, games, context=context)
     engine = RatingsEngine(games, priors)
+
+    log.info("Loading advanced play-level stats...")
+    fbs_teams = set(games.loc[games["home_is_fbs"], "home_team"]) | \
+                set(games.loc[games["away_is_fbs"], "away_team"])
+    team_games = load_team_game_stats(client, years)
+    team_games = pool_non_fbs(team_games, fbs_teams)
+    efficiency = EfficiencyEngine(team_games)
 
     log.info("Building features%s...", " with weather" if with_weather else "")
     weather = WeatherService() if with_weather else None
@@ -97,7 +115,8 @@ def build_dataset(start: int, end: int, with_weather: bool = True,
         log.info("Weather: %s", weather.coverage())
 
     feat = build_features(completed, engine, weather,
-                          with_weather=with_weather, historical=True)
+                          with_weather=with_weather, historical=True,
+                          efficiency=efficiency, context=context)
 
     if with_weather:
         known = feat["temp_f"].notna().mean()
@@ -106,6 +125,15 @@ def build_dataset(start: int, end: int, with_weather: bool = True,
             log.warning("Less than 80%% of games have weather - the weather "
                         "features will carry little signal. Check the log "
                         "above for rate limiting.")
+
+    eff_known = feat["home_off_ppa"].notna().mean()
+    log.info("Play-level efficiency resolved for %.1f%% of games", eff_known * 100)
+    if eff_known < 0.50:
+        log.warning("Advanced stats are mostly missing - the model will fall "
+                    "back on scoring margin alone, which is noticeably weaker.")
+
+    ctx_known = feat["home_talent"].notna().mean()
+    log.info("Recruiting talent resolved for %.1f%% of games", ctx_known * 100)
 
     log.info("Feature table: %d rows x %d cols", *feat.shape)
     return feat

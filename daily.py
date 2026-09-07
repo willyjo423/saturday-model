@@ -23,8 +23,9 @@ import pandas as pd
 import config, dataset
 from api import CFBDClient, CFBDError, MissingKeyError
 from build import build_priors
+from efficiency import EfficiencyEngine, load_team_game_stats, pool_non_fbs
 from model import FeatureMismatchError
-from features import build_features
+from features import SeasonContext, build_features
 from ratings import RatingsEngine
 from weather import WeatherService, describe
 
@@ -64,8 +65,16 @@ def run(target_dates: list[date], api_key: str | None = None,
         raise SystemExit("No games returned from the API.")
     games = dataset.add_rest_and_travel(games)
 
-    priors = build_priors(client, [season], games)
+    context = SeasonContext()
+    priors = build_priors(client, [season], games, context=context)
     engine = RatingsEngine(games, priors)
+
+    # Play-level efficiency for the current season only - last season's games
+    # feed the preseason prior, not the in-season efficiency solve.
+    fbs_teams = set(games.loc[games["home_is_fbs"], "home_team"]) | \
+                set(games.loc[games["away_is_fbs"], "away_team"])
+    team_games = pool_non_fbs(load_team_game_stats(client, [season]), fbs_teams)
+    efficiency = EfficiencyEngine(team_games)
 
     # --- select the slate ---
     kick_et = games["kickoff"].dt.tz_convert(ET)
@@ -96,7 +105,8 @@ def run(target_dates: list[date], api_key: str | None = None,
         weather.prefetch(slate, historical=False)
         log.info("Weather: %s", weather.coverage())
     feat = build_features(slate, engine, weather,
-                          with_weather=with_weather, historical=False)
+                          with_weather=with_weather, historical=False,
+                          efficiency=efficiency, context=context)
 
     model = joblib.load(MODEL_PATH)
     preds = model.predict(feat)
@@ -112,8 +122,11 @@ def run(target_dates: list[date], api_key: str | None = None,
         ou = r["over_under"]
 
         market_margin = -float(spread) if pd.notna(spread) else None
-        edge = (margin - market_margin) if market_margin is not None else None
-        total_edge = (total - float(ou)) if pd.notna(ou) else None
+        # Round before tiering, so the gap shown on the card is the same
+        # number that decided the label. Tiering the unrounded value let a
+        # game display "3.5 pt gap" while wearing the tier below it.
+        edge = round(margin - market_margin, 1) if market_margin is not None else None
+        total_edge = round(total - float(ou), 1) if pd.notna(ou) else None
 
         # NaN is not valid JSON, so unavailable readings go out as null.
         def _j(v):
@@ -143,8 +156,8 @@ def run(target_dates: list[date], api_key: str | None = None,
             "model_spread": round(-margin, 1),   # quoted home-team style
             "market_spread": None if market_margin is None else round(float(spread), 1),
             "market_total": None if pd.isna(ou) else round(float(ou), 1),
-            "spread_edge": None if edge is None else round(edge, 1),
-            "total_edge": None if total_edge is None else round(total_edge, 1),
+            "spread_edge": edge,
+            "total_edge": total_edge,
             "spread_tier": None if edge is None else tier_for(edge),
             "total_tier": None if total_edge is None else tier_for(total_edge),
             "spread_play": None if edge is None else (

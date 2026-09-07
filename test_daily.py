@@ -56,15 +56,31 @@ class StubClient:
         rows = [entry for entry in self.world["lines"] if entry["season"] == year]
         return pd.json_normalize(rows) if rows else pd.DataFrame()
 
-    # Enrichment endpoints the priors try and can live without.
-    def sp_ratings(self, year):
-        raise _Unavailable("stub: no SP+")
+    def advanced_game_stats(self, year, week=None, season_type="regular"):
+        self.calls_made += 1
+        if season_type != "regular":
+            return pd.DataFrame()
+        rows = [r for r in self.world.get("advanced", [])
+                if r["season"] == year]
+        return pd.json_normalize(rows) if rows else pd.DataFrame()
 
     def talent(self, year):
-        raise _Unavailable("stub: no talent")
+        self.calls_made += 1
+        pre = self.world.get("preseason", {}).get(year)
+        if pre is None:
+            raise _Unavailable("stub: no talent for that season")
+        return pre[0]
 
     def returning_production(self, year):
-        raise _Unavailable("stub: no returning production")
+        self.calls_made += 1
+        pre = self.world.get("preseason", {}).get(year)
+        if pre is None:
+            raise _Unavailable("stub: no returning production")
+        return pre[1]
+
+    # SP+ genuinely absent, so the priors path that copes without it is tested.
+    def sp_ratings(self, year):
+        raise _Unavailable("stub: no SP+")
 
 
 from api import CFBDError as _Unavailable  # noqa: E402
@@ -113,9 +129,18 @@ def train_stub_model(world) -> None:
         priors.build(int(year), None, None, None, prior_final)
     engine = RatingsEngine(games, priors)
 
+    from efficiency import EfficiencyEngine, normalise_game_stats
+    from features import SeasonContext
+    eff = EfficiencyEngine(normalise_game_stats(
+        pd.json_normalize(world.get("advanced", []))))
+    ctx = SeasonContext()
+    for yr, (talent_df, returning_df) in world.get("preseason", {}).items():
+        ctx.add_season(yr, talent_df, returning_df)
+
     feat = build_features(games[games["completed"]], engine,
                           FakeWeather(world["games"], world["venues"]),
-                          with_weather=True, historical=True)
+                          with_weather=True, historical=True,
+                          efficiency=eff, context=ctx)
     X, y = training_matrix(feat)
     model = CFBModel().fit(X, y)
     joblib.dump(model, config.MODELS / "cfb_model.joblib")

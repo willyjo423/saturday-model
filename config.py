@@ -41,6 +41,11 @@ MARGIN_CAP = 28.0
 HFA_PRIOR = 2.4
 # How much a prior-year rating carries into the next preseason.
 YEAR_CARRYOVER = 0.60
+# Games lose half their weight in the ratings solve every N weeks. A team in
+# November is not the team that opened in September - injuries, freshmen
+# developing, schemes settling - so recent evidence should count for more.
+# Set to 0 to weight every game equally.
+RECENCY_HALFLIFE_WEEKS = 6.0
 
 # --- Model -----------------------------------------------------------------
 RANDOM_SEED = 1729

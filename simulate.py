@@ -159,7 +159,87 @@ def make_lines(games: list[dict], sharpness: float = 3.1) -> list[dict]:
     return out
 
 
-def build_world(years: list[int]) -> dict:
+# Advanced-stat scales, roughly matching real FBS distributions.
+_STAT_SPEC = {
+    #                league mean, strength coefficient, per-game noise
+    "ppa":            (0.170, 0.0120, 0.090),
+    "successRate":    (0.425, 0.0060, 0.055),
+    "explosiveness":  (1.220, 0.0090, 0.180),
+    "lineYards":      (2.800, 0.0180, 0.420),
+    "stuffRate":      (0.190, -0.0035, 0.045),
+    "powerSuccess":   (0.680, 0.0070, 0.110),
+}
+_HAVOC = (0.175, 0.0030, 0.035)
+
+
+def make_advanced_stats(games: list[dict], teams: pd.DataFrame) -> list[dict]:
+    """Per-team-per-game advanced stats, generated additively.
+
+    Observed rate = league mean + this offence + that defence + noise, which is
+    exactly the structure EfficiencyEngine tries to invert. The noise is set
+    lower relative to signal than single-game scoring margin, mirroring the
+    real reason these metrics are useful: they say more per game than the
+    scoreboard does.
+    """
+    latent = teams.set_index("team")["latent"].to_dict()
+    pace = teams.set_index("team")["pace"].to_dict()
+    rows = []
+
+    for g in games:
+        for team, opp in ((g["homeTeam"], g["awayTeam"]),
+                          (g["awayTeam"], g["homeTeam"])):
+            if team not in latent or opp not in latent:
+                continue
+            off_q, def_q = latent[team], latent[opp]
+
+            offense, defense = {}, {}
+            for name, (mean, coef, noise) in _STAT_SPEC.items():
+                offense[name] = float(
+                    mean + coef * off_q - coef * def_q + RNG.normal(0, noise))
+                defense[name] = float(
+                    mean + coef * def_q - coef * off_q + RNG.normal(0, noise))
+
+            m, c, n = _HAVOC
+            offense["havoc"] = {"total": float(m - c * off_q + c * def_q
+                                               + RNG.normal(0, n))}
+            defense["havoc"] = {"total": float(m + c * def_q - c * off_q
+                                               + RNG.normal(0, n))}
+
+            tempo = (pace.get(team, 55) + pace.get(opp, 55)) / 2
+            offense["plays"] = float(tempo + RNG.normal(0, 5))
+            defense["plays"] = float(tempo + RNG.normal(0, 5))
+
+            rows.append({
+                "gameId": g["id"], "season": g["season"], "week": g["week"],
+                "team": team, "opponent": opp,
+                "offense": offense, "defense": defense,
+            })
+    return rows
+
+
+def make_preseason_inputs(teams: pd.DataFrame, year: int) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Recruiting talent and returning production, CFBD-shaped.
+
+    Both are noisy reads on the same hidden strength - which is what they are
+    in reality, and why they belong in the preseason prior rather than the
+    in-season solve.
+    """
+    latent = teams["latent"].to_numpy()
+    talent = pd.DataFrame({
+        "year": year,
+        "school": teams["team"],
+        "talent": 700 + latent * 9 + RNG.normal(0, 45, len(teams)),
+    })
+    returning = pd.DataFrame({
+        "season": year,
+        "team": teams["team"],
+        "totalPPA": 55 + latent * 0.6 + RNG.normal(0, 14, len(teams)),
+        "passingPPA": 28 + latent * 0.4 + RNG.normal(0, 11, len(teams)),
+    })
+    return talent, returning
+
+
+def build_world(years: list[int], with_advanced: bool = True) -> dict:
     teams = make_teams()
     venues = make_venues(teams)
     all_games, all_lines = [], []
@@ -167,8 +247,12 @@ def build_world(years: list[int]) -> dict:
         games, _ = simulate_season(teams, venues, year)
         all_games.extend(games)
         all_lines.extend(make_lines(games))
-    return {"teams": teams, "venues": venues,
-            "games": all_games, "lines": all_lines}
+    world = {"teams": teams, "venues": venues,
+             "games": all_games, "lines": all_lines}
+    world["advanced"] = (make_advanced_stats(all_games, teams)
+                         if with_advanced else [])
+    world["preseason"] = {y: make_preseason_inputs(teams, y) for y in years}
+    return world
 
 
 class FakeWeather:

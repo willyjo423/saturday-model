@@ -46,6 +46,27 @@ def _cap(series: pd.Series, cap: float) -> pd.Series:
     return sign * mag
 
 
+def _recency_weights(played: pd.DataFrame, as_of_week: int | None) -> np.ndarray:
+    """Exponential decay by how long ago each game was played.
+
+    Half-life is in weeks, so with the default of 6 a game from ten weeks ago
+    counts about a third as much as last week's. Without this, a September
+    blowout anchors a team's rating through November, long after the team that
+    played it has changed.
+    """
+    n = len(played)
+    if n == 0:
+        return np.ones(0)
+    half_life = config.RECENCY_HALFLIFE_WEEKS
+    if not half_life or half_life <= 0 or as_of_week is None:
+        return np.ones(n)
+    weeks_ago = np.clip(
+        as_of_week - pd.to_numeric(played["week"], errors="coerce").to_numpy(dtype=float),
+        0.0, None)
+    weeks_ago = np.nan_to_num(weeks_ago, nan=0.0)
+    return np.power(0.5, weeks_ago / float(half_life))
+
+
 class PreseasonPriors:
     """Preseason rating priors, all from information available before kickoff."""
 
@@ -135,7 +156,8 @@ class RatingsEngine:
         self._final_cache: dict[int, pd.Series] = {}
 
     # -- solving ------------------------------------------------------------
-    def _solve(self, played: pd.DataFrame, year: int) -> pd.DataFrame:
+    def _solve(self, played: pd.DataFrame, year: int,
+               as_of_week: int | None = None) -> pd.DataFrame:
         teams = sorted(set(played["home_team"]) | set(played["away_team"]))
         if not teams:
             return pd.DataFrame(columns=["team", "rating", "off", "def", "played"])
@@ -144,6 +166,8 @@ class RatingsEngine:
         n_t, n_g = len(teams), len(played)
 
         prior = self.priors.get(year, teams)
+        w = _recency_weights(played, as_of_week)
+        sw = np.sqrt(w)
 
         # --- margin solve ---
         X = np.zeros((n_g, n_t + 1))
@@ -152,6 +176,11 @@ class RatingsEngine:
         X[rows, played["away_team"].map(idx).to_numpy()] = -1.0
         X[:, n_t] = np.where(played["neutral_site"].to_numpy(), 0.0, 1.0)
         y = _cap(played["home_points"] - played["away_points"], config.MARGIN_CAP).to_numpy()
+
+        # Weighted least squares: scaling both sides by sqrt(w) makes an
+        # ordinary solve minimise the weighted residual.
+        X = X * sw[:, None]
+        y = y * sw
 
         lam = self.ridge_lambda
         P = np.eye(n_t + 1) * lam
@@ -198,9 +227,12 @@ class RatingsEngine:
             np.full(n_t, league_ppg / 2.0) - prior / 4.0,
             [config.HFA_PRIOR],
         ])
+        sw2 = np.concatenate([sw, sw])
+        X2 = X2 * sw2[:, None]
+        y2w = y2 * sw2
         P2 = np.eye(2 * n_t + 1) * (lam * 1.5)
         A2 = X2.T @ X2 + P2
-        rhs2 = X2.T @ y2 + P2 @ b02
+        rhs2 = X2.T @ y2w + P2 @ b02
         beta2 = np.linalg.solve(A2, rhs2)
 
         played_counts = (
@@ -234,7 +266,7 @@ class RatingsEngine:
             & g["away_points"].notna()
         )
         played = g.loc[mask]
-        result = self._solve(played, year)
+        result = self._solve(played, year, as_of_week=week)
         self._cache[key] = result
         return result
 
@@ -244,7 +276,8 @@ class RatingsEngine:
             return self._final_cache[year]
         g = self.games
         mask = (g["season"] == year) & g["home_points"].notna() & g["away_points"].notna()
-        res = self._solve(g.loc[mask], year)
+        # End-of-season summary: weight every game equally.
+        res = self._solve(g.loc[mask], year, as_of_week=None)
         series = res.set_index("team")["rating"] if not res.empty else pd.Series(dtype=float)
         self._final_cache[year] = series
         return series

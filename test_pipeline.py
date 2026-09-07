@@ -123,19 +123,70 @@ def main() -> int:
     check(corr > 0.75, "mid-season ratings track hidden team strength",
           f"r = {corr:.3f}")
 
+    # -------------------------------------------------- efficiency (leak-free)
+    section("3b. Play-level efficiency")
+    from efficiency import EfficiencyEngine, METRICS, normalise_game_stats
+
+    adv = normalise_game_stats(pd.json_normalize(world["advanced"]))
+    check(not adv.empty, "advanced game stats normalised",
+          f"{len(adv):,} team-games")
+    worst_metric = max(adv[f"off_{m}"].isna().mean() for m in METRICS)
+    check(worst_metric < 0.02, "every metric resolved from the API shape",
+          f"worst {worst_metric:.1%} missing")
+
+    eff = EfficiencyEngine(adv)
+    eff_full = eff.stats_before(2022, 8)
+    eff_trunc = EfficiencyEngine(
+        adv[~((adv["season"] == 2022) & (adv["week"] >= 8))]).stats_before(2022, 8)
+    merged_eff = eff_full.merge(eff_trunc, on="team", suffixes=("_f", "_t"))
+    eff_diff = float((merged_eff["off_ppa_f"] - merged_eff["off_ppa_t"]).abs().max())
+    check(eff_diff < 1e-9, "efficiency identical with future weeks deleted",
+          f"max diff {eff_diff:.2e}")
+
+    eff_mid = eff.stats_before(2022, 12).set_index("team")
+    common_eff = eff_mid.index.intersection(truth.index)
+    eff_corr = float(np.corrcoef(eff_mid.loc[common_eff, "off_ppa"],
+                                 truth[common_eff])[0, 1])
+    check(eff_corr > 0.75, "efficiency recovers hidden team strength",
+          f"r = {eff_corr:.3f}")
+
     # ---------------------------------------------------------------- features
     section("4. Feature construction")
     weather = FakeWeather(world["games"], world["venues"])
     completed = games[games["completed"]].copy()
-    feat = build_features(completed, engine, weather,
-                          with_weather=True, historical=True)
+    from features import SeasonContext
+    ctx = SeasonContext()
+    for yr, (talent_df, returning_df) in world["preseason"].items():
+        ctx.add_season(yr, talent_df, returning_df)
+
+    feat = build_features(completed, engine, weather, with_weather=True,
+                          historical=True, efficiency=eff, context=ctx)
 
     check(len(feat) == len(completed), "one feature row per game")
     missing_cols = [c for c in FEATURE_COLUMNS if c not in feat.columns]
     check(not missing_cols, "all declared features present", str(missing_cols))
-    nan_share = feat[FEATURE_COLUMNS].isna().mean().max()
-    check(nan_share < 0.02, "features essentially free of NaNs",
-          f"worst column {nan_share:.3%}")
+    # Core features must always be present. Efficiency is legitimately absent
+    # in week 1 (nothing has been played yet), so it is checked separately.
+    from features import CONTEXT_COLUMNS, EFF_EDGE_COLUMNS, EFF_PACE_COLUMNS, EFF_RAW_COLUMNS
+    eff_cols = set(EFF_EDGE_COLUMNS + EFF_RAW_COLUMNS + EFF_PACE_COLUMNS)
+    core = [c for c in FEATURE_COLUMNS if c not in eff_cols]
+    nan_share = feat[core].isna().mean().max()
+    worst = feat[core].isna().mean().idxmax()
+    check(nan_share < 0.02, "core features essentially free of NaNs",
+          f"worst column {worst} at {nan_share:.3%}")
+
+    mid = feat[feat["week"] >= 4]
+    eff_present = mid["home_off_ppa"].notna().mean()
+    check(eff_present > 0.95, "efficiency present once the season is under way",
+          f"{eff_present:.1%} of week-4+ games")
+    wk1 = feat[feat["week"] == 1]
+    check(len(wk1) == 0 or wk1["home_off_ppa"].isna().all(),
+          "efficiency correctly absent in week 1")
+
+    ctx_present = feat[CONTEXT_COLUMNS].notna().mean().min()
+    check(ctx_present > 0.95, "talent and returning production attached",
+          f"{ctx_present:.1%}")
+
     check(feat["temp_f"].std() > 5, "weather varies across games",
           f"temp sd {feat['temp_f'].std():.1f}F")
 
@@ -175,6 +226,27 @@ def main() -> int:
     print()
     print(summarize(metrics))
     print()
+
+    # Does the new feature group actually pay for itself? Same pipeline, same
+    # walk-forward, efficiency and preseason context removed. A feature set is
+    # worth keeping only if this number moves the right way.
+    section("5b. Are the new features earning their place?")
+    plain = build_features(completed, engine, weather, with_weather=True,
+                           historical=True, efficiency=None, context=None)
+    oos_plain = walk_forward(plain, min_train_seasons=3)
+    m_plain = evaluate(oos_plain)
+    gain = m_plain["margin_mae"] - metrics["margin_mae"]
+    total_gain = m_plain["total_mae"] - metrics["total_mae"]
+    print(f"  margin MAE  without: {m_plain['margin_mae']:.3f}   "
+          f"with: {metrics['margin_mae']:.3f}   gain: {gain:+.3f} pts")
+    print(f"  total  MAE  without: {m_plain['total_mae']:.3f}   "
+          f"with: {metrics['total_mae']:.3f}   gain: {total_gain:+.3f} pts")
+    print(f"  log loss    without: {m_plain['win_logloss']:.4f}   "
+          f"with: {metrics['win_logloss']:.4f}")
+    check(gain > 0, "efficiency and context improve margin accuracy",
+          f"{gain:+.3f} pts of MAE")
+    check(total_gain > 0, "tempo improves total accuracy",
+          f"{total_gain:+.3f} pts of MAE")
 
     naive_mae = float(np.mean(np.abs(oos["margin"])))
     check(metrics["margin_mae"] < naive_mae * 0.85,
