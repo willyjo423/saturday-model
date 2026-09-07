@@ -74,6 +74,11 @@ DEFAULT_WEIGHTS = {
     "away_travel_mi": 0.3,
 }
 
+# Graded counts. Kept OUT of COMP_FEATURES on purpose: they are for display,
+# and adding them to the model's feature list would force a full retrain for
+# what is a presentation detail.
+COMP_EXTRA = ["comp_cover_n", "comp_over_n"]
+
 COMP_FEATURES = [
     "comp_margin_median", "comp_margin_mean", "comp_margin_sd",
     "comp_margin_p25", "comp_margin_p75",
@@ -222,8 +227,10 @@ class CompsEngine:
         targets = add_market_margin(targets)
         idx, dist = self.neighbours(targets, k=k)
         n = len(targets)
-        cols = {c: np.full(n, np.nan) for c in COMP_FEATURES}
+        cols = {c: np.full(n, np.nan) for c in COMP_FEATURES + COMP_EXTRA}
         cols["comp_n"] = np.zeros(n)
+        cols["comp_cover_n"] = np.zeros(n)
+        cols["comp_over_n"] = np.zeros(n)
 
         for i in range(n):
             valid = idx[i] >= 0
@@ -254,11 +261,13 @@ class CompsEngine:
             # like this one. Pushes are excluded rather than counted as losses.
             covers = self.pool_home_cover[take]
             graded = covers[~np.isnan(covers)]
+            cols["comp_cover_n"][i] = float(len(graded))
             if len(graded) >= 20:
                 cols["comp_home_cover_rate"][i] = float(np.mean(graded))
 
             overs = self.pool_over[take]
             graded_ou = overs[~np.isnan(overs)]
+            cols["comp_over_n"][i] = float(len(graded_ou))
             if len(graded_ou) >= 20:
                 cols["comp_over_rate"][i] = float(np.mean(graded_ou))
 
@@ -316,13 +325,13 @@ def attach_comps(feat: pd.DataFrame, engine: "CompsEngine",
     """
     out = feat.copy()
     if not engine.available:
-        for col in COMP_FEATURES:
+        for col in COMP_FEATURES + COMP_EXTRA:
             out[col] = np.nan
         out["comp_n"] = 0.0
         return out
 
     summary = engine.summarise(feat, k=k)
-    for col in COMP_FEATURES:
+    for col in COMP_FEATURES + COMP_EXTRA:
         out[col] = summary[col].to_numpy()
 
     found = float(np.mean(summary["comp_n"] >= 20))

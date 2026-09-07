@@ -255,6 +255,22 @@ def main() -> int:
 
     check(all(g["weather_text"] for g in games), "weather attached to every game")
 
+    # All three market summaries must be present and mutually consistent.
+    check(c.get("over_rate") is not None and 0.0 <= c["over_rate"] <= 1.0,
+          "over/under rate present", f"{c['over_rate']:.0%} went over")
+    check(c.get("home_win_rate") is not None and 0.0 <= c["home_win_rate"] <= 1.0,
+          "moneyline win rate present", f"home won {c['home_win_rate']:.0%}")
+    check(c.get("cover_n") and c["cover_n"] <= c["n"],
+          "graded cover count excludes pushes",
+          f"{c['cover_n']} graded of {c['n']} comps")
+
+    from dashboard import _comps_table
+    tbl = _comps_table(with_comps[0])
+    check("Spread" in tbl and "Total" in tbl and "Moneyline" in tbl,
+          "summary shows all three markets")
+    check(f"Across all {c['n']} comparable games" in tbl,
+          "summary states the full sample size")
+
     ex = with_comps[0].get("comp_examples") or []
     check(len(ex) == 5, "five precedents per game", f"{len(ex)} returned")
     check(all(e["season"] < 2026 for e in ex),

@@ -243,6 +243,31 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 }
 .cmp-v { color: var(--muted); min-width: 11em; }
 
+/* ---------- comparables summary ---------- */
+.comps-sum { margin: 10px 0 6px; }
+.comps-hd {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .09em;
+  color: var(--faint); margin-bottom: 5px;
+}
+.sum-table {
+  border-collapse: collapse;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12.5px; font-variant-numeric: tabular-nums;
+}
+.sum-table th {
+  text-align: left; padding: 3px 16px 3px 0;
+  font-family: "IBM Plex Sans", ui-sans-serif, sans-serif;
+  font-size: 11px; font-weight: 600; color: var(--muted);
+  white-space: nowrap;
+}
+.sum-table td { padding: 3px 0; }
+.sum-table td.sd { color: var(--muted); padding-right: 8px; white-space: nowrap; }
+.sum-table td.rt {
+  color: var(--ink); font-weight: 600; padding-right: 22px;
+  text-align: right; width: 3.4em;
+}
+.sum-table td.ct { color: var(--faint); font-size: 11px; white-space: nowrap; }
+
 .market {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: 12px; color: var(--faint);
@@ -399,10 +424,6 @@ def _band(g: dict) -> str:
         return max(0.0, min(100.0, (v - lo) / span * 100.0))
 
     a, b = pos(p25), pos(p75)
-    home = g["home_team"]
-    win = c.get("home_win_rate")
-    win_txt = (f' · {_e(home)} won <b>{_pct(win)}</b>' if win is not None else "")
-
     return (
         '<div class="band-row">'
         f'<div class="band" title="Middle half of comparable final margins">'
@@ -410,9 +431,58 @@ def _band(g: dict) -> str:
         f'<div class="iqr" style="left:{a:.1f}%;width:{max(b - a, 1.0):.1f}%"></div>'
         f'<div class="zero" style="left:{pos(0.0):.1f}%"></div>'
         f'<div class="med" style="left:{pos(med):.1f}%"></div></div>'
-        f'<div class="band-label">Half finished <b>{p25:+.0f} to {p75:+.0f}</b>'
-        f'{win_txt}</div>'
+        f'<div class="band-label">Half of them finished '
+        f'<b>{p25:+.0f} to {p75:+.0f}</b></div>'
         '</div>')
+
+
+def _comps_table(g: dict) -> str:
+    """What all the comparable games did, on each of the three markets.
+
+    The five precedents below are the closest, not a summary - this is the
+    summary. Rates are of graded games, so pushes are excluded rather than
+    counted as losses, which is why the counts differ slightly per row.
+    """
+    c = g.get("comps") or {}
+    n = c.get("n")
+    if not n:
+        return ""
+
+    home, away = g["home_team"], g["away_team"]
+    rows = []
+
+    cover = c.get("cover_rate")
+    if cover is not None and g.get("market_spread") is not None:
+        hs, as_ = g["market_spread"], -g["market_spread"]
+        rows.append(("Spread",
+                     f'{_e(home)} {hs:+.1f}', _pct(cover),
+                     f'{_e(away)} {as_:+.1f}', _pct(1 - cover),
+                     c.get("cover_n")))
+
+    over = c.get("over_rate")
+    if over is not None and g.get("market_total") is not None:
+        t = g["market_total"]
+        rows.append(("Total", f'Over {t:.1f}', _pct(over),
+                     f'Under {t:.1f}', _pct(1 - over), c.get("over_n")))
+
+    win = c.get("home_win_rate")
+    if win is not None:
+        rows.append(("Moneyline", f'{_e(home)} win', _pct(win),
+                     f'{_e(away)} win', _pct(1 - win), n))
+
+    if not rows:
+        return ""
+
+    body = "".join(
+        f'<tr><th>{_e(k)}</th>'
+        f'<td class="sd">{a}</td><td class="rt">{ar}</td>'
+        f'<td class="sd">{b}</td><td class="rt">{br}</td>'
+        f'<td class="ct">{"" if cnt is None else f"of {cnt}"}</td></tr>'
+        for k, a, ar, b, br, cnt in rows)
+
+    return ('<div class="comps-sum">'
+            f'<div class="comps-hd">Across all {n} comparable games</div>'
+            f'<table class="sum-table">{body}</table></div>')
 
 
 def _market_line(g: dict) -> str:
@@ -563,6 +633,7 @@ def _game_row(g: dict) -> str:
       </div>
       {_forecast(g)}
       {_band(g)}
+      {_comps_table(g)}
       {_market_line(g)}
       {_totals_line(g)}
       {_flags(g)}
