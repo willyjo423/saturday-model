@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-07T00:29:27.584512-04:00",
+  "generated_at": "2026-09-07T01:06:04.866590-04:00",
   "season": 2026,
   "dates": [
     "2026-09-05"
@@ -15,16 +15,16 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 35,
-        "away_points": 15,
-        "margin": 19.5,
-        "total": 49.7,
-        "home_win_prob": 0.906
+        "away_points": 14,
+        "margin": 21.4,
+        "total": 49.5,
+        "home_win_prob": 0.9046
       },
       "comps": {
         "n": 200,
         "cover_rate": 0.503,
-        "home_cover_by": 13.2,
-        "away_cover_by": 13.0,
+        "home_cover_by": 13.1,
+        "away_cover_by": 12.9,
         "home_blowout": 0.76,
         "away_blowout": 0.01,
         "cover_n": 199,
@@ -36,10 +36,10 @@
         "historical_n": null,
         "margin_median": 24.0,
         "margin_p25": 14.0,
-        "margin_p75": 35.2,
+        "margin_p75": 35.0,
         "total_median": 57.0,
         "home_win_rate": 0.935,
-        "over_rate": 0.513,
+        "over_rate": 0.518,
         "agreement": 0.935,
         "price_spread": 4.3
       },
@@ -54,7 +54,7 @@
           "margin": 21.0,
           "home_spread": -28.0,
           "home_covered": false,
-          "distance": 0.5
+          "distance": 0.514
         },
         {
           "season": 2024,
@@ -66,7 +66,7 @@
           "margin": 24.0,
           "home_spread": -25.5,
           "home_covered": false,
-          "distance": 0.617
+          "distance": 0.628
         },
         {
           "season": 2024,
@@ -78,19 +78,7 @@
           "margin": 33.0,
           "home_spread": -27.5,
           "home_covered": true,
-          "distance": 0.622
-        },
-        {
-          "season": 2019,
-          "week": 1,
-          "home_team": "Iowa",
-          "away_team": "Miami (OH)",
-          "home_points": 38,
-          "away_points": 14,
-          "margin": 24.0,
-          "home_spread": -25.0,
-          "home_covered": false,
-          "distance": 0.694
+          "distance": 0.633
         },
         {
           "season": 2018,
@@ -102,7 +90,19 @@
           "margin": 34.0,
           "home_spread": -30.8,
           "home_covered": true,
-          "distance": 0.7
+          "distance": 0.703
+        },
+        {
+          "season": 2019,
+          "week": 1,
+          "home_team": "Iowa",
+          "away_team": "Miami (OH)",
+          "home_points": 38,
+          "away_points": 14,
+          "margin": 24.0,
+          "home_spread": -25.0,
+          "home_covered": false,
+          "distance": 0.721
         }
       ],
       "confidence_flags": [
@@ -110,8 +110,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -8.5,
-        "total": -2.8
+        "margin": -6.6,
+        "total": -3.0
       },
       "market_spread": -28.0,
       "market_total": 52.5,
@@ -135,10 +135,10 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 43,
-        "away_points": 10,
-        "margin": 33.8,
-        "total": 52.9,
-        "home_win_prob": 0.9797
+        "away_points": 9,
+        "margin": 33.5,
+        "total": 51.7,
+        "home_win_prob": 0.9699
       },
       "comps": {
         "n": 200,
@@ -174,7 +174,7 @@
           "margin": 40.0,
           "home_spread": -37.0,
           "home_covered": true,
-          "distance": 0.246
+          "distance": 0.249
         },
         {
           "season": 2024,
@@ -186,7 +186,7 @@
           "margin": 39.0,
           "home_spread": -36.5,
           "home_covered": true,
-          "distance": 0.256
+          "distance": 0.253
         },
         {
           "season": 2024,
@@ -198,7 +198,7 @@
           "margin": 34.0,
           "home_spread": -37.5,
           "home_covered": false,
-          "distance": 0.352
+          "distance": 0.349
         },
         {
           "season": 2017,
@@ -210,7 +210,7 @@
           "margin": 53.0,
           "home_spread": -36.0,
           "home_covered": true,
-          "distance": 0.43
+          "distance": 0.431
         },
         {
           "season": 2024,
@@ -222,7 +222,7 @@
           "margin": 49.0,
           "home_spread": -35.5,
           "home_covered": true,
-          "distance": 0.468
+          "distance": 0.466
         }
       ],
       "confidence_flags": [
@@ -230,8 +230,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -3.7,
-        "total": 1.4
+        "margin": -4.0,
+        "total": 0.2
       },
       "market_spread": -37.5,
       "market_total": 51.5,
@@ -254,11 +254,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 34,
-        "away_points": 17,
-        "margin": 17.0,
-        "total": 50.9,
-        "home_win_prob": 0.8794
+        "home_points": 35,
+        "away_points": 14,
+        "margin": 20.9,
+        "total": 49.0,
+        "home_win_prob": 0.8999
       },
       "comps": {
         "n": 200,
@@ -279,9 +279,9 @@
         "margin_p75": 21.0,
         "total_median": 55.0,
         "home_win_rate": 0.755,
-        "over_rate": 0.514,
+        "over_rate": 0.508,
         "agreement": 0.755,
-        "price_spread": 5.6
+        "price_spread": 5.5
       },
       "comp_examples": [
         {
@@ -294,7 +294,7 @@
           "margin": 17.0,
           "home_spread": -3.5,
           "home_covered": true,
-          "distance": 0.581
+          "distance": 0.579
         },
         {
           "season": 2022,
@@ -306,7 +306,7 @@
           "margin": -17.0,
           "home_spread": -4.5,
           "home_covered": false,
-          "distance": 0.645
+          "distance": 0.643
         },
         {
           "season": 2024,
@@ -318,7 +318,7 @@
           "margin": 18.0,
           "home_spread": -2.5,
           "home_covered": true,
-          "distance": 0.673
+          "distance": 0.672
         },
         {
           "season": 2017,
@@ -330,7 +330,7 @@
           "margin": -20.0,
           "home_spread": 2.5,
           "home_covered": false,
-          "distance": 0.754
+          "distance": 0.756
         },
         {
           "season": 2025,
@@ -342,7 +342,7 @@
           "margin": 28.0,
           "home_spread": -5.2,
           "home_covered": true,
-          "distance": 0.856
+          "distance": 0.855
         }
       ],
       "confidence_flags": [
@@ -350,8 +350,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 15.5,
-        "total": 1.4
+        "margin": 19.4,
+        "total": -0.5
       },
       "market_spread": -1.5,
       "market_total": 49.5,
@@ -374,32 +374,32 @@
       "away_team": "Oregon State",
       "neutral_site": false,
       "forecast": {
-        "home_points": 33,
+        "home_points": 35,
         "away_points": 17,
-        "margin": 16.7,
-        "total": 49.9,
-        "home_win_prob": 0.8748
+        "margin": 17.5,
+        "total": 52.4,
+        "home_win_prob": 0.8644
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.46,
+        "cover_rate": 0.455,
         "home_cover_by": 12.9,
         "away_cover_by": 13.1,
-        "home_blowout": 0.66,
+        "home_blowout": 0.655,
         "away_blowout": 0.025,
         "cover_n": 198,
         "over_n": 197,
-        "calibrated_rate": 0.46,
+        "calibrated_rate": 0.455,
         "side": "away",
-        "confidence": 0.54,
+        "confidence": 0.545,
         "historical_rate": null,
         "historical_n": null,
-        "margin_median": 20.5,
+        "margin_median": 20.0,
         "margin_p25": 7.0,
-        "margin_p75": 31.0,
+        "margin_p75": 30.2,
         "total_median": 53.0,
         "home_win_rate": 0.875,
-        "over_rate": 0.457,
+        "over_rate": 0.452,
         "agreement": 0.875,
         "price_spread": 3.3
       },
@@ -414,7 +414,7 @@
           "margin": 8.0,
           "home_spread": -21.5,
           "home_covered": false,
-          "distance": 0.308
+          "distance": 0.309
         },
         {
           "season": 2024,
@@ -426,7 +426,7 @@
           "margin": 20.0,
           "home_spread": -21.0,
           "home_covered": false,
-          "distance": 0.554
+          "distance": 0.56
         },
         {
           "season": 2019,
@@ -438,7 +438,7 @@
           "margin": 7.0,
           "home_spread": -23.5,
           "home_covered": false,
-          "distance": 0.562
+          "distance": 0.568
         },
         {
           "season": 2022,
@@ -450,7 +450,7 @@
           "margin": 28.0,
           "home_spread": -24.0,
           "home_covered": true,
-          "distance": 0.599
+          "distance": 0.605
         },
         {
           "season": 2017,
@@ -462,7 +462,7 @@
           "margin": 11.0,
           "home_spread": -24.0,
           "home_covered": false,
-          "distance": 0.654
+          "distance": 0.655
         }
       ],
       "confidence_flags": [
@@ -470,8 +470,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -4.3,
-        "total": -0.6
+        "margin": -3.5,
+        "total": 1.9
       },
       "market_spread": -21.0,
       "market_total": 50.5,
@@ -495,10 +495,10 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 37,
-        "away_points": 14,
-        "margin": 23.8,
+        "away_points": 13,
+        "margin": 23.9,
         "total": 50.9,
-        "home_win_prob": 0.9395
+        "home_win_prob": 0.9246
       },
       "comps": {
         "n": 200,
@@ -534,7 +534,7 @@
           "margin": 38.0,
           "home_spread": -38.5,
           "home_covered": false,
-          "distance": 0.572
+          "distance": 0.57
         },
         {
           "season": 2021,
@@ -546,7 +546,7 @@
           "margin": 32.0,
           "home_spread": -37.0,
           "home_covered": false,
-          "distance": 0.673
+          "distance": 0.672
         },
         {
           "season": 2019,
@@ -558,7 +558,7 @@
           "margin": 14.0,
           "home_spread": -35.5,
           "home_covered": false,
-          "distance": 0.794
+          "distance": 0.774
         },
         {
           "season": 2019,
@@ -570,7 +570,7 @@
           "margin": 19.0,
           "home_spread": -36.0,
           "home_covered": false,
-          "distance": 0.822
+          "distance": 0.839
         },
         {
           "season": 2022,
@@ -582,7 +582,7 @@
           "margin": 42.0,
           "home_spread": -37.5,
           "home_covered": true,
-          "distance": 0.848
+          "distance": 0.847
         }
       ],
       "confidence_flags": [
@@ -590,7 +590,7 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -15.7,
+        "margin": -15.6,
         "total": -5.6
       },
       "market_spread": -39.5,
@@ -614,34 +614,34 @@
       "away_team": "Liberty",
       "neutral_site": false,
       "forecast": {
-        "home_points": 25,
-        "away_points": 22,
-        "margin": 3.0,
-        "total": 47.7,
-        "home_win_prob": 0.5995
+        "home_points": 27,
+        "away_points": 24,
+        "margin": 3.2,
+        "total": 51.2,
+        "home_win_prob": 0.6003
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.503,
-        "home_cover_by": 12.1,
-        "away_cover_by": 11.4,
-        "home_blowout": 0.345,
-        "away_blowout": 0.09,
+        "cover_rate": 0.513,
+        "home_cover_by": 11.9,
+        "away_cover_by": 11.3,
+        "home_blowout": 0.35,
+        "away_blowout": 0.085,
         "cover_n": 199,
         "over_n": 200,
-        "calibrated_rate": 0.503,
+        "calibrated_rate": 0.513,
         "side": "home",
-        "confidence": 0.503,
+        "confidence": 0.513,
         "historical_rate": null,
         "historical_n": null,
         "margin_median": 7.0,
         "margin_p25": -3.0,
         "margin_p75": 18.0,
         "total_median": 51.0,
-        "home_win_rate": 0.65,
+        "home_win_rate": 0.66,
         "over_rate": 0.405,
-        "agreement": 0.65,
-        "price_spread": 2.3
+        "agreement": 0.66,
+        "price_spread": 2.4
       },
       "comp_examples": [
         {
@@ -654,7 +654,7 @@
           "margin": -18.0,
           "home_spread": -6.2,
           "home_covered": false,
-          "distance": 0.242
+          "distance": 0.244
         },
         {
           "season": 2022,
@@ -666,7 +666,7 @@
           "margin": 7.0,
           "home_spread": -7.5,
           "home_covered": false,
-          "distance": 0.308
+          "distance": 0.31
         },
         {
           "season": 2023,
@@ -678,7 +678,7 @@
           "margin": 3.0,
           "home_spread": -7.5,
           "home_covered": false,
-          "distance": 0.358
+          "distance": 0.359
         },
         {
           "season": 2015,
@@ -690,7 +690,7 @@
           "margin": 5.0,
           "home_spread": -7.0,
           "home_covered": false,
-          "distance": 0.498
+          "distance": 0.499
         },
         {
           "season": 2021,
@@ -702,7 +702,7 @@
           "margin": 14.0,
           "home_spread": -9.0,
           "home_covered": true,
-          "distance": 0.539
+          "distance": 0.54
         }
       ],
       "confidence_flags": [
@@ -710,8 +710,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -3.0,
-        "total": -2.8
+        "margin": -2.8,
+        "total": 0.7
       },
       "market_spread": -6.0,
       "market_total": 50.5,
@@ -734,11 +734,11 @@
       "away_team": "Ohio",
       "neutral_site": false,
       "forecast": {
-        "home_points": 33,
+        "home_points": 34,
         "away_points": 18,
-        "margin": 14.8,
-        "total": 51.0,
-        "home_win_prob": 0.8503
+        "margin": 16.8,
+        "total": 51.8,
+        "home_win_prob": 0.8558
       },
       "comps": {
         "n": 200,
@@ -774,7 +774,7 @@
           "margin": 17.0,
           "home_spread": -22.5,
           "home_covered": false,
-          "distance": 0.297
+          "distance": 0.299
         },
         {
           "season": 2022,
@@ -786,19 +786,7 @@
           "margin": 21.0,
           "home_spread": -24.0,
           "home_covered": false,
-          "distance": 0.408
-        },
-        {
-          "season": 2019,
-          "week": 1,
-          "home_team": "Iowa",
-          "away_team": "Miami (OH)",
-          "home_points": 38,
-          "away_points": 14,
-          "margin": 24.0,
-          "home_spread": -25.0,
-          "home_covered": false,
-          "distance": 0.417
+          "distance": 0.41
         },
         {
           "season": 2024,
@@ -810,7 +798,19 @@
           "margin": 24.0,
           "home_spread": -25.5,
           "home_covered": false,
-          "distance": 0.417
+          "distance": 0.418
+        },
+        {
+          "season": 2019,
+          "week": 1,
+          "home_team": "Iowa",
+          "away_team": "Miami (OH)",
+          "home_points": 38,
+          "away_points": 14,
+          "margin": 24.0,
+          "home_spread": -25.0,
+          "home_covered": false,
+          "distance": 0.423
         },
         {
           "season": 2025,
@@ -822,7 +822,7 @@
           "margin": 18.0,
           "home_spread": -23.5,
           "home_covered": false,
-          "distance": 0.46
+          "distance": 0.461
         }
       ],
       "confidence_flags": [
@@ -830,8 +830,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -8.7,
-        "total": 3.5
+        "margin": -6.7,
+        "total": 4.3
       },
       "market_spread": -23.5,
       "market_total": 47.5,
@@ -854,11 +854,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 44,
+        "home_points": 45,
         "away_points": 10,
-        "margin": 33.4,
-        "total": 53.8,
-        "home_win_prob": 0.9788
+        "margin": 34.4,
+        "total": 55.0,
+        "home_win_prob": 0.9724
       },
       "comps": {
         "n": 200,
@@ -894,7 +894,7 @@
           "margin": 59.0,
           "home_spread": -36.0,
           "home_covered": true,
-          "distance": 0.277
+          "distance": 0.279
         },
         {
           "season": 2022,
@@ -906,19 +906,7 @@
           "margin": 7.0,
           "home_spread": -35.0,
           "home_covered": false,
-          "distance": 0.543
-        },
-        {
-          "season": 2024,
-          "week": 1,
-          "home_team": "Northern Illinois",
-          "away_team": "__FCS__",
-          "home_points": 54,
-          "away_points": 15,
-          "margin": 39.0,
-          "home_spread": -36.5,
-          "home_covered": true,
-          "distance": 0.558
+          "distance": 0.56
         },
         {
           "season": 2017,
@@ -930,7 +918,19 @@
           "margin": 29.0,
           "home_spread": -35.5,
           "home_covered": false,
-          "distance": 0.563
+          "distance": 0.564
+        },
+        {
+          "season": 2024,
+          "week": 1,
+          "home_team": "Northern Illinois",
+          "away_team": "__FCS__",
+          "home_points": 54,
+          "away_points": 15,
+          "margin": 39.0,
+          "home_spread": -36.5,
+          "home_covered": true,
+          "distance": 0.575
         },
         {
           "season": 2016,
@@ -942,7 +942,7 @@
           "margin": 40.0,
           "home_spread": -37.0,
           "home_covered": true,
-          "distance": 0.577
+          "distance": 0.584
         }
       ],
       "confidence_flags": [
@@ -950,8 +950,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -2.1,
-        "total": -2.7
+        "margin": -1.1,
+        "total": -1.5
       },
       "market_spread": -35.5,
       "market_total": 56.5,
@@ -976,16 +976,16 @@
       "forecast": {
         "home_points": 40,
         "away_points": 12,
-        "margin": 27.6,
-        "total": 51.6,
-        "home_win_prob": 0.9598
+        "margin": 27.8,
+        "total": 52.3,
+        "home_win_prob": 0.9477
       },
       "comps": {
         "n": 200,
         "cover_rate": 0.5,
         "home_cover_by": 13.4,
         "away_cover_by": 13.0,
-        "home_blowout": 0.72,
+        "home_blowout": 0.715,
         "away_blowout": 0.015,
         "cover_n": 198,
         "over_n": 156,
@@ -999,7 +999,7 @@
         "margin_p75": 35.2,
         "total_median": 55.0,
         "home_win_rate": 0.935,
-        "over_rate": 0.41,
+        "over_rate": 0.404,
         "agreement": 0.935,
         "price_spread": 6.0
       },
@@ -1014,7 +1014,7 @@
           "margin": 17.0,
           "home_spread": -21.5,
           "home_covered": false,
-          "distance": 0.217
+          "distance": 0.213
         },
         {
           "season": 2023,
@@ -1026,7 +1026,7 @@
           "margin": 4.0,
           "home_spread": -22.0,
           "home_covered": false,
-          "distance": 0.232
+          "distance": 0.228
         },
         {
           "season": 2023,
@@ -1038,7 +1038,7 @@
           "margin": 21.0,
           "home_spread": -22.5,
           "home_covered": false,
-          "distance": 0.284
+          "distance": 0.281
         },
         {
           "season": 2025,
@@ -1050,7 +1050,7 @@
           "margin": 10.0,
           "home_spread": -21.2,
           "home_covered": false,
-          "distance": 0.3
+          "distance": 0.296
         },
         {
           "season": 2019,
@@ -1062,7 +1062,7 @@
           "margin": 20.0,
           "home_spread": -23.0,
           "home_covered": false,
-          "distance": 0.327
+          "distance": 0.297
         }
       ],
       "confidence_flags": [
@@ -1070,8 +1070,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 6.1,
-        "total": 0.1
+        "margin": 6.3,
+        "total": 0.8
       },
       "market_spread": -21.5,
       "market_total": 51.5,
@@ -1094,17 +1094,17 @@
       "away_team": "Coastal Carolina",
       "neutral_site": false,
       "forecast": {
-        "home_points": 32,
-        "away_points": 17,
-        "margin": 15.0,
-        "total": 49.4,
-        "home_win_prob": 0.8525
+        "home_points": 33,
+        "away_points": 16,
+        "margin": 16.9,
+        "total": 48.5,
+        "home_win_prob": 0.8577
       },
       "comps": {
         "n": 200,
         "cover_rate": 0.518,
-        "home_cover_by": 13.9,
-        "away_cover_by": 12.7,
+        "home_cover_by": 14.0,
+        "away_cover_by": 13.0,
         "home_blowout": 0.675,
         "away_blowout": 0.02,
         "cover_n": 199,
@@ -1118,10 +1118,10 @@
         "margin_p25": 8.0,
         "margin_p75": 31.2,
         "total_median": 55.0,
-        "home_win_rate": 0.895,
-        "over_rate": 0.51,
-        "agreement": 0.895,
-        "price_spread": 3.6
+        "home_win_rate": 0.89,
+        "over_rate": 0.505,
+        "agreement": 0.89,
+        "price_spread": 3.5
       },
       "comp_examples": [
         {
@@ -1134,7 +1134,7 @@
           "margin": 1.0,
           "home_spread": -21.0,
           "home_covered": false,
-          "distance": 0.289
+          "distance": 0.293
         },
         {
           "season": 2021,
@@ -1146,7 +1146,7 @@
           "margin": 1.0,
           "home_spread": -20.5,
           "home_covered": false,
-          "distance": 0.579
+          "distance": 0.596
         },
         {
           "season": 2021,
@@ -1158,7 +1158,7 @@
           "margin": 21.0,
           "home_spread": -19.5,
           "home_covered": true,
-          "distance": 0.591
+          "distance": 0.607
         },
         {
           "season": 2024,
@@ -1170,7 +1170,7 @@
           "margin": 23.0,
           "home_spread": -20.5,
           "home_covered": true,
-          "distance": 0.594
+          "distance": 0.61
         },
         {
           "season": 2025,
@@ -1182,7 +1182,7 @@
           "margin": 17.0,
           "home_spread": -21.5,
           "home_covered": false,
-          "distance": 0.594
+          "distance": 0.61
         }
       ],
       "confidence_flags": [
@@ -1191,8 +1191,8 @@
         "Line moved 3.5 pts since opening"
       ],
       "vs_market": {
-        "margin": -6.0,
-        "total": -5.1
+        "margin": -4.1,
+        "total": -6.0
       },
       "market_spread": -21.0,
       "market_total": 54.5,
@@ -1215,11 +1215,11 @@
       "away_team": "Ball State",
       "neutral_site": false,
       "forecast": {
-        "home_points": 48,
+        "home_points": 51,
         "away_points": 7,
-        "margin": 40.8,
-        "total": 55.2,
-        "home_win_prob": 0.9907
+        "margin": 43.5,
+        "total": 57.9,
+        "home_win_prob": 0.9888
       },
       "comps": {
         "n": 200,
@@ -1255,7 +1255,7 @@
           "margin": 46.0,
           "home_spread": -49.5,
           "home_covered": false,
-          "distance": 0.644
+          "distance": 0.647
         },
         {
           "season": 2016,
@@ -1267,7 +1267,7 @@
           "margin": 47.0,
           "home_spread": -46.0,
           "home_covered": true,
-          "distance": 0.933
+          "distance": 0.934
         },
         {
           "season": 2017,
@@ -1279,7 +1279,7 @@
           "margin": -3.0,
           "home_spread": -45.0,
           "home_covered": false,
-          "distance": 1.176
+          "distance": 1.177
         },
         {
           "season": 2022,
@@ -1291,7 +1291,7 @@
           "margin": 33.0,
           "home_spread": -44.5,
           "home_covered": false,
-          "distance": 1.332
+          "distance": 1.334
         },
         {
           "season": 2016,
@@ -1303,7 +1303,7 @@
           "margin": 42.0,
           "home_spread": -46.0,
           "home_covered": false,
-          "distance": 1.496
+          "distance": 1.497
         }
       ],
       "confidence_flags": [
@@ -1311,8 +1311,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -9.7,
-        "total": -0.3
+        "margin": -7.0,
+        "total": 2.4
       },
       "market_spread": -50.5,
       "market_total": 55.5,
@@ -1335,33 +1335,33 @@
       "away_team": "Miami (OH)",
       "neutral_site": false,
       "forecast": {
-        "home_points": 32,
-        "away_points": 16,
-        "margin": 15.9,
-        "total": 48.6,
-        "home_win_prob": 0.8649
+        "home_points": 31,
+        "away_points": 18,
+        "margin": 12.8,
+        "total": 49.3,
+        "home_win_prob": 0.7992
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.548,
+        "cover_rate": 0.538,
         "home_cover_by": 14.2,
         "away_cover_by": 12.9,
-        "home_blowout": 0.64,
+        "home_blowout": 0.63,
         "away_blowout": 0.04,
         "cover_n": 199,
         "over_n": 198,
-        "calibrated_rate": 0.548,
+        "calibrated_rate": 0.538,
         "side": "home",
-        "confidence": 0.548,
+        "confidence": 0.538,
         "historical_rate": null,
         "historical_n": null,
         "margin_median": 18.0,
-        "margin_p25": 7.0,
-        "margin_p75": 29.0,
+        "margin_p25": 6.0,
+        "margin_p75": 28.2,
         "total_median": 54.0,
-        "home_win_rate": 0.86,
-        "over_rate": 0.465,
-        "agreement": 0.86,
+        "home_win_rate": 0.855,
+        "over_rate": 0.46,
+        "agreement": 0.855,
         "price_spread": 3.2
       },
       "comp_examples": [
@@ -1375,31 +1375,7 @@
           "margin": 25.0,
           "home_spread": -17.0,
           "home_covered": true,
-          "distance": 0.341
-        },
-        {
-          "season": 2022,
-          "week": 1,
-          "home_team": "Ohio State",
-          "away_team": "Notre Dame",
-          "home_points": 21,
-          "away_points": 10,
-          "margin": 11.0,
-          "home_spread": -17.0,
-          "home_covered": false,
-          "distance": 0.399
-        },
-        {
-          "season": 2021,
-          "week": 1,
-          "home_team": "Michigan",
-          "away_team": "Western Michigan",
-          "home_points": 47,
-          "away_points": 14,
-          "margin": 33.0,
-          "home_spread": -16.5,
-          "home_covered": true,
-          "distance": 0.404
+          "distance": 0.344
         },
         {
           "season": 2016,
@@ -1416,6 +1392,30 @@
         {
           "season": 2022,
           "week": 1,
+          "home_team": "Ohio State",
+          "away_team": "Notre Dame",
+          "home_points": 21,
+          "away_points": 10,
+          "margin": 11.0,
+          "home_spread": -17.0,
+          "home_covered": false,
+          "distance": 0.413
+        },
+        {
+          "season": 2021,
+          "week": 1,
+          "home_team": "Michigan",
+          "away_team": "Western Michigan",
+          "home_points": 47,
+          "away_points": 14,
+          "margin": 33.0,
+          "home_spread": -16.5,
+          "home_covered": true,
+          "distance": 0.418
+        },
+        {
+          "season": 2022,
+          "week": 1,
           "home_team": "Mississippi State",
           "away_team": "Memphis",
           "home_points": 49,
@@ -1423,7 +1423,7 @@
           "margin": 26.0,
           "home_spread": -17.0,
           "home_covered": true,
-          "distance": 0.437
+          "distance": 0.451
         }
       ],
       "confidence_flags": [
@@ -1431,8 +1431,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -0.6,
-        "total": 1.1
+        "margin": -3.7,
+        "total": 1.8
       },
       "market_spread": -16.5,
       "market_total": 47.5,
@@ -1455,11 +1455,11 @@
       "away_team": "Kent State",
       "neutral_site": false,
       "forecast": {
-        "home_points": 39,
+        "home_points": 40,
         "away_points": 12,
-        "margin": 27.4,
-        "total": 50.7,
-        "home_win_prob": 0.959
+        "margin": 27.1,
+        "total": 51.9,
+        "home_win_prob": 0.9442
       },
       "comps": {
         "n": 200,
@@ -1486,18 +1486,6 @@
       },
       "comp_examples": [
         {
-          "season": 2023,
-          "week": 1,
-          "home_team": "Oklahoma",
-          "away_team": "Arkansas State",
-          "home_points": 73,
-          "away_points": 0,
-          "margin": 73.0,
-          "home_spread": -36.0,
-          "home_covered": true,
-          "distance": 0.276
-        },
-        {
           "season": 2019,
           "week": 1,
           "home_team": "Michigan",
@@ -1507,7 +1495,19 @@
           "margin": 19.0,
           "home_spread": -36.0,
           "home_covered": false,
-          "distance": 0.29
+          "distance": 0.242
+        },
+        {
+          "season": 2023,
+          "week": 1,
+          "home_team": "Oklahoma",
+          "away_team": "Arkansas State",
+          "home_points": 73,
+          "away_points": 0,
+          "margin": 73.0,
+          "home_spread": -36.0,
+          "home_covered": true,
+          "distance": 0.288
         },
         {
           "season": 2023,
@@ -1519,7 +1519,7 @@
           "margin": 27.0,
           "home_spread": -35.5,
           "home_covered": false,
-          "distance": 0.296
+          "distance": 0.307
         },
         {
           "season": 2022,
@@ -1531,7 +1531,7 @@
           "margin": 49.0,
           "home_spread": -36.2,
           "home_covered": true,
-          "distance": 0.312
+          "distance": 0.323
         },
         {
           "season": 2021,
@@ -1543,7 +1543,7 @@
           "margin": 32.0,
           "home_spread": -37.0,
           "home_covered": false,
-          "distance": 0.413
+          "distance": 0.421
         }
       ],
       "confidence_flags": [
@@ -1551,8 +1551,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -8.1,
-        "total": -2.8
+        "margin": -8.4,
+        "total": -1.6
       },
       "market_spread": -35.5,
       "market_total": 53.5,
@@ -1575,11 +1575,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 40,
-        "away_points": 10,
-        "margin": 29.5,
-        "total": 50.4,
-        "home_win_prob": 0.9675
+        "home_points": 42,
+        "away_points": 11,
+        "margin": 31.2,
+        "total": 52.7,
+        "home_win_prob": 0.9623
       },
       "comps": {
         "n": 200,
@@ -1615,19 +1615,7 @@
           "margin": 39.0,
           "home_spread": -31.5,
           "home_covered": true,
-          "distance": 0.327
-        },
-        {
-          "season": 2019,
-          "week": 1,
-          "home_team": "Charlotte",
-          "away_team": "__FCS__",
-          "home_points": 49,
-          "away_points": 28,
-          "margin": 21.0,
-          "home_spread": -31.0,
-          "home_covered": false,
-          "distance": 0.4
+          "distance": 0.324
         },
         {
           "season": 2024,
@@ -1639,7 +1627,7 @@
           "margin": 42.0,
           "home_spread": -32.5,
           "home_covered": true,
-          "distance": 0.423
+          "distance": 0.421
         },
         {
           "season": 2024,
@@ -1651,7 +1639,7 @@
           "margin": 38.0,
           "home_spread": -29.5,
           "home_covered": true,
-          "distance": 0.476
+          "distance": 0.474
         },
         {
           "season": 2024,
@@ -1663,7 +1651,19 @@
           "margin": 15.0,
           "home_spread": -30.5,
           "home_covered": false,
-          "distance": 0.477
+          "distance": 0.475
+        },
+        {
+          "season": 2017,
+          "week": 1,
+          "home_team": "SMU",
+          "away_team": "__FCS__",
+          "home_points": 58,
+          "away_points": 14,
+          "margin": 44.0,
+          "home_spread": -30.0,
+          "home_covered": true,
+          "distance": 0.525
         }
       ],
       "confidence_flags": [
@@ -1672,8 +1672,8 @@
         "Books disagree by 3.0 pts - market unsettled"
       ],
       "vs_market": {
-        "margin": -2.0,
-        "total": -5.1
+        "margin": -0.3,
+        "total": -2.8
       },
       "market_spread": -31.5,
       "market_total": 55.5,
@@ -1696,11 +1696,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 42,
-        "away_points": 9,
-        "margin": 33.0,
-        "total": 51.3,
-        "home_win_prob": 0.9777
+        "home_points": 43,
+        "away_points": 8,
+        "margin": 34.5,
+        "total": 51.4,
+        "home_win_prob": 0.9727
       },
       "comps": {
         "n": 200,
@@ -1736,7 +1736,7 @@
           "margin": 23.0,
           "home_spread": -29.5,
           "home_covered": false,
-          "distance": 0.156
+          "distance": 0.152
         },
         {
           "season": 2022,
@@ -1748,7 +1748,7 @@
           "margin": 26.0,
           "home_spread": -30.0,
           "home_covered": false,
-          "distance": 0.16
+          "distance": 0.156
         },
         {
           "season": 2024,
@@ -1760,7 +1760,7 @@
           "margin": 18.0,
           "home_spread": -30.5,
           "home_covered": false,
-          "distance": 0.202
+          "distance": 0.199
         },
         {
           "season": 2022,
@@ -1772,7 +1772,7 @@
           "margin": 21.0,
           "home_spread": -28.5,
           "home_covered": false,
-          "distance": 0.215
+          "distance": 0.212
         },
         {
           "season": 2019,
@@ -1784,7 +1784,7 @@
           "margin": 79.0,
           "home_spread": -29.0,
           "home_covered": true,
-          "distance": 0.224
+          "distance": 0.229
         }
       ],
       "confidence_flags": [
@@ -1792,8 +1792,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 3.5,
-        "total": -1.2
+        "margin": 5.0,
+        "total": -1.1
       },
       "market_spread": -29.5,
       "market_total": 52.5,
@@ -1818,9 +1818,9 @@
       "forecast": {
         "home_points": 40,
         "away_points": 12,
-        "margin": 27.9,
-        "total": 51.9,
-        "home_win_prob": 0.961
+        "margin": 28.3,
+        "total": 52.7,
+        "home_win_prob": 0.9502
       },
       "comps": {
         "n": 200,
@@ -1856,19 +1856,7 @@
           "margin": 49.0,
           "home_spread": -23.0,
           "home_covered": true,
-          "distance": 0.168
-        },
-        {
-          "season": 2019,
-          "week": 1,
-          "home_team": "North Texas",
-          "away_team": "__FCS__",
-          "home_points": 51,
-          "away_points": 31,
-          "margin": 20.0,
-          "home_spread": -23.0,
-          "home_covered": false,
-          "distance": 0.199
+          "distance": 0.17
         },
         {
           "season": 2023,
@@ -1880,7 +1868,7 @@
           "margin": 21.0,
           "home_spread": -22.5,
           "home_covered": false,
-          "distance": 0.203
+          "distance": 0.213
         },
         {
           "season": 2023,
@@ -1892,7 +1880,19 @@
           "margin": 4.0,
           "home_spread": -22.0,
           "home_covered": false,
-          "distance": 0.213
+          "distance": 0.223
+        },
+        {
+          "season": 2019,
+          "week": 1,
+          "home_team": "North Texas",
+          "away_team": "__FCS__",
+          "home_points": 51,
+          "away_points": 31,
+          "margin": 20.0,
+          "home_spread": -23.0,
+          "home_covered": false,
+          "distance": 0.257
         },
         {
           "season": 2022,
@@ -1904,7 +1904,7 @@
           "margin": 17.0,
           "home_spread": -21.5,
           "home_covered": false,
-          "distance": 0.273
+          "distance": 0.28
         }
       ],
       "confidence_flags": [
@@ -1912,8 +1912,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 5.4,
-        "total": -9.6
+        "margin": 5.8,
+        "total": -8.8
       },
       "market_spread": -22.5,
       "market_total": 61.5,
@@ -1936,17 +1936,17 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 38,
+        "home_points": 39,
         "away_points": 13,
-        "margin": 24.6,
-        "total": 51.1,
-        "home_win_prob": 0.9447
+        "margin": 25.5,
+        "total": 52.3,
+        "home_win_prob": 0.9348
       },
       "comps": {
         "n": 200,
         "cover_rate": 0.515,
         "home_cover_by": 13.8,
-        "away_cover_by": 12.1,
+        "away_cover_by": 11.9,
         "home_blowout": 0.655,
         "away_blowout": 0.025,
         "cover_n": 196,
@@ -1963,7 +1963,7 @@
         "home_win_rate": 0.91,
         "over_rate": 0.395,
         "agreement": 0.91,
-        "price_spread": 7.0
+        "price_spread": 6.9
       },
       "comp_examples": [
         {
@@ -1988,7 +1988,7 @@
           "margin": 21.0,
           "home_spread": -15.0,
           "home_covered": true,
-          "distance": 0.266
+          "distance": 0.268
         },
         {
           "season": 2022,
@@ -2000,7 +2000,7 @@
           "margin": 31.0,
           "home_spread": -15.0,
           "home_covered": true,
-          "distance": 0.306
+          "distance": 0.303
         },
         {
           "season": 2024,
@@ -2012,7 +2012,7 @@
           "margin": 24.0,
           "home_spread": -15.5,
           "home_covered": true,
-          "distance": 0.316
+          "distance": 0.313
         },
         {
           "season": 2022,
@@ -2024,7 +2024,7 @@
           "margin": 41.0,
           "home_spread": -13.5,
           "home_covered": true,
-          "distance": 0.389
+          "distance": 0.387
         }
       ],
       "confidence_flags": [
@@ -2032,8 +2032,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 10.1,
-        "total": -0.4
+        "margin": 11.0,
+        "total": 0.8
       },
       "market_spread": -14.5,
       "market_total": 51.5,
@@ -2056,11 +2056,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 55,
-        "away_points": 1,
-        "margin": 53.3,
-        "total": 55.9,
-        "home_win_prob": 0.995
+        "home_points": 54,
+        "away_points": 4,
+        "margin": 50.3,
+        "total": 58.1,
+        "home_win_prob": 0.9943
       },
       "comps": {
         "n": 200,
@@ -2096,7 +2096,7 @@
           "margin": 29.0,
           "home_spread": -50.8,
           "home_covered": false,
-          "distance": 0.434
+          "distance": 0.447
         },
         {
           "season": 2018,
@@ -2108,7 +2108,7 @@
           "margin": 41.0,
           "home_spread": -50.5,
           "home_covered": false,
-          "distance": 0.518
+          "distance": 0.519
         },
         {
           "season": 2023,
@@ -2120,7 +2120,7 @@
           "margin": 41.0,
           "home_spread": -50.5,
           "home_covered": false,
-          "distance": 0.593
+          "distance": 0.603
         },
         {
           "season": 2025,
@@ -2132,7 +2132,7 @@
           "margin": 55.0,
           "home_spread": -46.8,
           "home_covered": true,
-          "distance": 0.606
+          "distance": 0.615
         },
         {
           "season": 2025,
@@ -2144,7 +2144,7 @@
           "margin": 45.0,
           "home_spread": -47.0,
           "home_covered": false,
-          "distance": 0.695
+          "distance": 0.703
         }
       ],
       "confidence_flags": [
@@ -2152,8 +2152,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 3.8,
-        "total": 0.4
+        "margin": 0.8,
+        "total": 2.6
       },
       "market_spread": -49.5,
       "market_total": 55.5,
@@ -2176,11 +2176,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 36,
+        "home_points": 37,
         "away_points": 14,
-        "margin": 21.9,
-        "total": 50.9,
-        "home_win_prob": 0.9267
+        "margin": 22.7,
+        "total": 51.2,
+        "home_win_prob": 0.9153
       },
       "comps": {
         "n": 200,
@@ -2207,6 +2207,30 @@
       },
       "comp_examples": [
         {
+          "season": 2019,
+          "week": 1,
+          "home_team": "Navy",
+          "away_team": "__FCS__",
+          "home_points": 45,
+          "away_points": 7,
+          "margin": 38.0,
+          "home_spread": -21.5,
+          "home_covered": true,
+          "distance": 0.42
+        },
+        {
+          "season": 2021,
+          "week": 1,
+          "home_team": "UTEP",
+          "away_team": "__FCS__",
+          "home_points": 38,
+          "away_points": 28,
+          "margin": 10.0,
+          "home_spread": -20.5,
+          "home_covered": false,
+          "distance": 0.437
+        },
+        {
           "season": 2016,
           "week": 1,
           "home_team": "Nevada",
@@ -2219,30 +2243,6 @@
           "distance": 0.437
         },
         {
-          "season": 2019,
-          "week": 1,
-          "home_team": "Navy",
-          "away_team": "__FCS__",
-          "home_points": 45,
-          "away_points": 7,
-          "margin": 38.0,
-          "home_spread": -21.5,
-          "home_covered": true,
-          "distance": 0.438
-        },
-        {
-          "season": 2021,
-          "week": 1,
-          "home_team": "UTEP",
-          "away_team": "__FCS__",
-          "home_points": 38,
-          "away_points": 28,
-          "margin": 10.0,
-          "home_spread": -20.5,
-          "home_covered": false,
-          "distance": 0.439
-        },
-        {
           "season": 2023,
           "week": 1,
           "home_team": "Jacksonville State",
@@ -2252,7 +2252,7 @@
           "margin": 46.0,
           "home_spread": -20.2,
           "home_covered": true,
-          "distance": 0.445
+          "distance": 0.444
         },
         {
           "season": 2023,
@@ -2264,7 +2264,7 @@
           "margin": 37.0,
           "home_spread": -21.0,
           "home_covered": true,
-          "distance": 0.445
+          "distance": 0.444
         }
       ],
       "confidence_flags": [
@@ -2272,8 +2272,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 0.9,
-        "total": -2.6
+        "margin": 1.7,
+        "total": -2.3
       },
       "market_spread": -21.0,
       "market_total": 53.5,
@@ -2296,24 +2296,24 @@
       "away_team": "Baylor",
       "neutral_site": true,
       "forecast": {
-        "home_points": 26,
-        "away_points": 24,
-        "margin": 1.3,
-        "total": 50.3,
-        "home_win_prob": 0.5524
+        "home_points": 28,
+        "away_points": 25,
+        "margin": 3.5,
+        "total": 52.7,
+        "home_win_prob": 0.6091
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.513,
-        "home_cover_by": 11.9,
+        "cover_rate": 0.508,
+        "home_cover_by": 11.7,
         "away_cover_by": 11.4,
-        "home_blowout": 0.325,
+        "home_blowout": 0.315,
         "away_blowout": 0.105,
         "cover_n": 199,
         "over_n": 197,
-        "calibrated_rate": 0.513,
+        "calibrated_rate": 0.508,
         "side": "home",
-        "confidence": 0.513,
+        "confidence": 0.508,
         "historical_rate": null,
         "historical_n": null,
         "margin_median": 7.0,
@@ -2384,7 +2384,7 @@
           "margin": 4.0,
           "home_spread": -7.0,
           "home_covered": false,
-          "distance": 0.642
+          "distance": 0.709
         }
       ],
       "confidence_flags": [
@@ -2392,8 +2392,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -5.2,
-        "total": -8.2
+        "margin": -3.0,
+        "total": -5.8
       },
       "market_spread": -6.5,
       "market_total": 58.5,
@@ -2417,35 +2417,47 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 33,
-        "away_points": 17,
-        "margin": 16.5,
-        "total": 49.7,
-        "home_win_prob": 0.873
+        "away_points": 15,
+        "margin": 18.1,
+        "total": 47.3,
+        "home_win_prob": 0.8717
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.503,
+        "cover_rate": 0.497,
         "home_cover_by": 13.0,
-        "away_cover_by": 12.6,
-        "home_blowout": 0.695,
-        "away_blowout": 0.015,
+        "away_cover_by": 12.7,
+        "home_blowout": 0.69,
+        "away_blowout": 0.02,
         "cover_n": 199,
-        "over_n": 172,
-        "calibrated_rate": 0.503,
-        "side": "home",
+        "over_n": 173,
+        "calibrated_rate": 0.497,
+        "side": "away",
         "confidence": 0.503,
         "historical_rate": null,
         "historical_n": null,
-        "margin_median": 21.5,
+        "margin_median": 21.0,
         "margin_p25": 10.0,
-        "margin_p75": 34.2,
+        "margin_p75": 33.2,
         "total_median": 55.5,
         "home_win_rate": 0.93,
-        "over_rate": 0.488,
+        "over_rate": 0.486,
         "agreement": 0.93,
         "price_spread": 4.7
       },
       "comp_examples": [
+        {
+          "season": 2019,
+          "week": 1,
+          "home_team": "Bowling Green",
+          "away_team": "__FCS__",
+          "home_points": 46,
+          "away_points": 3,
+          "margin": 43.0,
+          "home_spread": -24.0,
+          "home_covered": true,
+          "distance": 1.003
+        },
         {
           "season": 2018,
           "week": 1,
@@ -2456,43 +2468,7 @@
           "margin": 3.0,
           "home_spread": -22.5,
           "home_covered": false,
-          "distance": 1.029
-        },
-        {
-          "season": 2022,
-          "week": 1,
-          "home_team": "UConn",
-          "away_team": "__FCS__",
-          "home_points": 28,
-          "away_points": 3,
-          "margin": 25.0,
-          "home_spread": -20.5,
-          "home_covered": true,
-          "distance": 1.411
-        },
-        {
-          "season": 2019,
-          "week": 1,
-          "home_team": "UConn",
-          "away_team": "__FCS__",
-          "home_points": 24,
-          "away_points": 21,
-          "margin": 3.0,
-          "home_spread": -23.0,
-          "home_covered": false,
-          "distance": 1.456
-        },
-        {
-          "season": 2017,
-          "week": 1,
-          "home_team": "UConn",
-          "away_team": "__FCS__",
-          "home_points": 27,
-          "away_points": 20,
-          "margin": 7.0,
-          "home_spread": -22.5,
-          "home_covered": false,
-          "distance": 1.459
+          "distance": 1.043
         },
         {
           "season": 2019,
@@ -2504,7 +2480,31 @@
           "margin": 2.0,
           "home_spread": -17.5,
           "home_covered": false,
-          "distance": 1.486
+          "distance": 1.394
+        },
+        {
+          "season": 2022,
+          "week": 1,
+          "home_team": "UConn",
+          "away_team": "__FCS__",
+          "home_points": 28,
+          "away_points": 3,
+          "margin": 25.0,
+          "home_spread": -20.5,
+          "home_covered": true,
+          "distance": 1.426
+        },
+        {
+          "season": 2019,
+          "week": 1,
+          "home_team": "UConn",
+          "away_team": "__FCS__",
+          "home_points": 24,
+          "away_points": 21,
+          "margin": 3.0,
+          "home_spread": -23.0,
+          "home_covered": false,
+          "distance": 1.471
         }
       ],
       "confidence_flags": [
@@ -2512,8 +2512,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -4.0,
-        "total": 0.2
+        "margin": -2.4,
+        "total": -2.2
       },
       "market_spread": -20.5,
       "market_total": 49.5,
@@ -2537,15 +2537,15 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 27,
-        "away_points": 23,
-        "margin": 4.1,
-        "total": 50.1,
-        "home_win_prob": 0.6277
+        "away_points": 24,
+        "margin": 2.7,
+        "total": 51.2,
+        "home_win_prob": 0.5886
       },
       "comps": {
         "n": 200,
         "cover_rate": 0.515,
-        "home_cover_by": 11.6,
+        "home_cover_by": 11.5,
         "away_cover_by": 11.5,
         "home_blowout": 0.345,
         "away_blowout": 0.095,
@@ -2561,7 +2561,7 @@
         "margin_p75": 17.0,
         "total_median": 52.0,
         "home_win_rate": 0.705,
-        "over_rate": 0.401,
+        "over_rate": 0.406,
         "agreement": 0.705,
         "price_spread": 2.4
       },
@@ -2576,7 +2576,7 @@
           "margin": -14.0,
           "home_spread": -6.0,
           "home_covered": false,
-          "distance": 0.211
+          "distance": 0.21
         },
         {
           "season": 2025,
@@ -2600,7 +2600,7 @@
           "margin": 30.0,
           "home_spread": -7.0,
           "home_covered": true,
-          "distance": 0.249
+          "distance": 0.248
         },
         {
           "season": 2018,
@@ -2612,7 +2612,7 @@
           "margin": -21.0,
           "home_spread": -7.0,
           "home_covered": false,
-          "distance": 0.321
+          "distance": 0.323
         },
         {
           "season": 2021,
@@ -2632,8 +2632,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -2.9,
-        "total": -1.4
+        "margin": -4.3,
+        "total": -0.3
       },
       "market_spread": -7.0,
       "market_total": 51.5,
@@ -2657,32 +2657,32 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 29,
-        "away_points": 21,
-        "margin": 7.8,
-        "total": 49.4,
-        "home_win_prob": 0.7197
+        "away_points": 22,
+        "margin": 7.0,
+        "total": 51.3,
+        "home_win_prob": 0.6897
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.495,
-        "home_cover_by": 13.1,
+        "cover_rate": 0.49,
+        "home_cover_by": 13.0,
         "away_cover_by": 11.6,
-        "home_blowout": 0.385,
+        "home_blowout": 0.38,
         "away_blowout": 0.085,
         "cover_n": 198,
         "over_n": 196,
-        "calibrated_rate": 0.495,
+        "calibrated_rate": 0.49,
         "side": "away",
-        "confidence": 0.505,
+        "confidence": 0.51,
         "historical_rate": null,
         "historical_n": null,
         "margin_median": 7.0,
-        "margin_p25": -2.0,
+        "margin_p25": -2.2,
         "margin_p75": 20.0,
         "total_median": 53.0,
-        "home_win_rate": 0.725,
+        "home_win_rate": 0.72,
         "over_rate": 0.444,
-        "agreement": 0.725,
+        "agreement": 0.72,
         "price_spread": 3.2
       },
       "comp_examples": [
@@ -2696,7 +2696,7 @@
           "margin": 17.0,
           "home_spread": -9.5,
           "home_covered": true,
-          "distance": 0.369
+          "distance": 0.373
         },
         {
           "season": 2023,
@@ -2708,7 +2708,7 @@
           "margin": -3.0,
           "home_spread": -8.5,
           "home_covered": false,
-          "distance": 0.386
+          "distance": 0.39
         },
         {
           "season": 2015,
@@ -2720,7 +2720,7 @@
           "margin": 35.0,
           "home_spread": -9.0,
           "home_covered": true,
-          "distance": 0.408
+          "distance": 0.412
         },
         {
           "season": 2023,
@@ -2732,7 +2732,7 @@
           "margin": 5.0,
           "home_spread": -10.0,
           "home_covered": false,
-          "distance": 0.422
+          "distance": 0.426
         },
         {
           "season": 2020,
@@ -2744,7 +2744,7 @@
           "margin": 23.0,
           "home_spread": -10.0,
           "home_covered": true,
-          "distance": 0.428
+          "distance": 0.431
         }
       ],
       "confidence_flags": [
@@ -2752,8 +2752,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -1.7,
-        "total": -2.1
+        "margin": -2.5,
+        "total": -0.2
       },
       "market_spread": -9.5,
       "market_total": 51.5,
@@ -2776,11 +2776,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 41,
+        "home_points": 42,
         "away_points": 10,
-        "margin": 30.6,
-        "total": 51.6,
-        "home_win_prob": 0.9711
+        "margin": 32.5,
+        "total": 52.1,
+        "home_win_prob": 0.9668
       },
       "comps": {
         "n": 200,
@@ -2803,7 +2803,7 @@
         "home_win_rate": 0.985,
         "over_rate": 0.487,
         "agreement": 0.985,
-        "price_spread": 5.2
+        "price_spread": 5.1
       },
       "comp_examples": [
         {
@@ -2816,7 +2816,7 @@
           "margin": 15.0,
           "home_spread": -30.5,
           "home_covered": false,
-          "distance": 0.184
+          "distance": 0.183
         },
         {
           "season": 2024,
@@ -2828,7 +2828,7 @@
           "margin": 42.0,
           "home_spread": -32.5,
           "home_covered": true,
-          "distance": 0.219
+          "distance": 0.218
         },
         {
           "season": 2025,
@@ -2840,7 +2840,7 @@
           "margin": 29.0,
           "home_spread": -30.8,
           "home_covered": false,
-          "distance": 0.226
+          "distance": 0.225
         },
         {
           "season": 2024,
@@ -2852,7 +2852,7 @@
           "margin": 39.0,
           "home_spread": -31.5,
           "home_covered": true,
-          "distance": 0.279
+          "distance": 0.278
         },
         {
           "season": 2024,
@@ -2864,7 +2864,7 @@
           "margin": 42.0,
           "home_spread": -33.5,
           "home_covered": true,
-          "distance": 0.358
+          "distance": 0.357
         }
       ],
       "confidence_flags": [
@@ -2872,8 +2872,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -0.9,
-        "total": 1.1
+        "margin": 1.0,
+        "total": 1.6
       },
       "market_spread": -31.5,
       "market_total": 50.5,
@@ -2896,11 +2896,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 43,
-        "away_points": 10,
-        "margin": 32.6,
-        "total": 53.1,
-        "home_win_prob": 0.9767
+        "home_points": 44,
+        "away_points": 11,
+        "margin": 33.3,
+        "total": 54.7,
+        "home_win_prob": 0.9694
       },
       "comps": {
         "n": 200,
@@ -2936,7 +2936,7 @@
           "margin": 66.0,
           "home_spread": -42.0,
           "home_covered": true,
-          "distance": 0.638
+          "distance": 0.648
         },
         {
           "season": 2022,
@@ -2948,7 +2948,7 @@
           "margin": 52.0,
           "home_spread": -39.5,
           "home_covered": true,
-          "distance": 0.676
+          "distance": 0.69
         },
         {
           "season": 2024,
@@ -2960,7 +2960,7 @@
           "margin": 21.0,
           "home_spread": -38.5,
           "home_covered": false,
-          "distance": 0.845
+          "distance": 0.856
         },
         {
           "season": 2016,
@@ -2972,7 +2972,7 @@
           "margin": 50.0,
           "home_spread": -40.0,
           "home_covered": true,
-          "distance": 0.891
+          "distance": 0.897
         },
         {
           "season": 2017,
@@ -2984,7 +2984,7 @@
           "margin": -3.0,
           "home_spread": -45.0,
           "home_covered": false,
-          "distance": 0.943
+          "distance": 0.95
         }
       ],
       "confidence_flags": [
@@ -2992,8 +2992,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -8.9,
-        "total": -1.4
+        "margin": -8.2,
+        "total": 0.2
       },
       "market_spread": -41.5,
       "market_total": 54.5,
@@ -3017,47 +3017,35 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 36,
-        "away_points": 16,
-        "margin": 20.4,
-        "total": 52.5,
-        "home_win_prob": 0.9142
+        "away_points": 14,
+        "margin": 21.5,
+        "total": 49.7,
+        "home_win_prob": 0.9058
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.47,
+        "cover_rate": 0.475,
         "home_cover_by": 12.7,
         "away_cover_by": 12.1,
-        "home_blowout": 0.73,
+        "home_blowout": 0.735,
         "away_blowout": 0.01,
         "cover_n": 198,
         "over_n": 196,
-        "calibrated_rate": 0.47,
+        "calibrated_rate": 0.475,
         "side": "away",
-        "confidence": 0.53,
+        "confidence": 0.525,
         "historical_rate": null,
         "historical_n": null,
-        "margin_median": 22.5,
-        "margin_p25": 12.8,
+        "margin_median": 23.0,
+        "margin_p25": 13.0,
         "margin_p75": 35.0,
         "total_median": 55.0,
-        "home_win_rate": 0.92,
+        "home_win_rate": 0.925,
         "over_rate": 0.5,
-        "agreement": 0.92,
+        "agreement": 0.925,
         "price_spread": 3.3
       },
       "comp_examples": [
-        {
-          "season": 2016,
-          "week": 1,
-          "home_team": "Penn State",
-          "away_team": "Kent State",
-          "home_points": 33,
-          "away_points": 13,
-          "margin": 20.0,
-          "home_spread": -23.5,
-          "home_covered": false,
-          "distance": 0.444
-        },
         {
           "season": 2019,
           "week": 1,
@@ -3068,7 +3056,19 @@
           "margin": -8.0,
           "home_spread": -24.5,
           "home_covered": false,
-          "distance": 0.466
+          "distance": 0.27
+        },
+        {
+          "season": 2016,
+          "week": 1,
+          "home_team": "Penn State",
+          "away_team": "Kent State",
+          "home_points": 33,
+          "away_points": 13,
+          "margin": 20.0,
+          "home_spread": -23.5,
+          "home_covered": false,
+          "distance": 0.448
         },
         {
           "season": 2025,
@@ -3080,7 +3080,7 @@
           "margin": 13.0,
           "home_spread": -23.5,
           "home_covered": false,
-          "distance": 0.491
+          "distance": 0.503
         },
         {
           "season": 2024,
@@ -3092,19 +3092,19 @@
           "margin": 14.0,
           "home_spread": -24.0,
           "home_covered": false,
-          "distance": 0.497
+          "distance": 0.509
         },
         {
-          "season": 2024,
+          "season": 2017,
           "week": 1,
-          "home_team": "Kentucky",
-          "away_team": "Southern Miss",
-          "home_points": 31,
-          "away_points": 0,
-          "margin": 31.0,
-          "home_spread": -25.5,
-          "home_covered": true,
-          "distance": 0.502
+          "home_team": "Minnesota",
+          "away_team": "Buffalo",
+          "home_points": 17,
+          "away_points": 7,
+          "margin": 10.0,
+          "home_spread": -23.0,
+          "home_covered": false,
+          "distance": 0.511
         }
       ],
       "confidence_flags": [
@@ -3112,8 +3112,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -4.1,
-        "total": -0.0
+        "margin": -3.0,
+        "total": -2.8
       },
       "market_spread": -24.5,
       "market_total": 52.5,
@@ -3136,30 +3136,30 @@
       "away_team": "Marshall",
       "neutral_site": false,
       "forecast": {
-        "home_points": 32,
-        "away_points": 17,
-        "margin": 14.6,
-        "total": 49.5,
-        "home_win_prob": 0.8465
+        "home_points": 34,
+        "away_points": 18,
+        "margin": 16.6,
+        "total": 52.0,
+        "home_win_prob": 0.8534
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.477,
+        "cover_rate": 0.482,
         "home_cover_by": 12.8,
-        "away_cover_by": 13.5,
+        "away_cover_by": 13.6,
         "home_blowout": 0.69,
         "away_blowout": 0.025,
         "cover_n": 199,
         "over_n": 197,
-        "calibrated_rate": 0.477,
+        "calibrated_rate": 0.482,
         "side": "away",
-        "confidence": 0.523,
+        "confidence": 0.518,
         "historical_rate": null,
         "historical_n": null,
-        "margin_median": 21.5,
+        "margin_median": 22.0,
         "margin_p25": 10.0,
-        "margin_p75": 33.0,
-        "total_median": 55.5,
+        "margin_p75": 33.2,
+        "total_median": 56.5,
         "home_win_rate": 0.9,
         "over_rate": 0.523,
         "agreement": 0.9,
@@ -3176,7 +3176,7 @@
           "margin": 21.0,
           "home_spread": -23.5,
           "home_covered": false,
-          "distance": 0.041
+          "distance": 0.039
         },
         {
           "season": 2024,
@@ -3188,7 +3188,7 @@
           "margin": 31.0,
           "home_spread": -23.5,
           "home_covered": true,
-          "distance": 0.153
+          "distance": 0.152
         },
         {
           "season": 2017,
@@ -3200,7 +3200,7 @@
           "margin": 6.0,
           "home_spread": -24.0,
           "home_covered": false,
-          "distance": 0.22
+          "distance": 0.221
         },
         {
           "season": 2024,
@@ -3224,7 +3224,7 @@
           "margin": 21.0,
           "home_spread": -24.0,
           "home_covered": false,
-          "distance": 0.298
+          "distance": 0.297
         }
       ],
       "confidence_flags": [
@@ -3232,8 +3232,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -8.9,
-        "total": -4.0
+        "margin": -6.9,
+        "total": -1.5
       },
       "market_spread": -23.5,
       "market_total": 53.5,
@@ -3256,11 +3256,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 50,
-        "away_points": 3,
-        "margin": 46.9,
-        "total": 53.8,
-        "home_win_prob": 0.995
+        "home_points": 49,
+        "away_points": 4,
+        "margin": 45.3,
+        "total": 53.3,
+        "home_win_prob": 0.9906
       },
       "comps": {
         "n": 200,
@@ -3296,7 +3296,7 @@
           "margin": 28.0,
           "home_spread": -48.0,
           "home_covered": false,
-          "distance": 0.428
+          "distance": 0.431
         },
         {
           "season": 2018,
@@ -3308,7 +3308,7 @@
           "margin": 41.0,
           "home_spread": -50.5,
           "home_covered": false,
-          "distance": 0.495
+          "distance": 0.498
         },
         {
           "season": 2016,
@@ -3320,7 +3320,7 @@
           "margin": 48.0,
           "home_spread": -48.5,
           "home_covered": false,
-          "distance": 0.509
+          "distance": 0.517
         },
         {
           "season": 2024,
@@ -3332,7 +3332,7 @@
           "margin": 51.0,
           "home_spread": -50.5,
           "home_covered": true,
-          "distance": 0.519
+          "distance": 0.534
         },
         {
           "season": 2025,
@@ -3344,7 +3344,7 @@
           "margin": 49.0,
           "home_spread": -48.5,
           "home_covered": true,
-          "distance": 0.523
+          "distance": 0.538
         }
       ],
       "confidence_flags": [
@@ -3352,8 +3352,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -2.6,
-        "total": -12.7
+        "margin": -4.2,
+        "total": -13.2
       },
       "market_spread": -49.5,
       "market_total": 66.5,
@@ -3376,11 +3376,11 @@
       "away_team": "Texas State",
       "neutral_site": false,
       "forecast": {
-        "home_points": 38,
-        "away_points": 16,
-        "margin": 22.0,
-        "total": 53.0,
-        "home_win_prob": 0.9271
+        "home_points": 39,
+        "away_points": 17,
+        "margin": 21.9,
+        "total": 55.2,
+        "home_win_prob": 0.9088
       },
       "comps": {
         "n": 200,
@@ -3416,7 +3416,7 @@
           "margin": 34.0,
           "home_spread": -30.8,
           "home_covered": true,
-          "distance": 0.321
+          "distance": 0.322
         },
         {
           "season": 2023,
@@ -3428,7 +3428,7 @@
           "margin": 21.0,
           "home_spread": -28.0,
           "home_covered": false,
-          "distance": 0.478
+          "distance": 0.484
         },
         {
           "season": 2023,
@@ -3440,7 +3440,7 @@
           "margin": 28.0,
           "home_spread": -30.5,
           "home_covered": false,
-          "distance": 0.487
+          "distance": 0.493
         },
         {
           "season": 2021,
@@ -3452,19 +3452,19 @@
           "margin": 5.0,
           "home_spread": -31.2,
           "home_covered": false,
-          "distance": 0.519
+          "distance": 0.525
         },
         {
-          "season": 2021,
+          "season": 2016,
           "week": 1,
-          "home_team": "Kentucky",
-          "away_team": "UL Monroe",
-          "home_points": 45,
-          "away_points": 10,
-          "margin": 35.0,
-          "home_spread": -31.0,
-          "home_covered": true,
-          "distance": 0.533
+          "home_team": "Mississippi State",
+          "away_team": "South Alabama",
+          "home_points": 20,
+          "away_points": 21,
+          "margin": -1.0,
+          "home_spread": -28.5,
+          "home_covered": false,
+          "distance": 0.538
         }
       ],
       "confidence_flags": [
@@ -3472,8 +3472,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -7.5,
-        "total": -7.5
+        "margin": -7.6,
+        "total": -5.3
       },
       "market_spread": -29.5,
       "market_total": 60.5,
@@ -3497,10 +3497,10 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 44,
-        "away_points": 10,
-        "margin": 34.1,
-        "total": 53.7,
-        "home_win_prob": 0.9803
+        "away_points": 11,
+        "margin": 32.8,
+        "total": 54.7,
+        "home_win_prob": 0.9678
       },
       "comps": {
         "n": 200,
@@ -3529,6 +3529,30 @@
         {
           "season": 2019,
           "week": 1,
+          "home_team": "Arkansas",
+          "away_team": "__FCS__",
+          "home_points": 20,
+          "away_points": 13,
+          "margin": 7.0,
+          "home_spread": -29.5,
+          "home_covered": false,
+          "distance": 0.328
+        },
+        {
+          "season": 2019,
+          "week": 1,
+          "home_team": "Texas Tech",
+          "away_team": "__FCS__",
+          "home_points": 45,
+          "away_points": 10,
+          "margin": 35.0,
+          "home_spread": -28.0,
+          "home_covered": true,
+          "distance": 0.45
+        },
+        {
+          "season": 2019,
+          "week": 1,
           "home_team": "Maryland",
           "away_team": "__FCS__",
           "home_points": 79,
@@ -3536,19 +3560,7 @@
           "margin": 79.0,
           "home_spread": -29.0,
           "home_covered": true,
-          "distance": 0.535
-        },
-        {
-          "season": 2024,
-          "week": 1,
-          "home_team": "Tulane",
-          "away_team": "__FCS__",
-          "home_points": 52,
-          "away_points": 0,
-          "margin": 52.0,
-          "home_spread": -28.5,
-          "home_covered": true,
-          "distance": 0.539
+          "distance": 0.536
         },
         {
           "season": 2016,
@@ -3560,7 +3572,7 @@
           "margin": -3.0,
           "home_spread": -27.5,
           "home_covered": false,
-          "distance": 0.541
+          "distance": 0.55
         },
         {
           "season": 2016,
@@ -3572,19 +3584,7 @@
           "margin": 34.0,
           "home_spread": -30.5,
           "home_covered": true,
-          "distance": 0.55
-        },
-        {
-          "season": 2022,
-          "week": 1,
-          "home_team": "Washington State",
-          "away_team": "__FCS__",
-          "home_points": 24,
-          "away_points": 17,
-          "margin": 7.0,
-          "home_spread": -28.5,
-          "home_covered": false,
-          "distance": 0.554
+          "distance": 0.553
         }
       ],
       "confidence_flags": [
@@ -3592,8 +3592,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 5.6,
-        "total": -5.8
+        "margin": 4.3,
+        "total": -4.8
       },
       "market_spread": -28.5,
       "market_total": 59.5,
@@ -3617,32 +3617,32 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 21,
-        "away_points": 30,
-        "margin": -8.4,
-        "total": 51.2,
-        "home_win_prob": 0.2932
+        "away_points": 31,
+        "margin": -10.4,
+        "total": 52.2,
+        "home_win_prob": 0.2764
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.472,
+        "cover_rate": 0.477,
         "home_cover_by": 12.9,
-        "away_cover_by": 12.6,
+        "away_cover_by": 12.7,
         "home_blowout": 0.06,
         "away_blowout": 0.44,
         "cover_n": 193,
         "over_n": 199,
-        "calibrated_rate": 0.472,
+        "calibrated_rate": 0.477,
         "side": "away",
-        "confidence": 0.528,
+        "confidence": 0.523,
         "historical_rate": null,
         "historical_n": null,
         "margin_median": -10.0,
         "margin_p25": -22.0,
         "margin_p75": -1.0,
-        "total_median": 57.5,
-        "home_win_rate": 0.235,
-        "over_rate": 0.518,
-        "agreement": 0.765,
+        "total_median": 57.0,
+        "home_win_rate": 0.24,
+        "over_rate": 0.513,
+        "agreement": 0.76,
         "price_spread": 3.5
       },
       "comp_examples": [
@@ -3656,7 +3656,7 @@
           "margin": 16.0,
           "home_spread": 14.0,
           "home_covered": true,
-          "distance": 0.794
+          "distance": 0.787
         },
         {
           "season": 2017,
@@ -3680,7 +3680,7 @@
           "margin": -2.0,
           "home_spread": 13.5,
           "home_covered": true,
-          "distance": 0.838
+          "distance": 0.839
         },
         {
           "season": 2021,
@@ -3692,7 +3692,7 @@
           "margin": -2.0,
           "home_spread": 14.0,
           "home_covered": true,
-          "distance": 0.931
+          "distance": 0.933
         },
         {
           "season": 2025,
@@ -3704,7 +3704,7 @@
           "margin": -1.0,
           "home_spread": 13.0,
           "home_covered": true,
-          "distance": 0.987
+          "distance": 0.989
         }
       ],
       "confidence_flags": [
@@ -3712,8 +3712,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 5.1,
-        "total": -6.3
+        "margin": 3.1,
+        "total": -5.3
       },
       "market_spread": 13.5,
       "market_total": 57.5,
@@ -3736,11 +3736,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 51,
-        "away_points": 6,
-        "margin": 44.7,
-        "total": 56.8,
-        "home_win_prob": 0.994
+        "home_points": 50,
+        "away_points": 7,
+        "margin": 43.6,
+        "total": 56.6,
+        "home_win_prob": 0.9889
       },
       "comps": {
         "n": 200,
@@ -3776,7 +3776,7 @@
           "margin": 59.0,
           "home_spread": -40.5,
           "home_covered": true,
-          "distance": 0.259
+          "distance": 0.272
         },
         {
           "season": 2022,
@@ -3788,7 +3788,7 @@
           "margin": 52.0,
           "home_spread": -40.5,
           "home_covered": true,
-          "distance": 0.283
+          "distance": 0.295
         },
         {
           "season": 2017,
@@ -3800,7 +3800,19 @@
           "margin": 31.0,
           "home_spread": -40.5,
           "home_covered": false,
-          "distance": 0.296
+          "distance": 0.302
+        },
+        {
+          "season": 2019,
+          "week": 1,
+          "home_team": "Temple",
+          "away_team": "__FCS__",
+          "home_points": 56,
+          "away_points": 12,
+          "margin": 44.0,
+          "home_spread": -42.0,
+          "home_covered": true,
+          "distance": 0.302
         },
         {
           "season": 2023,
@@ -3812,19 +3824,7 @@
           "margin": 65.0,
           "home_spread": -40.0,
           "home_covered": true,
-          "distance": 0.307
-        },
-        {
-          "season": 2021,
-          "week": 1,
-          "home_team": "Toledo",
-          "away_team": "__FCS__",
-          "home_points": 49,
-          "away_points": 10,
-          "margin": 39.0,
-          "home_spread": -39.5,
-          "home_covered": false,
-          "distance": 0.308
+          "distance": 0.312
         }
       ],
       "confidence_flags": [
@@ -3832,8 +3832,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 4.2,
-        "total": -6.7
+        "margin": 3.1,
+        "total": -6.9
       },
       "market_spread": -40.5,
       "market_total": 63.5,
@@ -3857,10 +3857,10 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 42,
-        "away_points": 11,
-        "margin": 30.8,
-        "total": 52.2,
-        "home_win_prob": 0.9717
+        "away_points": 10,
+        "margin": 32.2,
+        "total": 51.2,
+        "home_win_prob": 0.9659
       },
       "comps": {
         "n": 200,
@@ -3896,7 +3896,7 @@
           "margin": 34.0,
           "home_spread": -33.2,
           "home_covered": true,
-          "distance": 0.401
+          "distance": 0.399
         },
         {
           "season": 2017,
@@ -3908,7 +3908,7 @@
           "margin": 52.0,
           "home_spread": -30.0,
           "home_covered": true,
-          "distance": 0.527
+          "distance": 0.528
         },
         {
           "season": 2024,
@@ -3920,7 +3920,7 @@
           "margin": 63.0,
           "home_spread": -34.0,
           "home_covered": true,
-          "distance": 0.543
+          "distance": 0.541
         },
         {
           "season": 2024,
@@ -3932,7 +3932,7 @@
           "margin": 22.0,
           "home_spread": -29.0,
           "home_covered": false,
-          "distance": 0.555
+          "distance": 0.554
         },
         {
           "season": 2015,
@@ -3944,7 +3944,7 @@
           "margin": 35.0,
           "home_spread": -32.5,
           "home_covered": true,
-          "distance": 0.564
+          "distance": 0.566
         }
       ],
       "confidence_flags": [
@@ -3952,8 +3952,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -0.7,
-        "total": 7.7
+        "margin": 0.7,
+        "total": 6.7
       },
       "market_spread": -31.5,
       "market_total": 44.5,
@@ -3976,11 +3976,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 39,
-        "away_points": 13,
-        "margin": 26.1,
-        "total": 52.3,
-        "home_win_prob": 0.9527
+        "home_points": 40,
+        "away_points": 14,
+        "margin": 26.9,
+        "total": 54.0,
+        "home_win_prob": 0.9431
       },
       "comps": {
         "n": 200,
@@ -4016,7 +4016,7 @@
           "margin": 10.0,
           "home_spread": -20.0,
           "home_covered": false,
-          "distance": 0.148
+          "distance": 0.144
         },
         {
           "season": 2025,
@@ -4028,7 +4028,7 @@
           "margin": 42.0,
           "home_spread": -19.5,
           "home_covered": true,
-          "distance": 0.222
+          "distance": 0.22
         },
         {
           "season": 2020,
@@ -4040,7 +4040,7 @@
           "margin": 10.0,
           "home_spread": -21.0,
           "home_covered": false,
-          "distance": 0.28
+          "distance": 0.278
         },
         {
           "season": 2021,
@@ -4052,7 +4052,7 @@
           "margin": -20.0,
           "home_spread": -21.0,
           "home_covered": false,
-          "distance": 0.303
+          "distance": 0.301
         },
         {
           "season": 2025,
@@ -4064,7 +4064,7 @@
           "margin": 16.0,
           "home_spread": -19.5,
           "home_covered": false,
-          "distance": 0.311
+          "distance": 0.309
         }
       ],
       "confidence_flags": [
@@ -4072,8 +4072,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 6.6,
-        "total": 0.8
+        "margin": 7.4,
+        "total": 2.5
       },
       "market_spread": -19.5,
       "market_total": 51.5,
@@ -4096,18 +4096,18 @@
       "away_team": "Wyoming",
       "neutral_site": false,
       "forecast": {
-        "home_points": 24,
-        "away_points": 23,
-        "margin": 0.7,
-        "total": 47.0,
-        "home_win_prob": 0.5357
+        "home_points": 26,
+        "away_points": 25,
+        "margin": 1.0,
+        "total": 51.7,
+        "home_win_prob": 0.5469
       },
       "comps": {
         "n": 200,
         "cover_rate": 0.469,
         "home_cover_by": 11.2,
         "away_cover_by": 12.8,
-        "home_blowout": 0.215,
+        "home_blowout": 0.21,
         "away_blowout": 0.18,
         "cover_n": 196,
         "over_n": 197,
@@ -4118,12 +4118,12 @@
         "historical_n": null,
         "margin_median": 2.5,
         "margin_p25": -8.0,
-        "margin_p75": 10.2,
+        "margin_p75": 10.0,
         "total_median": 51.5,
         "home_win_rate": 0.515,
         "over_rate": 0.437,
         "agreement": 0.515,
-        "price_spread": 2.7
+        "price_spread": 2.8
       },
       "comp_examples": [
         {
@@ -4136,7 +4136,7 @@
           "margin": 23.0,
           "home_spread": -3.5,
           "home_covered": true,
-          "distance": 0.254
+          "distance": 0.256
         },
         {
           "season": 2021,
@@ -4172,7 +4172,7 @@
           "margin": -3.0,
           "home_spread": -0.5,
           "home_covered": false,
-          "distance": 0.527
+          "distance": 0.528
         },
         {
           "season": 2022,
@@ -4192,8 +4192,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -1.8,
-        "total": 0.5
+        "margin": -1.5,
+        "total": 5.2
       },
       "market_spread": -2.5,
       "market_total": 46.5,
@@ -4217,10 +4217,10 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 48,
-        "away_points": 7,
-        "margin": 41.8,
-        "total": 55.1,
-        "home_win_prob": 0.9917
+        "away_points": 6,
+        "margin": 42.7,
+        "total": 53.8,
+        "home_win_prob": 0.9879
       },
       "comps": {
         "n": 200,
@@ -4256,19 +4256,7 @@
           "margin": 44.0,
           "home_spread": -42.0,
           "home_covered": true,
-          "distance": 0.261
-        },
-        {
-          "season": 2022,
-          "week": 1,
-          "home_team": "Marshall",
-          "away_team": "__FCS__",
-          "home_points": 55,
-          "away_points": 3,
-          "margin": 52.0,
-          "home_spread": -40.5,
-          "home_covered": true,
-          "distance": 0.303
+          "distance": 0.106
         },
         {
           "season": 2018,
@@ -4280,7 +4268,19 @@
           "margin": 41.0,
           "home_spread": -43.0,
           "home_covered": false,
-          "distance": 0.312
+          "distance": 0.313
+        },
+        {
+          "season": 2022,
+          "week": 1,
+          "home_team": "Marshall",
+          "away_team": "__FCS__",
+          "home_points": 55,
+          "away_points": 3,
+          "margin": 52.0,
+          "home_spread": -40.5,
+          "home_covered": true,
+          "distance": 0.314
         },
         {
           "season": 2022,
@@ -4292,7 +4292,7 @@
           "margin": 59.0,
           "home_spread": -40.5,
           "home_covered": true,
-          "distance": 0.32
+          "distance": 0.33
         },
         {
           "season": 2022,
@@ -4304,7 +4304,7 @@
           "margin": 40.0,
           "home_spread": -42.0,
           "home_covered": false,
-          "distance": 0.328
+          "distance": 0.338
         }
       ],
       "confidence_flags": [
@@ -4312,8 +4312,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 0.3,
-        "total": 2.6
+        "margin": 1.2,
+        "total": 1.3
       },
       "market_spread": -41.5,
       "market_total": 52.5,
@@ -4337,26 +4337,26 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 40,
-        "away_points": 12,
-        "margin": 27.5,
-        "total": 52.2,
-        "home_win_prob": 0.9593
+        "away_points": 11,
+        "margin": 29.6,
+        "total": 50.7,
+        "home_win_prob": 0.9561
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.492,
-        "home_cover_by": 12.8,
+        "cover_rate": 0.497,
+        "home_cover_by": 12.7,
         "away_cover_by": 12.5,
         "home_blowout": 0.825,
         "away_blowout": 0.005,
         "cover_n": 199,
         "over_n": 151,
-        "calibrated_rate": 0.492,
+        "calibrated_rate": 0.497,
         "side": "away",
-        "confidence": 0.508,
+        "confidence": 0.503,
         "historical_rate": null,
         "historical_n": null,
-        "margin_median": 28.5,
+        "margin_median": 29.0,
         "margin_p25": 18.0,
         "margin_p75": 39.0,
         "total_median": 55.0,
@@ -4366,18 +4366,6 @@
         "price_spread": 4.9
       },
       "comp_examples": [
-        {
-          "season": 2019,
-          "week": 1,
-          "home_team": "UL Monroe",
-          "away_team": "__FCS__",
-          "home_points": 31,
-          "away_points": 9,
-          "margin": 22.0,
-          "home_spread": -28.0,
-          "home_covered": false,
-          "distance": 0.138
-        },
         {
           "season": 2017,
           "week": 1,
@@ -4391,6 +4379,18 @@
           "distance": 0.19
         },
         {
+          "season": 2019,
+          "week": 1,
+          "home_team": "UL Monroe",
+          "away_team": "__FCS__",
+          "home_points": 31,
+          "away_points": 9,
+          "margin": 22.0,
+          "home_spread": -28.0,
+          "home_covered": false,
+          "distance": 0.215
+        },
+        {
           "season": 2024,
           "week": 1,
           "home_team": "UAB",
@@ -4400,7 +4400,7 @@
           "margin": 38.0,
           "home_spread": -29.5,
           "home_covered": true,
-          "distance": 0.285
+          "distance": 0.286
         },
         {
           "season": 2017,
@@ -4424,7 +4424,7 @@
           "margin": 15.0,
           "home_spread": -30.5,
           "home_covered": false,
-          "distance": 0.36
+          "distance": 0.361
         }
       ],
       "confidence_flags": [
@@ -4433,8 +4433,8 @@
         "Line moved 3.0 pts since opening"
       ],
       "vs_market": {
-        "margin": -1.0,
-        "total": 0.7
+        "margin": 1.1,
+        "total": -0.8
       },
       "market_spread": -28.5,
       "market_total": 51.5,
@@ -4457,32 +4457,32 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 39,
-        "away_points": 13,
-        "margin": 26.1,
-        "total": 52.9,
-        "home_win_prob": 0.9529
+        "home_points": 40,
+        "away_points": 14,
+        "margin": 25.6,
+        "total": 54.1,
+        "home_win_prob": 0.9358
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.495,
+        "cover_rate": 0.5,
         "home_cover_by": 13.4,
-        "away_cover_by": 12.7,
-        "home_blowout": 0.73,
+        "away_cover_by": 12.6,
+        "home_blowout": 0.735,
         "away_blowout": 0.015,
         "cover_n": 198,
         "over_n": 157,
-        "calibrated_rate": 0.495,
-        "side": "away",
-        "confidence": 0.505,
+        "calibrated_rate": 0.5,
+        "side": "home",
+        "confidence": 0.5,
         "historical_rate": null,
         "historical_n": null,
-        "margin_median": 22.5,
+        "margin_median": 23.0,
         "margin_p25": 10.8,
         "margin_p75": 36.0,
         "total_median": 53.0,
         "home_win_rate": 0.94,
-        "over_rate": 0.401,
+        "over_rate": 0.408,
         "agreement": 0.94,
         "price_spread": 5.7
       },
@@ -4497,31 +4497,7 @@
           "margin": 4.0,
           "home_spread": -22.0,
           "home_covered": false,
-          "distance": 0.471
-        },
-        {
-          "season": 2019,
-          "week": 1,
-          "home_team": "Air Force",
-          "away_team": "__FCS__",
-          "home_points": 48,
-          "away_points": 7,
-          "margin": 41.0,
-          "home_spread": -23.5,
-          "home_covered": true,
-          "distance": 0.485
-        },
-        {
-          "season": 2020,
-          "week": 1,
-          "home_team": "North Texas",
-          "away_team": "__FCS__",
-          "home_points": 57,
-          "away_points": 31,
-          "margin": 26.0,
-          "home_spread": -23.0,
-          "home_covered": true,
-          "distance": 0.495
+          "distance": 0.487
         },
         {
           "season": 2017,
@@ -4533,7 +4509,19 @@
           "margin": 14.0,
           "home_spread": -24.5,
           "home_covered": false,
-          "distance": 0.502
+          "distance": 0.507
+        },
+        {
+          "season": 2020,
+          "week": 1,
+          "home_team": "North Texas",
+          "away_team": "__FCS__",
+          "home_points": 57,
+          "away_points": 31,
+          "margin": 26.0,
+          "home_spread": -23.0,
+          "home_covered": true,
+          "distance": 0.51
         },
         {
           "season": 2016,
@@ -4545,7 +4533,19 @@
           "margin": -6.0,
           "home_spread": -23.0,
           "home_covered": false,
-          "distance": 0.521
+          "distance": 0.526
+        },
+        {
+          "season": 2020,
+          "week": 1,
+          "home_team": "UAB",
+          "away_team": "__FCS__",
+          "home_points": 45,
+          "away_points": 35,
+          "margin": 10.0,
+          "home_spread": -21.0,
+          "home_covered": false,
+          "distance": 0.541
         }
       ],
       "confidence_flags": [
@@ -4553,8 +4553,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 3.6,
-        "total": 1.4
+        "margin": 3.1,
+        "total": 2.6
       },
       "market_spread": -22.5,
       "market_total": 51.5,
@@ -4577,11 +4577,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 51,
-        "away_points": 5,
-        "margin": 45.6,
-        "total": 56.5,
-        "home_win_prob": 0.9945
+        "home_points": 50,
+        "away_points": 6,
+        "margin": 43.7,
+        "total": 56.3,
+        "home_win_prob": 0.989
       },
       "comps": {
         "n": 200,
@@ -4617,7 +4617,7 @@
           "margin": 17.0,
           "home_spread": -41.5,
           "home_covered": false,
-          "distance": 0.107
+          "distance": 0.105
         },
         {
           "season": 2022,
@@ -4629,7 +4629,7 @@
           "margin": 40.0,
           "home_spread": -42.0,
           "home_covered": false,
-          "distance": 0.143
+          "distance": 0.141
         },
         {
           "season": 2022,
@@ -4641,7 +4641,7 @@
           "margin": 28.0,
           "home_spread": -42.5,
           "home_covered": false,
-          "distance": 0.191
+          "distance": 0.189
         },
         {
           "season": 2017,
@@ -4673,8 +4673,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 4.1,
-        "total": 1.0
+        "margin": 2.2,
+        "total": 0.8
       },
       "market_spread": -41.5,
       "market_total": 55.5,
@@ -4698,32 +4698,32 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 30,
-        "away_points": 20,
-        "margin": 9.8,
-        "total": 50.5,
-        "home_win_prob": 0.7634
+        "away_points": 21,
+        "margin": 9.0,
+        "total": 51.1,
+        "home_win_prob": 0.7299
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.57,
-        "home_cover_by": 12.9,
-        "away_cover_by": 11.9,
-        "home_blowout": 0.515,
+        "cover_rate": 0.575,
+        "home_cover_by": 13.0,
+        "away_cover_by": 12.0,
+        "home_blowout": 0.52,
         "away_blowout": 0.04,
         "cover_n": 200,
-        "over_n": 199,
-        "calibrated_rate": 0.57,
+        "over_n": 198,
+        "calibrated_rate": 0.575,
         "side": "home",
-        "confidence": 0.57,
+        "confidence": 0.575,
         "historical_rate": null,
         "historical_n": null,
         "margin_median": 14.0,
-        "margin_p25": 1.8,
-        "margin_p75": 23.2,
+        "margin_p25": 2.0,
+        "margin_p75": 24.0,
         "total_median": 52.0,
-        "home_win_rate": 0.76,
-        "over_rate": 0.427,
-        "agreement": 0.76,
+        "home_win_rate": 0.765,
+        "over_rate": 0.429,
+        "agreement": 0.765,
         "price_spread": 3.0
       },
       "comp_examples": [
@@ -4776,16 +4776,16 @@
           "distance": 0.341
         },
         {
-          "season": 2019,
+          "season": 2020,
           "week": 1,
-          "home_team": "Kentucky",
-          "away_team": "Toledo",
-          "home_points": 38,
-          "away_points": 24,
-          "margin": 14.0,
-          "home_spread": -10.0,
-          "home_covered": true,
-          "distance": 0.353
+          "home_team": "Southern Miss",
+          "away_team": "South Alabama",
+          "home_points": 21,
+          "away_points": 32,
+          "margin": -11.0,
+          "home_spread": -12.5,
+          "home_covered": false,
+          "distance": 0.354
         }
       ],
       "confidence_flags": [
@@ -4793,8 +4793,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -0.7,
-        "total": -2.0
+        "margin": -1.5,
+        "total": -1.4
       },
       "market_spread": -10.5,
       "market_total": 52.5,
@@ -4817,11 +4817,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 37,
-        "away_points": 15,
-        "margin": 21.4,
-        "total": 52.2,
-        "home_win_prob": 0.9224
+        "home_points": 38,
+        "away_points": 17,
+        "margin": 21.1,
+        "total": 54.2,
+        "home_win_prob": 0.9023
       },
       "comps": {
         "n": 200,
@@ -4869,7 +4869,7 @@
           "margin": 23.0,
           "home_spread": -22.5,
           "home_covered": true,
-          "distance": 0.265
+          "distance": 0.268
         },
         {
           "season": 2023,
@@ -4881,7 +4881,7 @@
           "margin": 21.0,
           "home_spread": -23.8,
           "home_covered": false,
-          "distance": 0.309
+          "distance": 0.306
         },
         {
           "season": 2018,
@@ -4893,7 +4893,7 @@
           "margin": 3.0,
           "home_spread": -21.0,
           "home_covered": false,
-          "distance": 0.367
+          "distance": 0.368
         },
         {
           "season": 2018,
@@ -4913,8 +4913,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -1.1,
-        "total": -3.3
+        "margin": -1.4,
+        "total": -1.3
       },
       "market_spread": -22.5,
       "market_total": 55.5,
@@ -4937,11 +4937,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 36,
-        "away_points": 16,
-        "margin": 20.3,
-        "total": 52.5,
-        "home_win_prob": 0.9131
+        "home_points": 37,
+        "away_points": 15,
+        "margin": 21.0,
+        "total": 52.0,
+        "home_win_prob": 0.9015
       },
       "comps": {
         "n": 200,
@@ -4977,7 +4977,7 @@
           "margin": 31.0,
           "home_spread": -22.5,
           "home_covered": true,
-          "distance": 0.261
+          "distance": 0.265
         },
         {
           "season": 2017,
@@ -5001,7 +5001,7 @@
           "margin": 23.0,
           "home_spread": -22.5,
           "home_covered": true,
-          "distance": 0.309
+          "distance": 0.313
         },
         {
           "season": 2017,
@@ -5013,7 +5013,7 @@
           "margin": 22.0,
           "home_spread": -23.5,
           "home_covered": false,
-          "distance": 0.33
+          "distance": 0.333
         },
         {
           "season": 2023,
@@ -5025,7 +5025,7 @@
           "margin": 21.0,
           "home_spread": -23.8,
           "home_covered": false,
-          "distance": 0.374
+          "distance": 0.385
         }
       ],
       "confidence_flags": [
@@ -5033,8 +5033,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -2.2,
-        "total": 5.0
+        "margin": -1.5,
+        "total": 4.5
       },
       "market_spread": -22.5,
       "market_total": 47.5,
@@ -5057,11 +5057,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 37,
-        "away_points": 16,
-        "margin": 21.2,
-        "total": 52.3,
-        "home_win_prob": 0.9207
+        "home_points": 38,
+        "away_points": 15,
+        "margin": 23.7,
+        "total": 52.7,
+        "home_win_prob": 0.9229
       },
       "comps": {
         "n": 200,
@@ -5109,7 +5109,7 @@
           "margin": 41.0,
           "home_spread": -13.5,
           "home_covered": true,
-          "distance": 0.303
+          "distance": 0.314
         },
         {
           "season": 2023,
@@ -5121,7 +5121,7 @@
           "margin": 18.0,
           "home_spread": -14.0,
           "home_covered": true,
-          "distance": 0.37
+          "distance": 0.38
         },
         {
           "season": 2025,
@@ -5133,7 +5133,7 @@
           "margin": -20.0,
           "home_spread": -15.5,
           "home_covered": false,
-          "distance": 0.442
+          "distance": 0.45
         },
         {
           "season": 2016,
@@ -5145,7 +5145,7 @@
           "margin": 21.0,
           "home_spread": -15.0,
           "home_covered": true,
-          "distance": 0.463
+          "distance": 0.466
         }
       ],
       "confidence_flags": [
@@ -5153,8 +5153,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 7.7,
-        "total": -1.2
+        "margin": 10.2,
+        "total": -0.8
       },
       "market_spread": -13.5,
       "market_total": 53.5,
@@ -5177,17 +5177,17 @@
       "away_team": "Florida International",
       "neutral_site": false,
       "forecast": {
-        "home_points": 29,
-        "away_points": 20,
-        "margin": 8.8,
-        "total": 48.7,
-        "home_win_prob": 0.7415
+        "home_points": 32,
+        "away_points": 19,
+        "margin": 13.5,
+        "total": 50.6,
+        "home_win_prob": 0.8108
       },
       "comps": {
         "n": 200,
         "cover_rate": 0.558,
         "home_cover_by": 13.5,
-        "away_cover_by": 13.0,
+        "away_cover_by": 13.2,
         "home_blowout": 0.595,
         "away_blowout": 0.035,
         "cover_n": 199,
@@ -5201,9 +5201,9 @@
         "margin_p25": 4.0,
         "margin_p75": 28.0,
         "total_median": 53.0,
-        "home_win_rate": 0.84,
-        "over_rate": 0.452,
-        "agreement": 0.84,
+        "home_win_rate": 0.835,
+        "over_rate": 0.447,
+        "agreement": 0.835,
         "price_spread": 2.8
       },
       "comp_examples": [
@@ -5217,7 +5217,7 @@
           "margin": 49.0,
           "home_spread": -13.0,
           "home_covered": true,
-          "distance": 0.312
+          "distance": 0.313
         },
         {
           "season": 2023,
@@ -5229,7 +5229,7 @@
           "margin": 24.0,
           "home_spread": -14.0,
           "home_covered": true,
-          "distance": 0.418
+          "distance": 0.417
         },
         {
           "season": 2020,
@@ -5241,7 +5241,7 @@
           "margin": -10.0,
           "home_spread": -14.5,
           "home_covered": false,
-          "distance": 0.429
+          "distance": 0.427
         },
         {
           "season": 2015,
@@ -5265,7 +5265,7 @@
           "margin": 17.0,
           "home_spread": -13.2,
           "home_covered": true,
-          "distance": 0.501
+          "distance": 0.5
         }
       ],
       "confidence_flags": [
@@ -5273,8 +5273,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -5.7,
-        "total": -4.8
+        "margin": -1.0,
+        "total": -2.9
       },
       "market_spread": -14.5,
       "market_total": 53.5,
@@ -5298,10 +5298,10 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 42,
-        "away_points": 9,
-        "margin": 33.0,
-        "total": 51.6,
-        "home_win_prob": 0.9777
+        "away_points": 12,
+        "margin": 30.7,
+        "total": 54.3,
+        "home_win_prob": 0.9603
       },
       "comps": {
         "n": 200,
@@ -5349,7 +5349,7 @@
           "margin": 42.0,
           "home_spread": -38.0,
           "home_covered": true,
-          "distance": 0.257
+          "distance": 0.253
         },
         {
           "season": 2021,
@@ -5361,7 +5361,7 @@
           "margin": 44.0,
           "home_spread": -37.5,
           "home_covered": true,
-          "distance": 0.276
+          "distance": 0.272
         },
         {
           "season": 2021,
@@ -5373,7 +5373,7 @@
           "margin": 50.0,
           "home_spread": -37.5,
           "home_covered": true,
-          "distance": 0.294
+          "distance": 0.291
         },
         {
           "season": 2023,
@@ -5385,7 +5385,7 @@
           "margin": 49.0,
           "home_spread": -39.5,
           "home_covered": true,
-          "distance": 0.332
+          "distance": 0.329
         }
       ],
       "confidence_flags": [
@@ -5393,8 +5393,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -5.5,
-        "total": -1.9
+        "margin": -7.8,
+        "total": 0.8
       },
       "market_spread": -38.5,
       "market_total": 53.5,
@@ -5418,10 +5418,10 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 54,
-        "away_points": 1,
-        "margin": 53.1,
-        "total": 55.6,
-        "home_win_prob": 0.995
+        "away_points": 3,
+        "margin": 50.6,
+        "total": 57.5,
+        "home_win_prob": 0.9945
       },
       "comps": {
         "n": 200,
@@ -5457,7 +5457,7 @@
           "margin": 55.0,
           "home_spread": -46.8,
           "home_covered": true,
-          "distance": 0.318
+          "distance": 0.314
         },
         {
           "season": 2025,
@@ -5469,7 +5469,7 @@
           "margin": 69.0,
           "home_spread": -44.0,
           "home_covered": true,
-          "distance": 0.386
+          "distance": 0.383
         },
         {
           "season": 2025,
@@ -5481,7 +5481,7 @@
           "margin": 45.0,
           "home_spread": -47.0,
           "home_covered": false,
-          "distance": 0.443
+          "distance": 0.44
         },
         {
           "season": 2018,
@@ -5493,7 +5493,7 @@
           "margin": 45.0,
           "home_spread": -46.0,
           "home_covered": false,
-          "distance": 0.571
+          "distance": 0.579
         },
         {
           "season": 2024,
@@ -5505,7 +5505,7 @@
           "margin": 76.0,
           "home_spread": -45.5,
           "home_covered": true,
-          "distance": 0.594
+          "distance": 0.592
         }
       ],
       "confidence_flags": [
@@ -5514,8 +5514,8 @@
         "Line moved 3.0 pts since opening"
       ],
       "vs_market": {
-        "margin": 7.6,
-        "total": -4.9
+        "margin": 5.1,
+        "total": -3.0
       },
       "market_spread": -45.5,
       "market_total": 60.5,
@@ -5538,33 +5538,33 @@
       "away_team": "Sam Houston",
       "neutral_site": false,
       "forecast": {
-        "home_points": 31,
+        "home_points": 32,
         "away_points": 20,
-        "margin": 10.7,
-        "total": 50.8,
-        "home_win_prob": 0.7804
+        "margin": 12.1,
+        "total": 51.5,
+        "home_win_prob": 0.7875
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.51,
-        "home_cover_by": 13.1,
-        "away_cover_by": 13.5,
-        "home_blowout": 0.6,
+        "cover_rate": 0.505,
+        "home_cover_by": 12.8,
+        "away_cover_by": 13.4,
+        "home_blowout": 0.595,
         "away_blowout": 0.035,
         "cover_n": 198,
         "over_n": 199,
-        "calibrated_rate": 0.51,
+        "calibrated_rate": 0.505,
         "side": "home",
-        "confidence": 0.51,
+        "confidence": 0.505,
         "historical_rate": null,
         "historical_n": null,
         "margin_median": 17.0,
-        "margin_p25": 5.8,
-        "margin_p75": 28.0,
-        "total_median": 52.0,
-        "home_win_rate": 0.84,
+        "margin_p25": 6.0,
+        "margin_p75": 27.2,
+        "total_median": 51.5,
+        "home_win_rate": 0.845,
         "over_rate": 0.422,
-        "agreement": 0.84,
+        "agreement": 0.845,
         "price_spread": 2.7
       },
       "comp_examples": [
@@ -5578,7 +5578,7 @@
           "margin": -3.0,
           "home_spread": -17.5,
           "home_covered": false,
-          "distance": 0.259
+          "distance": 0.264
         },
         {
           "season": 2015,
@@ -5602,7 +5602,7 @@
           "margin": 44.0,
           "home_spread": -17.5,
           "home_covered": true,
-          "distance": 0.349
+          "distance": 0.35
         },
         {
           "season": 2025,
@@ -5614,7 +5614,7 @@
           "margin": 13.0,
           "home_spread": -16.5,
           "home_covered": false,
-          "distance": 0.354
+          "distance": 0.359
         },
         {
           "season": 2019,
@@ -5626,7 +5626,7 @@
           "margin": 28.0,
           "home_spread": -17.5,
           "home_covered": true,
-          "distance": 0.415
+          "distance": 0.425
         }
       ],
       "confidence_flags": [
@@ -5634,8 +5634,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -5.8,
-        "total": -1.7
+        "margin": -4.4,
+        "total": -1.0
       },
       "market_spread": -16.5,
       "market_total": 52.5,
@@ -5659,10 +5659,10 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 38,
-        "away_points": 13,
-        "margin": 25.0,
-        "total": 50.9,
-        "home_win_prob": 0.9469
+        "away_points": 15,
+        "margin": 23.1,
+        "total": 53.9,
+        "home_win_prob": 0.9184
       },
       "comps": {
         "n": 200,
@@ -5698,7 +5698,7 @@
           "margin": -2.0,
           "home_spread": -15.0,
           "home_covered": false,
-          "distance": 0.286
+          "distance": 0.29
         },
         {
           "season": 2016,
@@ -5710,7 +5710,7 @@
           "margin": 45.0,
           "home_spread": -17.0,
           "home_covered": true,
-          "distance": 0.329
+          "distance": 0.33
         },
         {
           "season": 2022,
@@ -5722,19 +5722,7 @@
           "margin": 31.0,
           "home_spread": -15.0,
           "home_covered": true,
-          "distance": 0.412
-        },
-        {
-          "season": 2016,
-          "week": 1,
-          "home_team": "Purdue",
-          "away_team": "__FCS__",
-          "home_points": 45,
-          "away_points": 24,
-          "margin": 21.0,
-          "home_spread": -15.0,
-          "home_covered": true,
-          "distance": 0.432
+          "distance": 0.41
         },
         {
           "season": 2024,
@@ -5746,7 +5734,19 @@
           "margin": 24.0,
           "home_spread": -15.5,
           "home_covered": true,
-          "distance": 0.438
+          "distance": 0.436
+        },
+        {
+          "season": 2016,
+          "week": 1,
+          "home_team": "Purdue",
+          "away_team": "__FCS__",
+          "home_points": 45,
+          "away_points": 24,
+          "margin": 21.0,
+          "home_spread": -15.0,
+          "home_covered": true,
+          "distance": 0.437
         }
       ],
       "confidence_flags": [
@@ -5754,8 +5754,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 9.5,
-        "total": -8.6
+        "margin": 7.6,
+        "total": -5.6
       },
       "market_spread": -15.5,
       "market_total": 59.5,
@@ -5779,10 +5779,10 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 47,
-        "away_points": 6,
-        "margin": 40.6,
-        "total": 52.5,
-        "home_win_prob": 0.9905
+        "away_points": 8,
+        "margin": 39.2,
+        "total": 54.8,
+        "home_win_prob": 0.9829
       },
       "comps": {
         "n": 200,
@@ -5818,7 +5818,7 @@
           "margin": 45.0,
           "home_spread": -28.5,
           "home_covered": true,
-          "distance": 0.131
+          "distance": 0.128
         },
         {
           "season": 2021,
@@ -5830,7 +5830,7 @@
           "margin": 6.0,
           "home_spread": -28.5,
           "home_covered": false,
-          "distance": 0.165
+          "distance": 0.163
         },
         {
           "season": 2021,
@@ -5842,7 +5842,7 @@
           "margin": 23.0,
           "home_spread": -29.5,
           "home_covered": false,
-          "distance": 0.189
+          "distance": 0.187
         },
         {
           "season": 2024,
@@ -5854,7 +5854,7 @@
           "margin": 32.0,
           "home_spread": -29.0,
           "home_covered": true,
-          "distance": 0.28
+          "distance": 0.279
         },
         {
           "season": 2025,
@@ -5866,7 +5866,7 @@
           "margin": 35.0,
           "home_spread": -30.5,
           "home_covered": true,
-          "distance": 0.289
+          "distance": 0.287
         }
       ],
       "confidence_flags": [
@@ -5874,8 +5874,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 11.6,
-        "total": -5.0
+        "margin": 10.2,
+        "total": -2.7
       },
       "market_spread": -29.0,
       "market_total": 57.5,
@@ -5898,24 +5898,24 @@
       "away_team": "Clemson",
       "neutral_site": false,
       "forecast": {
-        "home_points": 29,
-        "away_points": 21,
-        "margin": 7.2,
-        "total": 49.9,
-        "home_win_prob": 0.7052
+        "home_points": 28,
+        "away_points": 23,
+        "margin": 4.8,
+        "total": 50.7,
+        "home_win_prob": 0.6388
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.533,
-        "home_cover_by": 12.4,
-        "away_cover_by": 11.7,
+        "cover_rate": 0.528,
+        "home_cover_by": 12.5,
+        "away_cover_by": 11.6,
         "home_blowout": 0.42,
         "away_blowout": 0.075,
         "cover_n": 199,
-        "over_n": 197,
-        "calibrated_rate": 0.533,
+        "over_n": 196,
+        "calibrated_rate": 0.528,
         "side": "home",
-        "confidence": 0.533,
+        "confidence": 0.528,
         "historical_rate": null,
         "historical_n": null,
         "margin_median": 8.0,
@@ -5923,9 +5923,9 @@
         "margin_p75": 20.2,
         "total_median": 53.0,
         "home_win_rate": 0.755,
-        "over_rate": 0.442,
+        "over_rate": 0.444,
         "agreement": 0.755,
-        "price_spread": 3.3
+        "price_spread": 3.2
       },
       "comp_examples": [
         {
@@ -5938,7 +5938,7 @@
           "margin": 17.0,
           "home_spread": -9.5,
           "home_covered": true,
-          "distance": 0.324
+          "distance": 0.321
         },
         {
           "season": 2022,
@@ -5950,7 +5950,7 @@
           "margin": 30.0,
           "home_spread": -9.5,
           "home_covered": true,
-          "distance": 0.39
+          "distance": 0.388
         },
         {
           "season": 2022,
@@ -5962,7 +5962,7 @@
           "margin": -1.0,
           "home_spread": -9.0,
           "home_covered": false,
-          "distance": 0.43
+          "distance": 0.427
         },
         {
           "season": 2020,
@@ -5974,7 +5974,7 @@
           "margin": 23.0,
           "home_spread": -10.0,
           "home_covered": true,
-          "distance": 0.436
+          "distance": 0.433
         },
         {
           "season": 2023,
@@ -5986,7 +5986,7 @@
           "margin": 5.0,
           "home_spread": -10.0,
           "home_covered": false,
-          "distance": 0.436
+          "distance": 0.434
         }
       ],
       "confidence_flags": [
@@ -5994,8 +5994,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -2.8,
-        "total": 1.4
+        "margin": -5.2,
+        "total": 2.2
       },
       "market_spread": -10.0,
       "market_total": 48.5,
@@ -6018,11 +6018,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 49,
+        "home_points": 48,
         "away_points": 8,
-        "margin": 41.2,
-        "total": 56.6,
-        "home_win_prob": 0.9911
+        "margin": 40.4,
+        "total": 56.4,
+        "home_win_prob": 0.9847
       },
       "comps": {
         "n": 200,
@@ -6058,19 +6058,7 @@
           "margin": 44.0,
           "home_spread": -42.5,
           "home_covered": true,
-          "distance": 0.388
-        },
-        {
-          "season": 2019,
-          "week": 1,
-          "home_team": "Marshall",
-          "away_team": "__FCS__",
-          "home_points": 56,
-          "away_points": 17,
-          "margin": 39.0,
-          "home_spread": -44.0,
-          "home_covered": false,
-          "distance": 0.415
+          "distance": 0.389
         },
         {
           "season": 2023,
@@ -6082,7 +6070,19 @@
           "margin": 35.0,
           "home_spread": -46.5,
           "home_covered": false,
-          "distance": 0.445
+          "distance": 0.443
+        },
+        {
+          "season": 2019,
+          "week": 1,
+          "home_team": "Marshall",
+          "away_team": "__FCS__",
+          "home_points": 56,
+          "away_points": 17,
+          "margin": 39.0,
+          "home_spread": -44.0,
+          "home_covered": false,
+          "distance": 0.459
         },
         {
           "season": 2015,
@@ -6094,7 +6094,7 @@
           "margin": 59.0,
           "home_spread": -43.0,
           "home_covered": true,
-          "distance": 0.457
+          "distance": 0.46
         },
         {
           "season": 2017,
@@ -6106,7 +6106,7 @@
           "margin": 12.0,
           "home_spread": -43.0,
           "home_covered": false,
-          "distance": 0.491
+          "distance": 0.494
         }
       ],
       "confidence_flags": [
@@ -6114,8 +6114,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -3.3,
-        "total": 0.1
+        "margin": -4.1,
+        "total": -0.1
       },
       "market_spread": -44.5,
       "market_total": 56.5,
@@ -6138,16 +6138,16 @@
       "away_team": "Western Michigan",
       "neutral_site": false,
       "forecast": {
-        "home_points": 34,
-        "away_points": 19,
-        "margin": 15.3,
-        "total": 52.3,
-        "home_win_prob": 0.8566
+        "home_points": 35,
+        "away_points": 17,
+        "margin": 18.0,
+        "total": 52.5,
+        "home_win_prob": 0.8702
       },
       "comps": {
         "n": 200,
         "cover_rate": 0.513,
-        "home_cover_by": 12.4,
+        "home_cover_by": 12.3,
         "away_cover_by": 13.2,
         "home_blowout": 0.755,
         "away_blowout": 0.01,
@@ -6178,7 +6178,7 @@
           "margin": -11.0,
           "home_spread": -26.8,
           "home_covered": false,
-          "distance": 0.281
+          "distance": 0.288
         },
         {
           "season": 2023,
@@ -6190,7 +6190,7 @@
           "margin": 21.0,
           "home_spread": -28.0,
           "home_covered": false,
-          "distance": 0.338
+          "distance": 0.344
         },
         {
           "season": 2016,
@@ -6202,7 +6202,7 @@
           "margin": 67.0,
           "home_spread": -27.5,
           "home_covered": true,
-          "distance": 0.399
+          "distance": 0.402
         },
         {
           "season": 2024,
@@ -6214,7 +6214,7 @@
           "margin": 33.0,
           "home_spread": -27.5,
           "home_covered": true,
-          "distance": 0.514
+          "distance": 0.518
         },
         {
           "season": 2023,
@@ -6226,7 +6226,7 @@
           "margin": 30.0,
           "home_spread": -26.0,
           "home_covered": true,
-          "distance": 0.528
+          "distance": 0.531
         }
       ],
       "confidence_flags": [
@@ -6234,8 +6234,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -12.2,
-        "total": 2.8
+        "margin": -9.5,
+        "total": 3.0
       },
       "market_spread": -27.5,
       "market_total": 49.5,
@@ -6260,9 +6260,9 @@
       "forecast": {
         "home_points": 38,
         "away_points": 13,
-        "margin": 25.0,
+        "margin": 24.8,
         "total": 51.6,
-        "home_win_prob": 0.9472
+        "home_win_prob": 0.9305
       },
       "comps": {
         "n": 200,
@@ -6298,7 +6298,19 @@
           "margin": 22.0,
           "home_spread": -29.0,
           "home_covered": false,
-          "distance": 0.313
+          "distance": 0.309
+        },
+        {
+          "season": 2019,
+          "week": 2,
+          "home_team": "Virginia Tech",
+          "away_team": "Old Dominion",
+          "home_points": 31,
+          "away_points": 17,
+          "margin": 14.0,
+          "home_spread": -28.8,
+          "home_covered": false,
+          "distance": 0.381
         },
         {
           "season": 2017,
@@ -6310,7 +6322,7 @@
           "margin": 52.0,
           "home_spread": -30.0,
           "home_covered": true,
-          "distance": 0.389
+          "distance": 0.393
         },
         {
           "season": 2016,
@@ -6334,19 +6346,7 @@
           "margin": 67.0,
           "home_spread": -27.5,
           "home_covered": true,
-          "distance": 0.422
-        },
-        {
-          "season": 2019,
-          "week": 2,
-          "home_team": "Virginia Tech",
-          "away_team": "Old Dominion",
-          "home_points": 31,
-          "away_points": 17,
-          "margin": 14.0,
-          "home_spread": -28.8,
-          "home_covered": false,
-          "distance": 0.429
+          "distance": 0.423
         }
       ],
       "confidence_flags": [
@@ -6354,7 +6354,7 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -3.5,
+        "margin": -3.7,
         "total": -2.9
       },
       "market_spread": -28.5,
@@ -6378,11 +6378,11 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 47,
-        "away_points": 9,
-        "margin": 38.0,
-        "total": 56.2,
-        "home_win_prob": 0.9872
+        "home_points": 48,
+        "away_points": 8,
+        "margin": 39.6,
+        "total": 55.7,
+        "home_win_prob": 0.9835
       },
       "comps": {
         "n": 200,
@@ -6409,18 +6409,6 @@
       },
       "comp_examples": [
         {
-          "season": 2019,
-          "week": 1,
-          "home_team": "TCU",
-          "away_team": "__FCS__",
-          "home_points": 39,
-          "away_points": 7,
-          "margin": 32.0,
-          "home_spread": -55.0,
-          "home_covered": false,
-          "distance": 0.885
-        },
-        {
           "season": 2016,
           "week": 1,
           "home_team": "Georgia Southern",
@@ -6433,6 +6421,18 @@
           "distance": 0.895
         },
         {
+          "season": 2019,
+          "week": 1,
+          "home_team": "TCU",
+          "away_team": "__FCS__",
+          "home_points": 39,
+          "away_points": 7,
+          "margin": 32.0,
+          "home_spread": -55.0,
+          "home_covered": false,
+          "distance": 0.919
+        },
+        {
           "season": 2024,
           "week": 1,
           "home_team": "Arkansas",
@@ -6442,7 +6442,7 @@
           "margin": 70.0,
           "home_spread": -50.5,
           "home_covered": true,
-          "distance": 0.935
+          "distance": 0.936
         },
         {
           "season": 2016,
@@ -6454,7 +6454,7 @@
           "margin": 39.0,
           "home_spread": -51.0,
           "home_covered": false,
-          "distance": 1.017
+          "distance": 1.026
         },
         {
           "season": 2018,
@@ -6466,7 +6466,7 @@
           "margin": 63.0,
           "home_spread": -48.5,
           "home_covered": true,
-          "distance": 1.23
+          "distance": 1.231
         }
       ],
       "confidence_flags": [
@@ -6474,8 +6474,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -16.5,
-        "total": -4.3
+        "margin": -14.9,
+        "total": -4.8
       },
       "market_spread": -54.5,
       "market_total": 60.5,
@@ -6498,33 +6498,33 @@
       "away_team": "Florida Atlantic",
       "neutral_site": false,
       "forecast": {
-        "home_points": 34,
-        "away_points": 21,
-        "margin": 12.5,
-        "total": 55.0,
-        "home_win_prob": 0.8143
+        "home_points": 36,
+        "away_points": 20,
+        "margin": 15.6,
+        "total": 55.9,
+        "home_win_prob": 0.8405
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.505,
-        "home_cover_by": 12.9,
-        "away_cover_by": 13.0,
-        "home_blowout": 0.735,
+        "cover_rate": 0.5,
+        "home_cover_by": 13.0,
+        "away_cover_by": 13.2,
+        "home_blowout": 0.73,
         "away_blowout": 0.01,
         "cover_n": 198,
         "over_n": 197,
-        "calibrated_rate": 0.505,
+        "calibrated_rate": 0.5,
         "side": "home",
-        "confidence": 0.505,
+        "confidence": 0.5,
         "historical_rate": null,
         "historical_n": null,
         "margin_median": 24.0,
-        "margin_p25": 11.8,
+        "margin_p25": 11.0,
         "margin_p75": 35.0,
-        "total_median": 56.5,
-        "home_win_rate": 0.935,
-        "over_rate": 0.513,
-        "agreement": 0.935,
+        "total_median": 57.0,
+        "home_win_rate": 0.93,
+        "over_rate": 0.518,
+        "agreement": 0.93,
         "price_spread": 3.9
       },
       "comp_examples": [
@@ -6550,7 +6550,7 @@
           "margin": 24.0,
           "home_spread": -25.0,
           "home_covered": false,
-          "distance": 0.279
+          "distance": 0.28
         },
         {
           "season": 2023,
@@ -6594,8 +6594,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -14.0,
-        "total": -4.5
+        "margin": -10.9,
+        "total": -3.6
       },
       "market_spread": -26.5,
       "market_total": 59.5,
@@ -6618,34 +6618,34 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 51,
-        "away_points": 4,
-        "margin": 46.8,
-        "total": 55.7,
-        "home_win_prob": 0.995
+        "home_points": 50,
+        "away_points": 8,
+        "margin": 41.5,
+        "total": 57.8,
+        "home_win_prob": 0.9863
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.467,
-        "home_cover_by": 10.6,
-        "away_cover_by": 12.9,
-        "home_blowout": 0.925,
+        "cover_rate": 0.472,
+        "home_cover_by": 10.5,
+        "away_cover_by": 12.8,
+        "home_blowout": 0.93,
         "away_blowout": 0.0,
         "cover_n": 197,
         "over_n": 151,
-        "calibrated_rate": 0.467,
+        "calibrated_rate": 0.472,
         "side": "away",
-        "confidence": 0.533,
+        "confidence": 0.528,
         "historical_rate": null,
         "historical_n": null,
-        "margin_median": 39.5,
+        "margin_median": 40.0,
         "margin_p25": 28.0,
-        "margin_p75": 49.2,
-        "total_median": 59.0,
+        "margin_p75": 50.0,
+        "total_median": 58.5,
         "home_win_rate": 0.99,
-        "over_rate": 0.497,
+        "over_rate": 0.49,
         "agreement": 0.99,
-        "price_spread": 6.2
+        "price_spread": 6.1
       },
       "comp_examples": [
         {
@@ -6658,7 +6658,7 @@
           "margin": 51.0,
           "home_spread": -50.5,
           "home_covered": true,
-          "distance": 0.449
+          "distance": 0.446
         },
         {
           "season": 2022,
@@ -6670,19 +6670,7 @@
           "margin": 57.0,
           "home_spread": -49.5,
           "home_covered": true,
-          "distance": 0.504
-        },
-        {
-          "season": 2016,
-          "week": 1,
-          "home_team": "Baylor",
-          "away_team": "__FCS__",
-          "home_points": 55,
-          "away_points": 7,
-          "margin": 48.0,
-          "home_spread": -48.5,
-          "home_covered": false,
-          "distance": 0.51
+          "distance": 0.502
         },
         {
           "season": 2023,
@@ -6694,7 +6682,19 @@
           "margin": 53.0,
           "home_spread": -48.2,
           "home_covered": true,
-          "distance": 0.514
+          "distance": 0.512
+        },
+        {
+          "season": 2016,
+          "week": 1,
+          "home_team": "Baylor",
+          "away_team": "__FCS__",
+          "home_points": 55,
+          "away_points": 7,
+          "margin": 48.0,
+          "home_spread": -48.5,
+          "home_covered": false,
+          "distance": 0.513
         },
         {
           "season": 2016,
@@ -6706,7 +6706,7 @@
           "margin": 54.0,
           "home_spread": -48.5,
           "home_covered": true,
-          "distance": 0.529
+          "distance": 0.531
         }
       ],
       "confidence_flags": [
@@ -6714,8 +6714,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -3.7,
-        "total": -5.8
+        "margin": -9.0,
+        "total": -3.7
       },
       "market_spread": -50.5,
       "market_total": 61.5,
@@ -6740,9 +6740,9 @@
       "forecast": {
         "home_points": 38,
         "away_points": 14,
-        "margin": 23.6,
-        "total": 51.6,
-        "home_win_prob": 0.9387
+        "margin": 23.8,
+        "total": 51.5,
+        "home_win_prob": 0.9239
       },
       "comps": {
         "n": 200,
@@ -6778,7 +6778,7 @@
           "margin": 10.0,
           "home_spread": -20.5,
           "home_covered": false,
-          "distance": 0.13
+          "distance": 0.14
         },
         {
           "season": 2023,
@@ -6790,7 +6790,7 @@
           "margin": 46.0,
           "home_spread": -20.2,
           "home_covered": true,
-          "distance": 0.171
+          "distance": 0.179
         },
         {
           "season": 2021,
@@ -6802,7 +6802,7 @@
           "margin": -20.0,
           "home_spread": -21.0,
           "home_covered": false,
-          "distance": 0.202
+          "distance": 0.209
         },
         {
           "season": 2025,
@@ -6814,7 +6814,7 @@
           "margin": 16.0,
           "home_spread": -19.5,
           "home_covered": false,
-          "distance": 0.221
+          "distance": 0.227
         },
         {
           "season": 2023,
@@ -6826,7 +6826,7 @@
           "margin": 10.0,
           "home_spread": -20.0,
           "home_covered": false,
-          "distance": 0.23
+          "distance": 0.236
         }
       ],
       "confidence_flags": [
@@ -6834,8 +6834,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 3.1,
-        "total": 3.1
+        "margin": 3.3,
+        "total": 3.0
       },
       "market_spread": -20.5,
       "market_total": 48.5,
@@ -6861,8 +6861,8 @@
         "home_points": 49,
         "away_points": 8,
         "margin": 41.4,
-        "total": 56.9,
-        "home_win_prob": 0.9913
+        "total": 56.6,
+        "home_win_prob": 0.9862
       },
       "comps": {
         "n": 200,
@@ -6889,6 +6889,18 @@
       },
       "comp_examples": [
         {
+          "season": 2019,
+          "week": 1,
+          "home_team": "Marshall",
+          "away_team": "__FCS__",
+          "home_points": 56,
+          "away_points": 17,
+          "margin": 39.0,
+          "home_spread": -44.0,
+          "home_covered": false,
+          "distance": 0.326
+        },
+        {
           "season": 2016,
           "week": 1,
           "home_team": "Air Force",
@@ -6910,31 +6922,7 @@
           "margin": 35.0,
           "home_spread": -46.5,
           "home_covered": false,
-          "distance": 0.356
-        },
-        {
-          "season": 2019,
-          "week": 1,
-          "home_team": "Marshall",
-          "away_team": "__FCS__",
-          "home_points": 56,
-          "away_points": 17,
-          "margin": 39.0,
-          "home_spread": -44.0,
-          "home_covered": false,
-          "distance": 0.361
-        },
-        {
-          "season": 2023,
-          "week": 1,
-          "home_team": "James Madison",
-          "away_team": "__FCS__",
-          "home_points": 38,
-          "away_points": 3,
-          "margin": 35.0,
-          "home_spread": -47.2,
-          "home_covered": false,
-          "distance": 0.397
+          "distance": 0.365
         },
         {
           "season": 2016,
@@ -6946,7 +6934,19 @@
           "margin": 55.0,
           "home_spread": -47.0,
           "home_covered": true,
-          "distance": 0.397
+          "distance": 0.398
+        },
+        {
+          "season": 2023,
+          "week": 1,
+          "home_team": "James Madison",
+          "away_team": "__FCS__",
+          "home_points": 38,
+          "away_points": 3,
+          "margin": 35.0,
+          "home_spread": -47.2,
+          "home_covered": false,
+          "distance": 0.405
         }
       ],
       "confidence_flags": [
@@ -6955,7 +6955,7 @@
       ],
       "vs_market": {
         "margin": -4.1,
-        "total": 0.4
+        "total": 0.1
       },
       "market_spread": -45.5,
       "market_total": 56.5,
@@ -6979,10 +6979,10 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 41,
-        "away_points": 12,
-        "margin": 28.8,
-        "total": 52.3,
-        "home_win_prob": 0.9649
+        "away_points": 11,
+        "margin": 29.4,
+        "total": 52.2,
+        "home_win_prob": 0.955
       },
       "comps": {
         "n": 200,
@@ -7018,7 +7018,7 @@
           "margin": -17.0,
           "home_spread": -14.0,
           "home_covered": false,
-          "distance": 0.383
+          "distance": 0.385
         },
         {
           "season": 2017,
@@ -7030,7 +7030,19 @@
           "margin": 7.0,
           "home_spread": -13.0,
           "home_covered": false,
-          "distance": 0.42
+          "distance": 0.424
+        },
+        {
+          "season": 2019,
+          "week": 1,
+          "home_team": "San Diego State",
+          "away_team": "__FCS__",
+          "home_points": 6,
+          "away_points": 0,
+          "margin": 6.0,
+          "home_spread": -14.0,
+          "home_covered": false,
+          "distance": 0.512
         },
         {
           "season": 2025,
@@ -7042,7 +7054,7 @@
           "margin": -3.0,
           "home_spread": -14.2,
           "home_covered": false,
-          "distance": 0.557
+          "distance": 0.558
         },
         {
           "season": 2025,
@@ -7054,19 +7066,7 @@
           "margin": 2.0,
           "home_spread": -13.5,
           "home_covered": false,
-          "distance": 0.56
-        },
-        {
-          "season": 2019,
-          "week": 1,
-          "home_team": "Minnesota",
-          "away_team": "__FCS__",
-          "home_points": 28,
-          "away_points": 21,
-          "margin": 7.0,
-          "home_spread": -14.5,
-          "home_covered": false,
-          "distance": 0.566
+          "distance": 0.561
         }
       ],
       "confidence_flags": [
@@ -7074,8 +7074,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 14.8,
-        "total": 2.8
+        "margin": 15.4,
+        "total": 2.7
       },
       "market_spread": -14.0,
       "market_total": 49.5,
@@ -7099,23 +7099,23 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 39,
-        "away_points": 11,
-        "margin": 28.1,
-        "total": 50.8,
-        "home_win_prob": 0.962
+        "away_points": 13,
+        "margin": 26.0,
+        "total": 52.6,
+        "home_win_prob": 0.9377
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.515,
-        "home_cover_by": 14.1,
+        "cover_rate": 0.52,
+        "home_cover_by": 14.0,
         "away_cover_by": 12.4,
         "home_blowout": 0.84,
         "away_blowout": 0.005,
         "cover_n": 200,
         "over_n": 164,
-        "calibrated_rate": 0.515,
+        "calibrated_rate": 0.52,
         "side": "home",
-        "confidence": 0.515,
+        "confidence": 0.52,
         "historical_rate": null,
         "historical_n": null,
         "margin_median": 31.0,
@@ -7123,7 +7123,7 @@
         "margin_p75": 41.2,
         "total_median": 55.0,
         "home_win_rate": 0.98,
-        "over_rate": 0.512,
+        "over_rate": 0.518,
         "agreement": 0.98,
         "price_spread": 4.7
       },
@@ -7138,19 +7138,7 @@
           "margin": 46.0,
           "home_spread": -30.5,
           "home_covered": true,
-          "distance": 0.269
-        },
-        {
-          "season": 2019,
-          "week": 1,
-          "home_team": "Charlotte",
-          "away_team": "__FCS__",
-          "home_points": 49,
-          "away_points": 28,
-          "margin": 21.0,
-          "home_spread": -31.0,
-          "home_covered": false,
-          "distance": 0.359
+          "distance": 0.265
         },
         {
           "season": 2017,
@@ -7162,19 +7150,7 @@
           "margin": 22.0,
           "home_spread": -29.0,
           "home_covered": false,
-          "distance": 0.392
-        },
-        {
-          "season": 2018,
-          "week": 1,
-          "home_team": "Georgia Southern",
-          "away_team": "__FCS__",
-          "home_points": 37,
-          "away_points": 6,
-          "margin": 31.0,
-          "home_spread": -28.0,
-          "home_covered": true,
-          "distance": 0.439
+          "distance": 0.399
         },
         {
           "season": 2024,
@@ -7186,7 +7162,31 @@
           "margin": 38.0,
           "home_spread": -29.5,
           "home_covered": true,
-          "distance": 0.443
+          "distance": 0.441
+        },
+        {
+          "season": 2018,
+          "week": 1,
+          "home_team": "Georgia Southern",
+          "away_team": "__FCS__",
+          "home_points": 37,
+          "away_points": 6,
+          "margin": 31.0,
+          "home_spread": -28.0,
+          "home_covered": true,
+          "distance": 0.442
+        },
+        {
+          "season": 2016,
+          "week": 1,
+          "home_team": "Old Dominion",
+          "away_team": "__FCS__",
+          "home_points": 54,
+          "away_points": 21,
+          "margin": 33.0,
+          "home_spread": -28.0,
+          "home_covered": true,
+          "distance": 0.464
         }
       ],
       "confidence_flags": [
@@ -7195,8 +7195,8 @@
         "Line moved 3.0 pts since opening"
       ],
       "vs_market": {
-        "margin": -1.4,
-        "total": -1.7
+        "margin": -3.5,
+        "total": 0.1
       },
       "market_spread": -29.5,
       "market_total": 52.5,
@@ -7220,23 +7220,23 @@
       "neutral_site": false,
       "forecast": {
         "home_points": 46,
-        "away_points": 7,
-        "margin": 39.4,
-        "total": 52.7,
-        "home_win_prob": 0.9891
+        "away_points": 8,
+        "margin": 38.3,
+        "total": 54.3,
+        "home_win_prob": 0.9813
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.482,
+        "cover_rate": 0.477,
         "home_cover_by": 11.6,
-        "away_cover_by": 12.9,
+        "away_cover_by": 12.8,
         "home_blowout": 0.865,
         "away_blowout": 0.0,
         "cover_n": 199,
         "over_n": 155,
-        "calibrated_rate": 0.482,
+        "calibrated_rate": 0.477,
         "side": "away",
-        "confidence": 0.518,
+        "confidence": 0.523,
         "historical_rate": null,
         "historical_n": null,
         "margin_median": 32.0,
@@ -7244,23 +7244,11 @@
         "margin_p75": 42.0,
         "total_median": 55.0,
         "home_win_rate": 0.98,
-        "over_rate": 0.458,
+        "over_rate": 0.465,
         "agreement": 0.98,
-        "price_spread": 5.7
+        "price_spread": 5.8
       },
       "comp_examples": [
-        {
-          "season": 2017,
-          "week": 1,
-          "home_team": "Baylor",
-          "away_team": "__FCS__",
-          "home_points": 45,
-          "away_points": 48,
-          "margin": -3.0,
-          "home_spread": -33.0,
-          "home_covered": false,
-          "distance": 0.328
-        },
         {
           "season": 2019,
           "week": 1,
@@ -7271,19 +7259,19 @@
           "margin": 35.0,
           "home_spread": -33.0,
           "home_covered": true,
-          "distance": 0.375
+          "distance": 0.289
         },
         {
-          "season": 2016,
+          "season": 2017,
           "week": 1,
-          "home_team": "Utah",
+          "home_team": "Baylor",
           "away_team": "__FCS__",
-          "home_points": 24,
-          "away_points": 0,
-          "margin": 24.0,
-          "home_spread": -34.0,
+          "home_points": 45,
+          "away_points": 48,
+          "margin": -3.0,
+          "home_spread": -33.0,
           "home_covered": false,
-          "distance": 0.405
+          "distance": 0.329
         },
         {
           "season": 2022,
@@ -7294,6 +7282,18 @@
           "away_points": 27,
           "margin": 11.0,
           "home_spread": -32.5,
+          "home_covered": false,
+          "distance": 0.406
+        },
+        {
+          "season": 2016,
+          "week": 1,
+          "home_team": "Utah",
+          "away_team": "__FCS__",
+          "home_points": 24,
+          "away_points": 0,
+          "margin": 24.0,
+          "home_spread": -34.0,
           "home_covered": false,
           "distance": 0.408
         },
@@ -7307,7 +7307,7 @@
           "margin": 47.0,
           "home_spread": -32.0,
           "home_covered": true,
-          "distance": 0.43
+          "distance": 0.427
         }
       ],
       "confidence_flags": [
@@ -7315,8 +7315,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 6.9,
-        "total": -6.8
+        "margin": 5.8,
+        "total": -5.2
       },
       "market_spread": -32.5,
       "market_total": 59.5,
@@ -7341,9 +7341,9 @@
       "forecast": {
         "home_points": 49,
         "away_points": 7,
-        "margin": 41.5,
-        "total": 56.2,
-        "home_win_prob": 0.9914
+        "margin": 41.7,
+        "total": 56.3,
+        "home_win_prob": 0.9867
       },
       "comps": {
         "n": 200,
@@ -7379,7 +7379,7 @@
           "margin": 40.0,
           "home_spread": -38.5,
           "home_covered": true,
-          "distance": 0.056
+          "distance": 0.052
         },
         {
           "season": 2024,
@@ -7391,7 +7391,7 @@
           "margin": 54.0,
           "home_spread": -38.5,
           "home_covered": true,
-          "distance": 0.058
+          "distance": 0.054
         },
         {
           "season": 2022,
@@ -7403,7 +7403,7 @@
           "margin": 53.0,
           "home_spread": -38.0,
           "home_covered": true,
-          "distance": 0.104
+          "distance": 0.102
         },
         {
           "season": 2021,
@@ -7415,7 +7415,7 @@
           "margin": 39.0,
           "home_spread": -39.5,
           "home_covered": false,
-          "distance": 0.188
+          "distance": 0.187
         },
         {
           "season": 2024,
@@ -7427,7 +7427,7 @@
           "margin": 62.0,
           "home_spread": -38.5,
           "home_covered": true,
-          "distance": 0.193
+          "distance": 0.191
         }
       ],
       "confidence_flags": [
@@ -7435,8 +7435,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 3.0,
-        "total": -5.8
+        "margin": 3.2,
+        "total": -5.7
       },
       "market_spread": -38.5,
       "market_total": 62.0,
@@ -7459,17 +7459,17 @@
       "away_team": "__FCS__",
       "neutral_site": false,
       "forecast": {
-        "home_points": 50,
-        "away_points": 6,
-        "margin": 43.7,
-        "total": 56.1,
-        "home_win_prob": 0.9933
+        "home_points": 49,
+        "away_points": 7,
+        "margin": 42.8,
+        "total": 55.9,
+        "home_win_prob": 0.9881
       },
       "comps": {
         "n": 200,
         "cover_rate": 0.46,
         "home_cover_by": 11.2,
-        "away_cover_by": 13.2,
+        "away_cover_by": 13.1,
         "home_blowout": 0.92,
         "away_blowout": 0.0,
         "cover_n": 198,
@@ -7484,7 +7484,7 @@
         "margin_p75": 49.0,
         "total_median": 58.0,
         "home_win_rate": 0.99,
-        "over_rate": 0.484,
+        "over_rate": 0.477,
         "agreement": 0.99,
         "price_spread": 5.9
       },
@@ -7499,7 +7499,7 @@
           "margin": 39.0,
           "home_spread": -43.5,
           "home_covered": false,
-          "distance": 0.187
+          "distance": 0.048
         },
         {
           "season": 2018,
@@ -7511,7 +7511,7 @@
           "margin": 47.0,
           "home_spread": -43.0,
           "home_covered": true,
-          "distance": 0.189
+          "distance": 0.191
         },
         {
           "season": 2022,
@@ -7523,19 +7523,7 @@
           "margin": 46.0,
           "home_spread": -43.5,
           "home_covered": true,
-          "distance": 0.196
-        },
-        {
-          "season": 2019,
-          "week": 1,
-          "home_team": "Marshall",
-          "away_team": "__FCS__",
-          "home_points": 56,
-          "away_points": 17,
-          "margin": 39.0,
-          "home_spread": -44.0,
-          "home_covered": false,
-          "distance": 0.259
+          "distance": 0.191
         },
         {
           "season": 2021,
@@ -7547,7 +7535,19 @@
           "margin": 62.0,
           "home_spread": -43.5,
           "home_covered": true,
-          "distance": 0.277
+          "distance": 0.273
+        },
+        {
+          "season": 2015,
+          "week": 1,
+          "home_team": "California",
+          "away_team": "__FCS__",
+          "home_points": 73,
+          "away_points": 14,
+          "margin": 59.0,
+          "home_spread": -43.0,
+          "home_covered": true,
+          "distance": 0.3
         }
       ],
       "confidence_flags": [
@@ -7555,8 +7555,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 0.2,
-        "total": 3.6
+        "margin": -0.7,
+        "total": 3.4
       },
       "market_spread": -43.5,
       "market_total": 52.5,
@@ -7579,28 +7579,28 @@
       "away_team": "UNLV",
       "neutral_site": false,
       "forecast": {
-        "home_points": 25,
+        "home_points": 24,
         "away_points": 25,
-        "margin": -0.2,
-        "total": 50.6,
-        "home_win_prob": 0.5118
+        "margin": -1.1,
+        "total": 49.4,
+        "home_win_prob": 0.4944
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.567,
-        "home_cover_by": 12.0,
-        "away_cover_by": 14.1,
+        "cover_rate": 0.562,
+        "home_cover_by": 12.1,
+        "away_cover_by": 13.9,
         "home_blowout": 0.155,
-        "away_blowout": 0.215,
+        "away_blowout": 0.21,
         "cover_n": 194,
         "over_n": 199,
-        "calibrated_rate": 0.567,
+        "calibrated_rate": 0.562,
         "side": "home",
-        "confidence": 0.567,
+        "confidence": 0.562,
         "historical_rate": null,
         "historical_n": null,
         "margin_median": -1.0,
-        "margin_p25": -12.2,
+        "margin_p25": -12.0,
         "margin_p75": 7.0,
         "total_median": 54.5,
         "home_win_rate": 0.49,
@@ -7643,7 +7643,7 @@
           "margin": 11.0,
           "home_spread": 2.0,
           "home_covered": true,
-          "distance": 0.941
+          "distance": 0.942
         },
         {
           "season": 2025,
@@ -7675,8 +7675,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": 2.8,
-        "total": -4.9
+        "margin": 1.9,
+        "total": -6.1
       },
       "market_spread": 3.0,
       "market_total": 55.5,
@@ -7699,33 +7699,33 @@
       "away_team": "Central Michigan",
       "neutral_site": false,
       "forecast": {
-        "home_points": 29,
-        "away_points": 19,
-        "margin": 9.4,
-        "total": 47.8,
-        "home_win_prob": 0.7556
+        "home_points": 32,
+        "away_points": 21,
+        "margin": 10.8,
+        "total": 52.3,
+        "home_win_prob": 0.7657
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.553,
+        "cover_rate": 0.543,
         "home_cover_by": 12.8,
-        "away_cover_by": 11.8,
-        "home_blowout": 0.49,
+        "away_cover_by": 11.7,
+        "home_blowout": 0.48,
         "away_blowout": 0.065,
         "cover_n": 199,
         "over_n": 198,
-        "calibrated_rate": 0.553,
+        "calibrated_rate": 0.543,
         "side": "home",
-        "confidence": 0.553,
+        "confidence": 0.543,
         "historical_rate": null,
         "historical_n": null,
         "margin_median": 13.0,
-        "margin_p25": 3.0,
-        "margin_p75": 23.0,
+        "margin_p25": 2.8,
+        "margin_p75": 22.2,
         "total_median": 51.5,
-        "home_win_rate": 0.795,
-        "over_rate": 0.429,
-        "agreement": 0.795,
+        "home_win_rate": 0.79,
+        "over_rate": 0.424,
+        "agreement": 0.79,
         "price_spread": 3.1
       },
       "comp_examples": [
@@ -7739,7 +7739,7 @@
           "margin": 5.0,
           "home_spread": -10.0,
           "home_covered": false,
-          "distance": 0.371
+          "distance": 0.372
         },
         {
           "season": 2017,
@@ -7751,7 +7751,7 @@
           "margin": 11.0,
           "home_spread": -10.5,
           "home_covered": true,
-          "distance": 0.403
+          "distance": 0.404
         },
         {
           "season": 2024,
@@ -7763,7 +7763,7 @@
           "margin": 6.0,
           "home_spread": -12.0,
           "home_covered": false,
-          "distance": 0.406
+          "distance": 0.408
         },
         {
           "season": 2016,
@@ -7775,7 +7775,7 @@
           "margin": 15.0,
           "home_spread": -10.0,
           "home_covered": true,
-          "distance": 0.473
+          "distance": 0.474
         },
         {
           "season": 2025,
@@ -7787,7 +7787,7 @@
           "margin": 32.0,
           "home_spread": -13.5,
           "home_covered": true,
-          "distance": 0.516
+          "distance": 0.517
         }
       ],
       "confidence_flags": [
@@ -7795,8 +7795,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -1.6,
-        "total": 0.3
+        "margin": -0.2,
+        "total": 4.8
       },
       "market_spread": -11.0,
       "market_total": 47.5,
@@ -7821,9 +7821,9 @@
       "forecast": {
         "home_points": 42,
         "away_points": 10,
-        "margin": 31.9,
-        "total": 51.8,
-        "home_win_prob": 0.9749
+        "margin": 32.0,
+        "total": 52.8,
+        "home_win_prob": 0.9652
       },
       "comps": {
         "n": 200,
@@ -7859,7 +7859,7 @@
           "margin": 21.0,
           "home_spread": -38.5,
           "home_covered": false,
-          "distance": 0.129
+          "distance": 0.125
         },
         {
           "season": 2024,
@@ -7871,7 +7871,7 @@
           "margin": 34.0,
           "home_spread": -37.5,
           "home_covered": false,
-          "distance": 0.195
+          "distance": 0.192
         },
         {
           "season": 2022,
@@ -7883,7 +7883,7 @@
           "margin": 52.0,
           "home_spread": -39.5,
           "home_covered": true,
-          "distance": 0.34
+          "distance": 0.338
         },
         {
           "season": 2024,
@@ -7895,7 +7895,7 @@
           "margin": 39.0,
           "home_spread": -36.5,
           "home_covered": true,
-          "distance": 0.482
+          "distance": 0.481
         },
         {
           "season": 2022,
@@ -7907,7 +7907,7 @@
           "margin": 31.0,
           "home_spread": -40.0,
           "home_covered": false,
-          "distance": 0.529
+          "distance": 0.528
         }
       ],
       "confidence_flags": [
@@ -7915,8 +7915,8 @@
         "No play-level efficiency for one side yet"
       ],
       "vs_market": {
-        "margin": -6.1,
-        "total": -4.7
+        "margin": -6.0,
+        "total": -3.7
       },
       "market_spread": -38.0,
       "market_total": 56.5,
@@ -7939,33 +7939,33 @@
       "away_team": "UCLA",
       "neutral_site": false,
       "forecast": {
-        "home_points": 23,
+        "home_points": 24,
         "away_points": 26,
-        "margin": -2.3,
-        "total": 49.2,
-        "home_win_prob": 0.4514
+        "margin": -3.0,
+        "total": 50.0,
+        "home_win_prob": 0.4475
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.469,
+        "cover_rate": 0.464,
         "home_cover_by": 11.1,
-        "away_cover_by": 13.5,
-        "home_blowout": 0.115,
-        "away_blowout": 0.265,
+        "away_cover_by": 13.1,
+        "home_blowout": 0.11,
+        "away_blowout": 0.26,
         "cover_n": 196,
         "over_n": 199,
-        "calibrated_rate": 0.469,
+        "calibrated_rate": 0.464,
         "side": "away",
-        "confidence": 0.531,
+        "confidence": 0.536,
         "historical_rate": null,
         "historical_n": null,
         "margin_median": -3.0,
         "margin_p25": -14.0,
-        "margin_p75": 5.2,
-        "total_median": 53.0,
-        "home_win_rate": 0.4,
-        "over_rate": 0.518,
-        "agreement": 0.6,
+        "margin_p75": 5.0,
+        "total_median": 54.5,
+        "home_win_rate": 0.395,
+        "over_rate": 0.533,
+        "agreement": 0.605,
         "price_spread": 2.7
       },
       "comp_examples": [
@@ -7979,7 +7979,7 @@
           "margin": -2.0,
           "home_spread": 2.0,
           "home_covered": null,
-          "distance": 0.482
+          "distance": 0.483
         },
         {
           "season": 2018,
@@ -7991,7 +7991,7 @@
           "margin": 7.0,
           "home_spread": 3.0,
           "home_covered": true,
-          "distance": 0.501
+          "distance": 0.507
         },
         {
           "season": 2025,
@@ -8003,7 +8003,7 @@
           "margin": -32.0,
           "home_spread": 2.5,
           "home_covered": false,
-          "distance": 0.538
+          "distance": 0.542
         },
         {
           "season": 2022,
@@ -8015,7 +8015,7 @@
           "margin": -18.0,
           "home_spread": 1.5,
           "home_covered": false,
-          "distance": 0.543
+          "distance": 0.548
         },
         {
           "season": 2024,
@@ -8027,7 +8027,7 @@
           "margin": -24.0,
           "home_spread": 2.5,
           "home_covered": false,
-          "distance": 0.576
+          "distance": 0.58
         }
       ],
       "confidence_flags": [
@@ -8036,8 +8036,8 @@
         "Line moved 5.0 pts since opening"
       ],
       "vs_market": {
-        "margin": 0.2,
-        "total": -4.3
+        "margin": -0.5,
+        "total": -3.5
       },
       "market_spread": 2.5,
       "market_total": 53.5,
@@ -8063,30 +8063,30 @@
         "home_points": 20,
         "away_points": 26,
         "margin": -6.2,
-        "total": 45.8,
-        "home_win_prob": 0.3468
+        "total": 46.2,
+        "home_win_prob": 0.3679
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.52,
+        "cover_rate": 0.51,
         "home_cover_by": 12.3,
-        "away_cover_by": 14.1,
-        "home_blowout": 0.14,
-        "away_blowout": 0.255,
+        "away_cover_by": 13.9,
+        "home_blowout": 0.135,
+        "away_blowout": 0.25,
         "cover_n": 196,
         "over_n": 199,
-        "calibrated_rate": 0.52,
+        "calibrated_rate": 0.51,
         "side": "home",
-        "confidence": 0.52,
+        "confidence": 0.51,
         "historical_rate": null,
         "historical_n": null,
-        "margin_median": -2.5,
-        "margin_p25": -14.0,
+        "margin_median": -3.0,
+        "margin_p25": -13.2,
         "margin_p75": 7.0,
         "total_median": 53.0,
-        "home_win_rate": 0.475,
+        "home_win_rate": 0.465,
         "over_rate": 0.457,
-        "agreement": 0.525,
+        "agreement": 0.535,
         "price_spread": 3.4
       },
       "comp_examples": [
@@ -8100,7 +8100,19 @@
           "margin": -13.0,
           "home_spread": 2.8,
           "home_covered": false,
-          "distance": 1.044
+          "distance": 1.051
+        },
+        {
+          "season": 2019,
+          "week": 1,
+          "home_team": "Coastal Carolina",
+          "away_team": "Eastern Michigan",
+          "home_points": 23,
+          "away_points": 30,
+          "margin": -7.0,
+          "home_spread": 5.0,
+          "home_covered": false,
+          "distance": 1.113
         },
         {
           "season": 2024,
@@ -8112,7 +8124,7 @@
           "margin": -2.0,
           "home_spread": 1.5,
           "home_covered": false,
-          "distance": 1.213
+          "distance": 1.219
         },
         {
           "season": 2022,
@@ -8124,7 +8136,7 @@
           "margin": -2.0,
           "home_spread": 3.5,
           "home_covered": true,
-          "distance": 1.231
+          "distance": 1.237
         },
         {
           "season": 2021,
@@ -8136,19 +8148,7 @@
           "margin": 11.0,
           "home_spread": 2.0,
           "home_covered": true,
-          "distance": 1.232
-        },
-        {
-          "season": 2017,
-          "week": 4,
-          "home_team": "Air Force",
-          "away_team": "San Diego State",
-          "home_points": 24,
-          "away_points": 28,
-          "margin": -4.0,
-          "home_spread": 1.5,
-          "home_covered": false,
-          "distance": 1.241
+          "distance": 1.238
         }
       ],
       "confidence_flags": [
@@ -8157,7 +8157,7 @@
       ],
       "vs_market": {
         "margin": -4.7,
-        "total": -5.7
+        "total": -5.3
       },
       "market_spread": 1.5,
       "market_total": 51.5,
@@ -8174,215 +8174,215 @@
   ],
   "model_metrics": {
     "n_games": 5398,
-    "margin_mae": 12.723913168128663,
-    "total_mae": 13.321198855600796,
-    "win_logloss": 0.5109818820555119,
-    "win_accuracy": 0.7374953686550574,
-    "win_brier": 0.1721102549017249,
-    "win_ece": 0.015076951831467754,
+    "margin_mae": 12.694825794323943,
+    "total_mae": 13.230775810491936,
+    "win_logloss": 0.5109332446325234,
+    "win_accuracy": 0.7382363838458689,
+    "win_brier": 0.17195059589318937,
+    "win_ece": 0.00969471886688999,
     "calibration_table": [
       {
         "bin": "(0.0, 0.1]",
-        "predicted": 0.0658,
-        "observed": 0.0598,
-        "n": 117
+        "predicted": 0.0664,
+        "observed": 0.0727,
+        "n": 110
       },
       {
         "bin": "(0.1, 0.2]",
-        "predicted": 0.1489,
-        "observed": 0.1562,
-        "n": 320
+        "predicted": 0.1532,
+        "observed": 0.1392,
+        "n": 316
       },
       {
         "bin": "(0.2, 0.3]",
-        "predicted": 0.2518,
-        "observed": 0.2541,
-        "n": 362
+        "predicted": 0.2504,
+        "observed": 0.2791,
+        "n": 344
       },
       {
         "bin": "(0.3, 0.4]",
-        "predicted": 0.3513,
-        "observed": 0.3716,
-        "n": 444
+        "predicted": 0.3521,
+        "observed": 0.3298,
+        "n": 476
       },
       {
         "bin": "(0.4, 0.5]",
-        "predicted": 0.4488,
-        "observed": 0.4293,
-        "n": 594
+        "predicted": 0.4513,
+        "observed": 0.4454,
+        "n": 613
       },
       {
         "bin": "(0.5, 0.6]",
-        "predicted": 0.5516,
-        "observed": 0.5645,
-        "n": 698
+        "predicted": 0.5527,
+        "observed": 0.5458,
+        "n": 720
       },
       {
         "bin": "(0.6, 0.7]",
-        "predicted": 0.6484,
-        "observed": 0.6094,
-        "n": 681
+        "predicted": 0.6479,
+        "observed": 0.6587,
+        "n": 671
       },
       {
         "bin": "(0.7, 0.8]",
-        "predicted": 0.7503,
-        "observed": 0.7668,
-        "n": 596
+        "predicted": 0.751,
+        "observed": 0.7645,
+        "n": 586
       },
       {
         "bin": "(0.8, 0.9]",
-        "predicted": 0.8505,
-        "observed": 0.8599,
-        "n": 678
+        "predicted": 0.8509,
+        "observed": 0.8519,
+        "n": 709
       },
       {
         "bin": "(0.9, 1.0]",
-        "predicted": 0.9571,
-        "observed": 0.9515,
-        "n": 908
+        "predicted": 0.9553,
+        "observed": 0.9578,
+        "n": 853
       }
     ],
     "market_margin_mae": 12.182869080779945,
-    "model_margin_mae_on_lined": 12.722131259681003,
-    "mae_vs_market": 0.5392621789010583,
+    "model_margin_mae_on_lined": 12.693751981802846,
+    "mae_vs_market": 0.5108829010229012,
     "ats_n": 5286,
-    "ats_win_pct": 0.5022701475595914,
+    "ats_win_pct": 0.5054861899356792,
     "ats_by_tier": {
       "Strong": {
         "threshold": 6.0,
-        "n": 916,
-        "ats_win_pct": 0.490174672489083
+        "n": 862,
+        "ats_win_pct": 0.494199535962877
       },
       "Lean": {
         "threshold": 3.5,
-        "n": 2165,
-        "ats_win_pct": 0.497459584295612
+        "n": 2108,
+        "ats_win_pct": 0.4971537001897533
       },
       "Slight": {
         "threshold": 2.0,
-        "n": 3328,
-        "ats_win_pct": 0.49789663461538464
+        "n": 3256,
+        "ats_win_pct": 0.5006142506142506
       }
     },
     "breakeven_at_minus_110": 0.5238,
     "market_total_mae": 12.694697251114412,
-    "model_total_mae_on_lined": 13.316509841936764,
+    "model_total_mae_on_lined": 13.226065640172992,
     "margin_mae_by_season": {
-      "2019": 13.224,
-      "2020": 13.102,
-      "2021": 13.069,
-      "2022": 12.669,
-      "2023": 12.61,
-      "2024": 12.426,
-      "2025": 12.136
+      "2019": 13.088,
+      "2020": 13.025,
+      "2021": 12.948,
+      "2022": 12.69,
+      "2023": 12.636,
+      "2024": 12.509,
+      "2025": 12.115
     },
     "comps_calibration": {
-      "slope": -0.6145844711079078,
-      "intercept": -0.001198415207587909,
+      "slope": -0.523330560549464,
+      "intercept": -0.00046414342128424206,
       "n_fitted": 5286,
       "buckets": [
         {
           "lo": 0.4,
           "hi": 0.45,
-          "n": 852,
-          "predicted": 0.4326769455249124,
-          "realized": 0.5070422535211268,
-          "se": 0.017128018621769447
+          "n": 866,
+          "predicted": 0.4322827519259311,
+          "realized": 0.5115473441108545,
+          "se": 0.016986159929486676
         },
         {
           "lo": 0.45,
           "hi": 0.5,
-          "n": 2407,
-          "predicted": 0.47636998604382286,
-          "realized": 0.5006231823847113,
-          "se": 0.010191347773512561
+          "n": 2466,
+          "predicted": 0.4761831968104216,
+          "realized": 0.4967558799675588,
+          "se": 0.010068489620903169
         },
         {
           "lo": 0.5,
           "hi": 0.55,
-          "n": 1728,
-          "predicted": 0.5191632096378331,
-          "realized": 0.5028935185185185,
-          "se": 0.012027929196600687
+          "n": 1683,
+          "predicted": 0.5189405991539825,
+          "realized": 0.5086155674390969,
+          "se": 0.012186064238087555
         },
         {
           "lo": 0.55,
           "hi": 0.6,
-          "n": 254,
-          "predicted": 0.5626693092148056,
-          "realized": 0.4881889763779528,
-          "se": 0.03136403600952984
+          "n": 225,
+          "predicted": 0.5631004597598117,
+          "realized": 0.4711111111111111,
+          "se": 0.033277648962012886
         }
       ]
     },
     "edge_calibration": {
-      "a": 0.1091908561168816,
-      "b": -0.0019023898200398234,
-      "intercept": 0.12381635028945669,
+      "a": 0.11067274415545507,
+      "b": -0.0019207837837821769,
+      "intercept": 0.10717096565877385,
       "n_fitted": 5385,
       "buckets": [
         {
           "lo": 0.0,
           "hi": 1.5,
-          "n": 1526,
-          "ats": 0.5124508519003932,
-          "se": 0.01279552306124483,
-          "realized_fraction": 0.6407388070479332,
-          "mean_edge": 0.7289565859376652
+          "n": 1543,
+          "ats": 0.5132858068697342,
+          "se": 0.012724293270455028,
+          "realized_fraction": 0.9598977053068622,
+          "mean_edge": 0.7379539851898933
         },
         {
           "lo": 1.5,
           "hi": 3.0,
-          "n": 1271,
-          "ats": 0.4980330448465775,
-          "se": 0.0140247093143223,
-          "realized_fraction": 0.0346563964876353,
-          "mean_edge": 2.253209436207068
+          "n": 1299,
+          "ats": 0.5034642032332564,
+          "se": 0.013872508668717153,
+          "realized_fraction": 0.1763711471850889,
+          "mean_edge": 2.1922155531068253
         },
         {
           "lo": 3.0,
           "hi": 4.5,
-          "n": 935,
-          "ats": 0.506951871657754,
-          "se": 0.016350167916207657,
-          "realized_fraction": 0.12348626411581387,
-          "mean_edge": 3.700426723001299
+          "n": 924,
+          "ats": 0.5064935064935064,
+          "se": 0.01644740516822545,
+          "realized_fraction": 0.06762901534663522,
+          "mean_edge": 3.7126409396221276
         },
         {
           "lo": 4.5,
           "hi": 6.0,
-          "n": 638,
-          "ats": 0.49686520376175547,
-          "se": 0.019794800505223743,
-          "realized_fraction": 0.08936789165082357,
-          "mean_edge": 5.204614132185846
+          "n": 658,
+          "ats": 0.5045592705167173,
+          "se": 0.01949121901320184,
+          "realized_fraction": 0.05205345343465548,
+          "mean_edge": 5.218799465350118
         },
         {
           "lo": 6.0,
           "hi": 9.0,
-          "n": 605,
-          "ats": 0.4793388429752066,
-          "se": 0.020310528010943008,
-          "realized_fraction": 0.0469897117468266,
-          "mean_edge": 7.254973019325105
+          "n": 554,
+          "ats": 0.48014440433212996,
+          "se": 0.021226207972950894,
+          "realized_fraction": 0.09422516625264896,
+          "mean_edge": 7.226908752535285
         },
         {
           "lo": 9.0,
           "hi": 13.0,
-          "n": 225,
-          "ats": 0.5022222222222222,
-          "se": 0.03333300411360055,
-          "realized_fraction": 0.14281090150132084,
-          "mean_edge": 10.588983098102185
+          "n": 228,
+          "ats": 0.5131578947368421,
+          "se": 0.033101841113666895,
+          "realized_fraction": 0.09625876236935021,
+          "mean_edge": 10.605095143612372
         },
         {
           "lo": 13.0,
           "hi": 99.0,
-          "n": 86,
-          "ats": 0.5348837209302325,
-          "se": 0.053785007638515174,
-          "realized_fraction": 0.12000601988515698,
-          "mean_edge": 16.205582384296747
+          "n": 80,
+          "ats": 0.5375,
+          "se": 0.05574425418821208,
+          "realized_fraction": 0.16707908757453702,
+          "mean_edge": 16.552789700663194
         }
       ]
     }
