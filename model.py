@@ -8,9 +8,8 @@ from dataclasses import dataclass, field
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
-from sklearn.ensemble import (HistGradientBoostingClassifier,
-                              HistGradientBoostingRegressor)
-from sklearn.isotonic import IsotonicRegression
+from sklearn.ensemble import HistGradientBoostingRegressor
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import log_loss, mean_absolute_error
 
 import config
@@ -21,6 +20,11 @@ log = logging.getLogger(__name__)
 
 class FeatureMismatchError(RuntimeError):
     """Saved model was fitted on a different feature set than the code builds."""
+
+
+# The two ratings-derived baselines the trees correct rather than replace.
+BASELINE_MARGIN = "proj_margin"
+BASELINE_TOTAL = "proj_total"
 
 
 def _regressor(**kw) -> HistGradientBoostingRegressor:
@@ -41,18 +45,24 @@ def _regressor(**kw) -> HistGradientBoostingRegressor:
     return HistGradientBoostingRegressor(**params)
 
 
-def _classifier() -> HistGradientBoostingClassifier:
-    return HistGradientBoostingClassifier(
-        max_iter=350,
-        learning_rate=0.045,
-        max_leaf_nodes=20,
-        min_samples_leaf=60,
-        l2_regularization=1.5,
-        early_stopping=True,
-        validation_fraction=0.12,
-        n_iter_no_change=30,
-        random_state=config.RANDOM_SEED,
-    )
+def _fit_line(x: np.ndarray, target: np.ndarray) -> tuple[float, float]:
+    """Least-squares slope and intercept, with a safe fallback.
+
+    The ratings baseline is systematically compressed early in a season, when
+    ridge shrinkage pulls every team toward its preseason prior. Rescaling it
+    against reality before the trees see it means the model inherits a
+    baseline that is on the right scale, not merely the right order.
+    """
+    ok = np.isfinite(x) & np.isfinite(target)
+    if ok.sum() < 200 or np.std(x[ok]) < 1e-6:
+        return 1.0, 0.0
+    slope, intercept = np.polyfit(x[ok], target[ok], 1)
+    # Guard against a degenerate fit inverting or exploding the baseline.
+    if not np.isfinite(slope) or not (0.2 <= slope <= 5.0):
+        return 1.0, 0.0
+    return float(slope), float(intercept)
+
+
 
 
 @dataclass
@@ -61,89 +71,117 @@ class CFBModel:
 
     margin: HistGradientBoostingRegressor | None = None
     total: HistGradientBoostingRegressor | None = None
-    winner: HistGradientBoostingClassifier | None = None
-    calibrator: IsotonicRegression | None = None
+    margin_line: tuple[float, float] = (1.0, 0.0)
+    total_line: tuple[float, float] = (1.0, 0.0)
+    wp_coef: float = 0.0
+    wp_intercept: float = 0.0
     margin_sigma: float = 16.0
     total_sigma: float = 13.0
     features: list[str] = field(default_factory=lambda: list(FEATURE_COLUMNS))
     trained_seasons: list[int] = field(default_factory=list)
 
+    # -- baselines ----------------------------------------------------------
+    def _baseline(self, X: pd.DataFrame, which: str) -> np.ndarray:
+        col, (a, b) = ((BASELINE_MARGIN, self.margin_line) if which == "margin"
+                       else (BASELINE_TOTAL, self.total_line))
+        raw = pd.to_numeric(X[col], errors="coerce").to_numpy(dtype=float)
+        return a * np.nan_to_num(raw, nan=0.0) + b
+
     # -- fitting ------------------------------------------------------------
     def fit(self, X: pd.DataFrame, y: pd.DataFrame) -> "CFBModel":
-        X = X[self.features]
-        self.margin = _regressor().fit(X, y["margin"])
-        self.total = _regressor().fit(X, y["total"])
+        """Fit the trees on the *residual* from a rescaled ratings baseline.
 
-        resid = y["margin"] - self.margin.predict(X)
+        Asking a gradient booster to predict a scoring margin outright means
+        every prediction is an average of training leaves, so it can never
+        exceed what it has already seen and regresses hard toward the middle.
+        That is why a 45-point mismatch used to come out as a 20-point
+        favourite. Here the ratings difference supplies the level - it is
+        linear, so it extrapolates without limit - and the trees only learn
+        the correction on top of it.
+        """
+        X = X[self.features]
+
+        self.margin_line = _fit_line(
+            X[BASELINE_MARGIN].to_numpy(dtype=float), y["margin"].to_numpy(dtype=float))
+        self.total_line = _fit_line(
+            X[BASELINE_TOTAL].to_numpy(dtype=float), y["total"].to_numpy(dtype=float))
+        log.info("baseline scaling: margin %.2fx%+.2f, total %.2fx%+.2f",
+                 *self.margin_line, *self.total_line)
+
+        margin_base = self._baseline(X, "margin")
+        total_base = self._baseline(X, "total")
+
+        self.margin = _regressor().fit(X, y["margin"].to_numpy() - margin_base)
+        self.total = _regressor().fit(X, y["total"].to_numpy() - total_base)
+
+        resid = y["margin"].to_numpy() - (margin_base + self.margin.predict(X))
         # 1.4826 * MAD is a robust sd estimate, less swayed by 60-point games.
         self.margin_sigma = float(max(9.0, 1.4826 * np.median(np.abs(resid - np.median(resid)))))
-        tresid = y["total"] - self.total.predict(X)
+        tresid = y["total"].to_numpy() - (total_base + self.total.predict(X))
         self.total_sigma = float(max(7.0, 1.4826 * np.median(np.abs(tresid - np.median(tresid)))))
 
-        wmask = y["home_win"].notna()
-        if wmask.sum() > 200:
-            self.winner = _classifier().fit(X.loc[wmask.values], y.loc[wmask, "home_win"])
-            self._fit_calibrator(X, y)
-
         self.trained_seasons = sorted(y["season"].unique().tolist())
+        self._fit_win_probability(X, y)
         return self
 
-    def _fit_calibrator(self, X: pd.DataFrame, y: pd.DataFrame) -> None:
-        """Fit isotonic calibration on genuinely held-out predictions.
+    def _fit_win_probability(self, X: pd.DataFrame, y: pd.DataFrame) -> None:
+        """Map predicted margin to win probability with a one-variable logistic.
 
-        Calibrating on the training tail is the classic trap: the boosted
-        models are near-perfect in sample, so the isotonic map learns to trust
-        confidence levels that don't survive contact with new games. Instead we
-        hold out the most recent season, fit a shadow model on everything
-        before it, and calibrate on the shadow's out-of-sample probabilities.
+        Isotonic regression on blended probabilities was the wrong tool: fitted
+        on a few hundred held-out games it produces flat plateaus, so a coin
+        flip came out at 61% and a near-certainty got dragged down to 90%. A
+        logistic in the predicted margin has two parameters, is monotonic by
+        construction, and keeps rising sensibly past the largest mismatch in
+        the training data - which is exactly what a 45-point favourite needs.
         """
+        wmask = y["home_win"].notna().to_numpy()
+        if wmask.sum() < 400:
+            # Fall back to a normal CDF over the margin.
+            self.wp_coef, self.wp_intercept = 1.0 / self.margin_sigma, 0.0
+            return
+
         seasons = sorted(y["season"].dropna().unique())
-        if len(seasons) < 3:
-            return
+        margins, wins = None, None
 
-        # More holdout seasons means a less lumpy isotonic fit, but the shadow
-        # model needs enough history to be representative. Two when we can
-        # afford it, one otherwise.
-        n_holdout = 2 if len(seasons) >= 5 else 1
-        cutoff = seasons[-n_holdout]
-        train = (y["season"] < cutoff).to_numpy()
-        held = (y["season"] >= cutoff).to_numpy()
-        if train.sum() < 800 or held.sum() < 250:
-            return
+        if len(seasons) >= 4:
+            # Fit the mapping on genuinely out-of-sample margins so it reflects
+            # how confident the model deserves to be on games it has not seen.
+            cutoff = seasons[-2]
+            train = (y["season"] < cutoff).to_numpy()
+            held = (y["season"] >= cutoff).to_numpy() & wmask
+            if train.sum() >= 800 and held.sum() >= 300:
+                shadow_line = _fit_line(
+                    X.loc[train, BASELINE_MARGIN].to_numpy(dtype=float),
+                    y.loc[train, "margin"].to_numpy(dtype=float))
+                base_tr = (shadow_line[0]
+                           * np.nan_to_num(X.loc[train, BASELINE_MARGIN].to_numpy(dtype=float))
+                           + shadow_line[1])
+                shadow = _regressor().fit(X.loc[train],
+                                          y.loc[train, "margin"].to_numpy() - base_tr)
+                base_ho = (shadow_line[0]
+                           * np.nan_to_num(X.loc[held, BASELINE_MARGIN].to_numpy(dtype=float))
+                           + shadow_line[1])
+                margins = base_ho + shadow.predict(X.loc[held])
+                wins = y.loc[held, "home_win"].to_numpy()
 
-        shadow = CFBModel(features=list(self.features))
-        shadow.margin = _regressor().fit(X.loc[train], y.loc[train, "margin"])
-        wtrain = train & y["home_win"].notna().to_numpy()
-        shadow.winner = _classifier().fit(X.loc[wtrain], y.loc[wtrain, "home_win"])
-        sresid = y.loc[train, "margin"] - shadow.margin.predict(X.loc[train])
-        shadow.margin_sigma = float(max(
-            9.0, 1.4826 * np.median(np.abs(sresid - np.median(sresid)))))
+        if margins is None:
+            margins = (self._baseline(X, "margin") + self.margin.predict(X))[wmask]
+            wins = y.loc[wmask, "home_win"].to_numpy()
 
-        eval_mask = held & y["home_win"].notna().to_numpy()
-        if eval_mask.sum() < 250:
-            return
-
-        raw = shadow._raw_win_prob(X.loc[eval_mask])
-        truth = y.loc[eval_mask, "home_win"].to_numpy()
-        self.calibrator = IsotonicRegression(
-            y_min=0.02, y_max=0.98, out_of_bounds="clip").fit(raw, truth)
-        log.info("calibrated win probabilities on %d held-out games (%s+)",
-                 int(eval_mask.sum()), int(cutoff))
+        clf = LogisticRegression(C=1e6, solver="lbfgs")
+        clf.fit(margins.reshape(-1, 1), wins.astype(int))
+        self.wp_coef = float(clf.coef_[0][0])
+        self.wp_intercept = float(clf.intercept_[0])
+        log.info("win probability: p = sigmoid(%.4f * margin %+.4f) "
+                 "-> 1 pt of margin is worth %.1f%% at the coin flip",
+                 self.wp_coef, self.wp_intercept, 25 * self.wp_coef)
 
     # -- prediction ---------------------------------------------------------
-    def _raw_win_prob(self, X: pd.DataFrame) -> np.ndarray:
-        """Blend the classifier with a normal CDF over the margin prediction.
-
-        The classifier picks up patterns the margin model smooths over; the
-        CDF keeps probabilities coherent with the predicted spread. Averaging
-        them is more stable than either alone.
-        """
-        margin_pred = self.margin.predict(X[self.features])
-        cdf_prob = norm.cdf(margin_pred / self.margin_sigma)
-        if self.winner is None:
-            return cdf_prob
-        clf_prob = self.winner.predict_proba(X[self.features])[:, 1]
-        return 0.5 * cdf_prob + 0.5 * clf_prob
+    def _win_prob(self, margin: np.ndarray) -> np.ndarray:
+        if self.wp_coef <= 0:
+            return norm.cdf(margin / self.margin_sigma)
+        z = np.clip(self.wp_coef * margin + self.wp_intercept, -12, 12)
+        return 1.0 / (1.0 + np.exp(-z))
 
     def check_compatible(self, X: pd.DataFrame) -> None:
         """Fail loudly if the saved model predates the current feature set.
@@ -169,11 +207,11 @@ class CFBModel:
     def predict(self, X: pd.DataFrame) -> pd.DataFrame:
         self.check_compatible(X)
         Xf = X[self.features]
-        margin = self.margin.predict(Xf)
-        total = self.total.predict(Xf)
-        raw = self._raw_win_prob(X)
-        prob = self.calibrator.predict(raw) if self.calibrator is not None else raw
-        prob = np.clip(prob, 0.01, 0.99)
+        margin = self._baseline(Xf, "margin") + self.margin.predict(Xf)
+        total = self._baseline(Xf, "total") + self.total.predict(Xf)
+        # A total below a floor is nonsense and would poison the score split.
+        total = np.clip(total, 17.0, 120.0)
+        prob = np.clip(self._win_prob(margin), 0.005, 0.995)
         return pd.DataFrame({
             "pred_margin": margin,
             "pred_total": total,

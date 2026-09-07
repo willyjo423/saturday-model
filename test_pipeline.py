@@ -216,12 +216,33 @@ def main() -> int:
 
     check(out["home_win_prob"].between(0, 1).all(), "probabilities within [0,1]")
 
+    # The bug that started this: a huge favourite was coming back at 58%.
+    # Win probability must rise monotonically with margin and reach near
+    # certainty for a blowout, including margins larger than any in training.
+    ladder = [(0, 0.47, 0.53), (7, 0.62, 0.75), (14, 0.75, 0.88),
+              (21, 0.85, 0.95), (35, 0.94, 0.995), (50, 0.96, 0.999)]
+    probs = [model._win_prob(np.array([float(m)]))[0] for m, _, _ in ladder]
+    in_band = all(lo <= p <= hi for p, (_, lo, hi) in zip(probs, ladder))
+    check(in_band, "win probability sane across the margin ladder",
+          " ".join(f"{m}pt={p*100:.0f}%" for (m, _, _), p in zip(ladder, probs)))
+    check(all(a < b for a, b in zip(probs, probs[1:])),
+          "win probability rises monotonically with margin")
+
+    # Predictions must be able to exceed the training range, which tree
+    # averaging alone can never do - that is what the linear baseline buys.
+    all_preds = model.predict(X)["pred_margin"]
+    reach = max(abs(all_preds.max()), abs(all_preds.min()))
+    check(reach > 25, "model can express a lopsided game",
+          f"largest predicted margin {reach:.1f} pts, "
+          f"sd {all_preds.std():.1f} vs outcome sd {y['margin'].std():.1f}")
+
     # A model saved before a feature-set change must say so plainly rather
     # than dying inside pandas with a bare KeyError.
     from model import FeatureMismatchError
     stale = CFBModel(features=list(model.features) + ["a_feature_we_dropped"])
     stale.margin, stale.total = model.margin, model.total
-    stale.winner, stale.calibrator = model.winner, model.calibrator
+    stale.margin_line, stale.total_line = model.margin_line, model.total_line
+    stale.wp_coef, stale.wp_intercept = model.wp_coef, model.wp_intercept
     stale.trained_seasons = list(model.trained_seasons)
     try:
         stale.predict(sample)

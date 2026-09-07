@@ -249,19 +249,34 @@ class RatingsEngine:
         self._final_cache[year] = series
         return series
 
+    def _from_prior(self, year: int, team: str, hfa: float,
+                    league_ppg: float) -> dict:
+        """Best estimate for a team with no games this season yet.
+
+        Week 1 has no results at all, so the preseason prior is the *only*
+        information available. Returning a flat zero here - as this used to -
+        made every opening-weekend game a pick'em regardless of who was
+        playing, and a 45-point mismatch came out as a coin flip.
+        """
+        prior = self.priors.by_year.get(year, pd.Series(dtype=float))
+        if len(prior):
+            rating = float(prior.get(team, prior.get(FCS, prior.min() - 10.0)))
+        else:
+            rating = -20.0 if team == FCS else 0.0
+        half = league_ppg / 2.0
+        return {"rating": rating, "off": half + rating / 4.0,
+                "def": half - rating / 4.0, "played": 0.0,
+                "hfa": hfa, "known": 0}
+
     def lookup(self, year: int, week: int, team: str) -> dict:
         table = self.ratings_before(year, week)
         if table.empty:
-            return {"rating": 0.0, "off": 13.5, "def": 13.5, "played": 0.0,
-                    "hfa": config.HFA_PRIOR, "known": 0}
+            return self._from_prior(year, team, config.HFA_PRIOR, 27.0)
         row = table.loc[table["team"] == team]
         hfa = table.attrs.get("hfa", config.HFA_PRIOR)
         if row.empty:
-            prior = self.priors.by_year.get(year, pd.Series(dtype=float))
-            fallback = float(prior.get(team, prior.get(FCS, -20.0))) if len(prior) else -20.0
-            half = table.attrs.get("league_ppg", 27.0) / 2.0
-            return {"rating": fallback, "off": half, "def": half,
-                    "played": 0.0, "hfa": hfa, "known": 0}
+            return self._from_prior(
+                year, team, hfa, table.attrs.get("league_ppg", 27.0))
         r = row.iloc[0]
         return {"rating": float(r["rating"]), "off": float(r["off"]),
                 "def": float(r["def"]), "played": float(r["played"]),
