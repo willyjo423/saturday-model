@@ -465,6 +465,36 @@ def main() -> int:
     check(all(a < b for a, b in zip(probs, probs[1:])),
           "win probability rises monotonically with margin")
 
+    # Uncertainty should depend on how much the ratings had to go on. A week-2
+    # forecast built on preseason priors deserves a wider spread - and a less
+    # confident probability - than a week-12 one.
+    curve = model.sigma_by_played
+    check(bool(curve), "residual spread fitted by games played",
+          " ".join(f"{c['lo']:.0f}-{c['hi']:.0f}:{c['sigma']:.1f}" for c in curve))
+    if curve:
+        thin, thick = curve[0]["sigma"], curve[-1]["sigma"]
+        print(f"  thin evidence sigma {thin:.2f} vs thick {thick:.2f} "
+              f"({thin - thick:+.2f})")
+        sigmas = [c["sigma"] for c in curve]
+        check(all(a >= b - 1e-9 for a, b in zip(sigmas, sigmas[1:])),
+              "uncertainty never rises as evidence accumulates",
+              " -> ".join(f"{v:.1f}" for v in sigmas))
+
+        # The same margin must yield a less confident probability when the
+        # ratings behind it are thin.
+        p_thin = model._win_prob(np.array([10.0]), np.array([float(curve[0]["lo"])]))[0]
+        p_thick = model._win_prob(np.array([10.0]), np.array([float(curve[-1]["lo"])]))[0]
+        print(f"  a 10-pt edge reads {p_thin*100:.1f}% on thin evidence, "
+              f"{p_thick*100:.1f}% on thick")
+        check(p_thin <= p_thick + 1e-9,
+              "thin evidence never produces more confidence than thick",
+              f"{p_thin*100:.1f}% vs {p_thick*100:.1f}%")
+
+    sig = model.predict(X)["margin_sigma"]
+    check(sig.notna().all() and (sig > 0).all(),
+          "every prediction carries its own uncertainty",
+          f"{sig.min():.1f}-{sig.max():.1f} pts")
+
     # Predictions must be able to exceed the training range, which tree
     # averaging alone can never do - that is what the linear baseline buys.
     all_preds = model.predict(X)["pred_margin"]

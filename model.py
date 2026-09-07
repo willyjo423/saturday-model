@@ -77,6 +77,10 @@ class CFBModel:
     wp_intercept: float = 0.0
     margin_sigma: float = 16.0
     total_sigma: float = 13.0
+    # Residual spread as a function of how many games the teams have played.
+    # A week-2 forecast leaning on preseason priors deserves less confidence
+    # than a week-12 one, and a single global sigma cannot express that.
+    sigma_by_played: list = field(default_factory=list)
     features: list[str] = field(default_factory=lambda: list(FEATURE_COLUMNS))
     trained_seasons: list[int] = field(default_factory=list)
 
@@ -120,9 +124,59 @@ class CFBModel:
         tresid = y["total"].to_numpy() - (total_base + self.total.predict(X))
         self.total_sigma = float(max(7.0, 1.4826 * np.median(np.abs(tresid - np.median(tresid)))))
 
+        self.sigma_by_played = self._fit_sigma_curve(X, resid)
         self.trained_seasons = sorted(y["season"].unique().tolist())
         self._fit_win_probability(X, y)
         return self
+
+    # -- uncertainty as a function of evidence -------------------------------
+    def _fit_sigma_curve(self, X: pd.DataFrame, resid) -> list:
+        """Measure residual spread separately for thin and thick evidence.
+
+        Early in a season the ratings are mostly preseason prior, so the same
+        predicted margin carries far more uncertainty than it does in November.
+        Reporting one global sigma makes week-2 forecasts overconfident, which
+        is exactly where the model is weakest and where a reader most needs to
+        be told so.
+        """
+        if "min_played" not in X.columns:
+            return []
+        played = pd.to_numeric(X["min_played"], errors="coerce").to_numpy()
+        r = np.asarray(resid, dtype=float)
+
+        curve = []
+        for lo, hi in ((0, 2), (2, 4), (4, 7), (7, 99)):
+            sel = (played >= lo) & (played < hi) & np.isfinite(r)
+            if sel.sum() < 200:
+                continue
+            block = r[sel]
+            sd = float(1.4826 * np.median(np.abs(block - np.median(block))))
+            curve.append({"lo": float(lo), "hi": float(hi),
+                          "n": int(sel.sum()), "sigma": max(sd, 6.0)})
+
+        if len(curve) < 2:
+            return []
+
+        # More evidence cannot make a forecast less certain, so impose that
+        # rather than letting bucket noise invert it. Without this the fitted
+        # curve can come back slightly tighter for thin evidence, and the
+        # adjustment would then make week-2 predictions *more* confident -
+        # the exact opposite of the point.
+        for i in range(len(curve) - 2, -1, -1):
+            curve[i]["sigma"] = max(curve[i]["sigma"], curve[i + 1]["sigma"])
+
+        log.info("residual spread by games played: %s",
+                 ", ".join(f"{c['lo']:.0f}-{c['hi']:.0f}: {c['sigma']:.1f}"
+                           f" (n={c['n']:,})" for c in curve))
+        return curve
+
+    def sigma_for(self, min_played) -> np.ndarray:
+        """Per-game residual spread, falling back to the global figure."""
+        m = np.asarray(min_played, dtype=float)
+        out = np.full(m.shape, self.margin_sigma, dtype=float)
+        for c in (self.sigma_by_played or []):
+            out = np.where((m >= c["lo"]) & (m < c["hi"]), c["sigma"], out)
+        return np.nan_to_num(out, nan=self.margin_sigma)
 
     def _fit_win_probability(self, X: pd.DataFrame, y: pd.DataFrame) -> None:
         """Map predicted margin to win probability with a one-variable logistic.
@@ -177,10 +231,29 @@ class CFBModel:
                  self.wp_coef, self.wp_intercept, 25 * self.wp_coef)
 
     # -- prediction ---------------------------------------------------------
-    def _win_prob(self, margin: np.ndarray) -> np.ndarray:
+    def _win_prob(self, margin: np.ndarray,
+                  min_played: np.ndarray | None = None) -> np.ndarray:
+        """Win probability, widened when the ratings behind it are thin.
+
+        The slope is scaled by how much wider the residuals are for this level
+        of evidence, so the same predicted margin yields a less confident
+        number in week 2 than in week 12.
+        """
+        if min_played is None or not self.sigma_by_played:
+            scale = 1.0
+        else:
+            # Capped at 1: this may only ever widen a probability toward a coin
+            # flip, never sharpen one. A bucket whose residuals happen to come
+            # back tighter than average is far more likely to be noise than a
+            # licence for extra confidence, and overconfidence on thin evidence
+            # is the costlier mistake.
+            scale = np.minimum(1.0, self.margin_sigma / self.sigma_for(min_played))
+
         if self.wp_coef <= 0:
-            return norm.cdf(margin / self.margin_sigma)
-        z = np.clip(self.wp_coef * margin + self.wp_intercept, -12, 12)
+            sigma = (self.margin_sigma if min_played is None
+                     else self.sigma_for(min_played))
+            return norm.cdf(margin / sigma)
+        z = np.clip(self.wp_coef * margin * scale + self.wp_intercept, -12, 12)
         return 1.0 / (1.0 + np.exp(-z))
 
     def check_compatible(self, X: pd.DataFrame) -> None:
@@ -211,11 +284,15 @@ class CFBModel:
         total = self._baseline(Xf, "total") + self.total.predict(Xf)
         # A total below a floor is nonsense and would poison the score split.
         total = np.clip(total, 17.0, 120.0)
-        prob = np.clip(self._win_prob(margin), 0.005, 0.995)
+        played = (Xf["min_played"].to_numpy(dtype=float)
+                  if "min_played" in Xf.columns else None)
+        prob = np.clip(self._win_prob(margin, played), 0.005, 0.995)
         return pd.DataFrame({
             "pred_margin": margin,
             "pred_total": total,
             "home_win_prob": prob,
+            "margin_sigma": self.sigma_for(played) if played is not None
+                            else np.full(len(Xf), self.margin_sigma),
             "pred_home_points": (total + margin) / 2,
             "pred_away_points": (total - margin) / 2,
         }, index=X.index)

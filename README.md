@@ -159,6 +159,39 @@ efficiency, books far apart, a line that has moved a long way since opening.
 Those come from the market metadata (provider dispersion, opening number)
 which is deliberately kept out of the model and used only for confidence.
 
+## Learning from misses
+
+A single bad forecast teaches almost nothing. Margins have a spread of roughly
+sixteen points, so a forty-point miss should turn up on most slates - it is a
+draw from the tail, not evidence that anything is broken. Adjusting a model
+because of one game is the fastest way to overfit it.
+
+So instead of hand-tuning, the system accumulates. Every daily run archives its
+forecasts, and `track.py` grades them once the results land:
+
+```bash
+python track.py            # score every archived forecast
+python track.py --write    # also write docs/performance.json
+```
+
+It reports margin error and winner accuracy against the closing line on the
+same games, whether the win probabilities are honest (do 65% calls win about
+65%?), and breakdowns that one game can never give you: by stage of season, by
+how many games the ratings had to go on, and by whether the home side was
+favoured. The daily workflow runs it automatically.
+
+Nothing here feeds back into the model on its own. It produces evidence; the
+decision to change anything stays a deliberate one.
+
+**Uncertainty scales with evidence.** A week-2 forecast leans almost entirely
+on preseason priors, so it deserves a wider spread than a week-12 one. The
+model fits residual spread separately by how many games each side has played,
+and the fitted curve is forced to be non-increasing - more evidence cannot make
+a forecast less certain, and letting bucket noise invert that would make early
+predictions *more* confident, which is precisely backwards. The adjustment is
+also capped so it can only ever widen a probability toward a coin flip, never
+sharpen one.
+
 ## About accuracy
 
 The honest benchmark is not "does it pick winners" — favourites win most games,
