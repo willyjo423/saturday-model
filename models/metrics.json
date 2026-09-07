@@ -1,105 +1,105 @@
 {
   "n_games": 5398,
-  "margin_mae": 13.13584350668296,
-  "total_mae": 13.274385030688972,
-  "win_logloss": 0.5294335117240896,
-  "win_accuracy": 0.728047424972212,
-  "win_brier": 0.1788814308689086,
-  "win_ece": 0.01641057581740595,
+  "margin_mae": 13.120397682627976,
+  "total_mae": 13.25080940852966,
+  "win_logloss": 0.5299520652118351,
+  "win_accuracy": 0.7278621711745091,
+  "win_brier": 0.17922311262518734,
+  "win_ece": 0.013986379356817012,
   "calibration_table": [
     {
       "bin": "(0.0, 0.1]",
-      "predicted": 0.0659,
-      "observed": 0.0488,
-      "n": 82
+      "predicted": 0.0667,
+      "observed": 0.05,
+      "n": 80
     },
     {
       "bin": "(0.1, 0.2]",
-      "predicted": 0.1548,
-      "observed": 0.1894,
-      "n": 264
+      "predicted": 0.1565,
+      "observed": 0.1899,
+      "n": 258
     },
     {
       "bin": "(0.2, 0.3]",
-      "predicted": 0.252,
-      "observed": 0.2684,
-      "n": 395
+      "predicted": 0.2543,
+      "observed": 0.2817,
+      "n": 394
     },
     {
       "bin": "(0.3, 0.4]",
-      "predicted": 0.352,
-      "observed": 0.3444,
-      "n": 511
+      "predicted": 0.3513,
+      "observed": 0.3286,
+      "n": 493
     },
     {
       "bin": "(0.4, 0.5]",
-      "predicted": 0.4519,
-      "observed": 0.4462,
-      "n": 632
+      "predicted": 0.4518,
+      "observed": 0.4441,
+      "n": 662
     },
     {
       "bin": "(0.5, 0.6]",
-      "predicted": 0.5506,
-      "observed": 0.564,
-      "n": 672
+      "predicted": 0.5518,
+      "observed": 0.5729,
+      "n": 658
     },
     {
       "bin": "(0.6, 0.7]",
-      "predicted": 0.6507,
-      "observed": 0.6235,
-      "n": 680
+      "predicted": 0.6495,
+      "observed": 0.6324,
+      "n": 710
     },
     {
       "bin": "(0.7, 0.8]",
-      "predicted": 0.7492,
-      "observed": 0.7792,
-      "n": 625
+      "predicted": 0.7517,
+      "observed": 0.7551,
+      "n": 641
     },
     {
       "bin": "(0.8, 0.9]",
-      "predicted": 0.8502,
-      "observed": 0.8321,
-      "n": 691
+      "predicted": 0.8509,
+      "observed": 0.8397,
+      "n": 655
     },
     {
       "bin": "(0.9, 1.0]",
-      "predicted": 0.9508,
-      "observed": 0.9444,
-      "n": 846
+      "predicted": 0.9504,
+      "observed": 0.9469,
+      "n": 847
     }
   ],
   "market_margin_mae": 12.182869080779945,
-  "model_margin_mae_on_lined": 13.137303770652462,
-  "mae_vs_market": 0.9544346898725173,
+  "model_margin_mae_on_lined": 13.12327114830649,
+  "mae_vs_market": 0.940402067526545,
   "ats_n": 5286,
-  "ats_win_pct": 0.5035944003026863,
+  "ats_win_pct": 0.4998108210367007,
   "ats_by_tier": {
     "Strong": {
       "threshold": 6.0,
-      "n": 1695,
-      "ats_win_pct": 0.4967551622418879
+      "n": 1724,
+      "ats_win_pct": 0.4953596287703016
     },
     "Lean": {
       "threshold": 3.5,
-      "n": 2925,
-      "ats_win_pct": 0.49401709401709404
+      "n": 2977,
+      "ats_win_pct": 0.5001679543164259
     },
     "Slight": {
       "threshold": 2.0,
-      "n": 3880,
-      "ats_win_pct": 0.4981958762886598
+      "n": 3883,
+      "ats_win_pct": 0.503476693278393
     }
   },
   "breakeven_at_minus_110": 0.5238,
   "market_total_mae": 12.694697251114412,
-  "model_total_mae_on_lined": 13.269733046693082,
+  "model_total_mae_on_lined": 13.24769219820157,
   "margin_mae_by_season": {
-    "2019": 13.482,
-    "2020": 13.286,
-    "2021": 13.525,
-    "2022": 13.072,
-    "2023": 12.942,
-    "2024": 13.001,
-    "2025": 12.721
+    "2019": 13.456,
+    "2020": 13.343,
+    "2021": 13.499,
+    "2022": 13.051,
+    "2023": 12.997,
+    "2024": 13.015,
+    "2025": 12.589
   }
 }
