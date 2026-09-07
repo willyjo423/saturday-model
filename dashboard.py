@@ -2,15 +2,16 @@
 
 Design notes
 ------------
-The page answers one question per game: *when games like this have been played
-before, what happened?* So each card leads with the side and the price, the
-rate at which comparable games covered it, and - crucially - what that rate has
-actually been worth once measured out of sample. Then five real precedents,
-named and scored, so a reader can check the reasoning by eye rather than
-trusting it.
+This is a forecasting page, not a tipsheet. Each card leads with a projected
+score and a win probability, then shows how comparable historical games
+finished, then the market alongside the model for orientation, then five real
+precedents so the reasoning can be checked by eye.
 
-The model still does the work of deciding which games are alike. It just does
-not front the card any more. Its numbers stay in predictions.json.
+It deliberately makes no recommendation. Measured across 5,000+ out-of-sample
+games, neither the model's disagreement with the closing line nor the
+comparables' cover rate predicted covering - every band came back at 50%.
+Reporting an edge that does not exist would be the one genuinely dishonest
+thing this page could do, so it reports forecasts instead.
 """
 from __future__ import annotations
 
@@ -141,7 +142,7 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--line); }
   padding: 16px 18px 14px;
   margin-bottom: 12px;
 }
-.game.play { border-left-color: var(--field); box-shadow: var(--shadow); }
+.game.close { border-left-color: var(--flag); box-shadow: var(--shadow); }
 
 .head {
   display: flex; flex-wrap: wrap; align-items: baseline;
@@ -222,6 +223,25 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--line); }
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums;
 }
+
+.prob-bar {
+  height: 8px; border-radius: 4px; background: var(--sunken);
+  overflow: hidden; display: flex; margin: 8px 0 4px; max-width: 460px;
+}
+.prob-bar i { display: block; height: 100%; }
+.prob-bar i.lead  { background: var(--field); }
+.prob-bar i.trail { background: var(--faint); opacity: .55; }
+.prob-ends {
+  display: flex; justify-content: space-between; max-width: 460px;
+  font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums;
+}
+.cmp-row { display: flex; gap: 16px; align-items: baseline; }
+.cmp-k {
+  font-family: "IBM Plex Sans", ui-sans-serif, sans-serif;
+  font-size: 10px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--faint); width: 4.5em;
+}
+.cmp-v { color: var(--muted); min-width: 11em; }
 
 .market {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
@@ -327,45 +347,41 @@ def _pct(v, digits=0) -> str:
 
 
 # ---------------------------------------------------------------- card parts
-def _verdict(g: dict) -> str:
-    """The single thing this card is telling you."""
-    play = g.get("play")
-    comps = g.get("comps") or {}
+def _forecast(g: dict) -> str:
+    """The projected result, which is what this tool actually does well."""
+    f = g.get("forecast") or {}
+    if not f:
+        return ""
 
-    if not play:
-        n = comps.get("n")
-        reason = ("comparable games split too evenly to favour a side"
-                  if n else "not enough comparable games")
-        return (f'<div class="verdict"><span class="pick none">No play</span>'
-                f'</div><div class="because">{_e(reason)}.</div>')
+    home, away = g["home_team"], g["away_team"]
+    hp, ap = f.get("home_points"), f.get("away_points")
+    prob = f.get("home_win_prob")
+    home_pct = int(round((prob or 0.5) * 100))
 
-    tier = play.get("tier") or "Slight"
-    cls = {"Strong": "", "Lean": "lean", "Slight": "slight"}.get(tier, "slight")
-    tag = f'<span class="tag {cls}">{_e(tier)}</span>'
-
-    pick = (f'<span class="pick">{_e(play["team"])} '
-            f'<span class="num">{_e(play["line"])}</span></span>')
-
-    rate = comps.get("cover_rate")
-    side = comps.get("side")
-    shown = rate if side == "home" else (None if rate is None else 1 - rate)
-    n = comps.get("n")
-
-    because = (f'<div class="because">This side covered in '
-               f'<b>{_pct(shown)}</b> of <b>{n}</b> similar games.</div>')
-
-    hist_rate = play.get("expected_rate")
-    hist_n = play.get("sample")
-    if hist_rate is not None and hist_n:
-        track = (f'<div class="track-record">When the comparables have said '
-                 f'this before, the side actually won <b>{_pct(hist_rate, 1)}</b> '
-                 f'of the time, over <b>{hist_n:,}</b> graded games. '
-                 f'Break-even is 52.4%.</div>')
+    if hp is None or ap is None:
+        line = ""
+    elif hp >= ap:
+        line = f'<span class="pick">{_e(home)} <span class="num">{hp}–{ap}</span></span>'
     else:
-        track = ('<div class="track-record">No measured track record for a '
-                 'signal this strong yet — treat it as untested.</div>')
+        line = f'<span class="pick">{_e(away)} <span class="num">{ap}–{hp}</span></span>'
 
-    return f'<div class="verdict">{pick}{tag}</div>{because}{track}'
+    fav = home if home_pct >= 50 else away
+    conf = home_pct if home_pct >= 50 else 100 - home_pct
+    prob_txt = (f'<div class="because">{_e(fav)} to win — '
+                f'<b>{conf}%</b></div>')
+
+    # Colour the favoured side, not the home side - green on the 19% end
+    # reads as an endorsement of the wrong team.
+    home_cls = "lead" if home_pct >= 50 else "trail"
+    away_cls = "trail" if home_pct >= 50 else "lead"
+    bar = (f'<div class="prob-bar">'
+           f'<i class="{away_cls}" style="width:{100 - home_pct}%"></i>'
+           f'<i class="{home_cls}" style="width:{home_pct}%"></i></div>'
+           f'<div class="prob-ends">'
+           f'<span>{_e(away)} {100 - home_pct}%</span>'
+           f'<span>{_e(home)} {home_pct}%</span></div>')
+
+    return f'<div class="verdict">{line}</div>{prob_txt}{bar}'
 
 
 def _band(g: dict) -> str:
@@ -400,25 +416,37 @@ def _band(g: dict) -> str:
 
 
 def _market_line(g: dict) -> str:
-    bits = []
+    """Market and model side by side, as orientation rather than advice.
+
+    The difference between them predicted nothing across 5,000+ out-of-sample
+    games, so it is shown plainly and left alone.
+    """
+    f = g.get("forecast") or {}
+    rows = []
+
     if g.get("market_spread") is not None:
-        bits.append(f'{_e(g["home_team"])} {g["market_spread"]:+.1f}')
-    if g.get("market_total") is not None:
-        bits.append(f'total {g["market_total"]:.1f}')
-    if not bits:
+        rows.append(("Market",
+                     f'{_e(g["home_team"])} {g["market_spread"]:+.1f}',
+                     f'total {g["market_total"]:.1f}'
+                     if g.get("market_total") is not None else ""))
+    if f.get("margin") is not None:
+        m = f["margin"]
+        rows.append(("Model",
+                     f'{_e(g["home_team"])} {-m:+.1f}',
+                     f'total {f["total"]:.1f}' if f.get("total") else ""))
+
+    if not rows:
         return '<div class="market">No market line available</div>'
-    return f'<div class="market">Market &nbsp;{" &nbsp;·&nbsp; ".join(bits)}</div>'
+
+    body = "".join(
+        f'<div class="cmp-row"><span class="cmp-k">{_e(k)}</span>'
+        f'<span class="cmp-v">{a}</span><span class="cmp-v">{b}</span></div>'
+        for k, a, b in rows)
+    return f'<div class="market">{body}</div>'
 
 
 def _totals_line(g: dict) -> str:
-    tp = g.get("total_play")
-    if not tp:
-        return ""
-    cls = "over" if tp["side"] == "Over" else "under"
-    return (f'<div class="totals">Total: <b>{_e(tp["side"])} {tp["line"]:.1f}</b> '
-            f'— comparable games went {_e(tp["side"].lower())} '
-            f'<b>{_pct(tp["rate"] if tp["side"] == "Over" else 1 - tp["rate"])}</b> '
-            f'of the time.</div>')
+    return ""
 
 
 def _precedents(g: dict) -> str:
@@ -435,8 +463,8 @@ def _precedents(g: dict) -> str:
         return ""
 
     home, away = g["home_team"], g["away_team"]
-    has_play = bool(g.get("play"))
-    side = (g.get("comps") or {}).get("side") if has_play else None
+    # No side is being recommended, so results are reported, not scored.
+    side = None
     total_n = (g.get("comps") or {}).get("n")
 
     body = []
@@ -475,11 +503,27 @@ def _precedents(g: dict) -> str:
     header = ('<tr class="hd"><th>Season</th><th>Game</th><th>Final</th>'
               f'<th>{_e(line_head)}</th><th>Covered</th></tr>')
 
+    # The five nearest can easily lean one way while the full set does not -
+    # five games is a tiny sample, and they were picked for being closest, not
+    # for being representative. Say so with numbers rather than leaving the
+    # reader to wonder why the table contradicts the headline.
+    shown = [e for e in rows[:5] if e.get("home_covered") is not None]
+    shown_cov = sum(1 for e in shown if e["home_covered"])
+    full_rate = (g.get("comps") or {}).get("cover_rate")
+    contrast = ""
+    if shown and full_rate is not None:
+        contrast = (f' In these five, {_e(home)} covered '
+                    f'<b>{shown_cov} of {len(shown)}</b>; across all '
+                    f'{(g.get("comps") or {}).get("n")} comparable games it was '
+                    f'<b>{_pct(full_rate)}</b> — the five are the closest, '
+                    f'not a summary.')
+
     key = (f'<p class="prec-key">In each of these the <b>home team stands in '
            f'for {_e(home)}</b> and the visitor stands in for {_e(away)}. '
            f'The line shown is the home team’s.'
            + (' Green means the game went the way this pick needs.'
               if side else '')
+           + contrast
            + '</p>')
 
     label = ("Five closest precedents" if not total_n
@@ -493,14 +537,17 @@ def _precedents(g: dict) -> str:
 
 def _flags(g: dict) -> str:
     flags = g.get("confidence_flags") or []
-    if not flags or not g.get("play"):
+    if not flags:
         return ""
     items = "".join(f"<span><i>▲</i> {_e(f)}</span>" for f in flags[:3])
     return f'<div class="flags"><span class="lead">Watch</span>{items}</div>'
 
 
 def _game_row(g: dict) -> str:
-    has_play = bool(g.get("play"))
+    # Highlight the genuinely uncertain games - those are the interesting ones
+    # to watch, and it is a claim the model can actually support.
+    prob = ((g.get("forecast") or {}).get("home_win_prob") or 0.5)
+    close = abs(prob - 0.5) <= 0.10
     meta = []
     if g.get("kickoff_et"):
         meta.append(_e(g["kickoff_et"]))
@@ -508,13 +555,13 @@ def _game_row(g: dict) -> str:
         meta.append("Neutral site")
 
     return f"""
-    <article class="game{' play' if has_play else ''}">
+    <article class="game{' close' if close else ''}">
       <div class="head">
         <span class="teams">{_e(g["away_team"])} <span class="at">at</span> {_e(g["home_team"])}</span>
         <span class="when">{" · ".join(meta)}</span>
         <span class="wx">{_e(g.get("weather_text", ""))}</span>
       </div>
-      {_verdict(g)}
+      {_forecast(g)}
       {_band(g)}
       {_market_line(g)}
       {_totals_line(g)}
@@ -526,19 +573,19 @@ def _game_row(g: dict) -> str:
 # ---------------------------------------------------------------- page parts
 def _summary_strip(payload: dict) -> str:
     games = payload["games"]
-    plays = [g for g in games if g.get("play")]
-    cells = [("Games", str(len(games))), ("Plays", str(len(plays)))]
+    cells = [("Games", str(len(games)))]
 
-    strong = sum(1 for g in plays if (g["play"].get("tier") == "Strong"))
-    if plays:
-        cells.append(("Strong", str(strong)))
+    close = [g for g in games
+             if abs(((g.get("forecast") or {}).get("home_win_prob") or .5) - .5) <= 0.10]
+    cells.append(("Toss-ups", str(len(close))))
 
     m = payload.get("model_metrics") or {}
-    cc = m.get("comps_calibration") or {}
-    if cc.get("n_fitted"):
-        cells.append(("Signal tested on", f'{cc["n_fitted"]:,}'))
+    if m.get("margin_mae"):
+        cells.append(("Model error", f'{m["margin_mae"]:.1f} pts'))
     if m.get("market_margin_mae"):
-        cells.append(("Market MAE", f'{m["market_margin_mae"]:.1f}'))
+        cells.append(("Market error", f'{m["market_margin_mae"]:.1f} pts'))
+    if m.get("win_accuracy"):
+        cells.append(("Winners called", f'{m["win_accuracy"] * 100:.0f}%'))
 
     inner = "".join(f"<div><dt>{_e(k)}</dt><dd>{_e(v)}</dd></div>" for k, v in cells)
     return f'<dl class="strip">{inner}</dl>'
@@ -546,28 +593,39 @@ def _summary_strip(payload: dict) -> str:
 
 def _lede(payload: dict) -> str:
     m = payload.get("model_metrics") or {}
-    cc = m.get("comps_calibration") or {}
-    tested = (f' Every rate below was checked against <b>{cc["n_fitted"]:,}</b> '
-              f'games the model had never seen.' if cc.get("n_fitted") else "")
-    return (f'<p class="lede">Each game is matched against the most similar '
-            f'matchups of the last decade — similar teams, and a similar price '
-            f'— and the card reports what those games actually did.{tested}</p>')
+    acc = (f' Across seasons it had never seen, it called '
+           f'<b>{m["win_accuracy"] * 100:.0f}%</b> of winners correctly.'
+           if m.get("win_accuracy") else "")
+    return (f'<p class="lede">A projected score and win probability for every '
+            f'game, with the outcomes of the most similar matchups of the last '
+            f'decade for context.{acc} '
+            f'No picks: the model does not beat the closing line, and the page '
+            f'says so rather than pretending otherwise.</p>')
 
 
 def _honesty_note(payload: dict) -> str:
     m = payload.get("model_metrics") or {}
-    bits = []
     cc = m.get("comps_calibration") or {}
-    if cc.get("slope") is not None and cc.get("n_fitted"):
+    bits = []
+
+    if m.get("margin_mae") and m.get("market_margin_mae"):
+        gap = m["margin_mae"] - m["market_margin_mae"]
         bits.append(
-            f"The raw rate from comparable games overstates its own accuracy — "
-            f"200 nearest neighbours are nowhere near 200 independent games — "
-            f"so it is corrected against {cc['n_fitted']:,} out-of-sample "
-            f"results before anything is called a play.")
-    bits.append("Comparables only ever come from games played earlier than the "
-                "one being predicted, and the betting line is never an input to "
-                "the model that decides which games are alike.")
-    bits.append("This is a forecasting tool, not advice.")
+            f"<strong>On accuracy:</strong> out of sample the model's margin "
+            f"error is {m['margin_mae']:.1f} points against the closing line's "
+            f"{m['market_margin_mae']:.1f} — it trails the market by "
+            f"{abs(gap):.1f}.")
+
+    if cc.get("n_fitted"):
+        bits.append(
+            f"<strong>On picks:</strong> across {cc['n_fitted']:,} games the "
+            f"model had never seen, neither its disagreement with the line nor "
+            f"the comparables' cover rate predicted covering — every band came "
+            f"back at roughly 50%. So this page makes no recommendations.")
+
+    bits.append("Ratings, efficiency and comparables are all built only from "
+                "games played before the one being forecast, and the betting "
+                "line is never an input to the model itself.")
     return f'<p class="note">{" ".join(bits)}</p>'
 
 
@@ -588,17 +646,9 @@ def render(payload: dict, standalone: bool = True, banner: str = "") -> str:
     except (ValueError, IndexError):
         pretty = ", ".join(dates)
 
-    plays = [g for g in games if g.get("play")]
-    rest = [g for g in games if not g.get("play")]
-
     if games:
-        body = ""
-        if plays:
-            body += '<h2 class="sec">Where the precedents point somewhere</h2>'
-            body += "".join(_game_row(g) for g in plays)
-        if rest:
-            body += '<h2 class="sec">Rest of the slate</h2>'
-            body += "".join(_game_row(g) for g in rest)
+        body = '<h2 class="sec">The slate, by kickoff</h2>'
+        body += "".join(_game_row(g) for g in games)
     else:
         body = ('<div class="empty">No games scheduled for this date. '
                 'The next run will pick up the following slate automatically.</div>')

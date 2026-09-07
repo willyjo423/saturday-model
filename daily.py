@@ -200,19 +200,15 @@ def run(target_dates: list[date], api_key: str | None = None,
         ou = r["over_under"]
 
         market_margin = -float(spread) if pd.notna(spread) else None
-        # Round before tiering, so the gap shown on the card is the same
-        # number that decided the label. Tiering the unrounded value let a
-        # game display "3.5 pt gap" while wearing the tier below it.
+        # Kept as context, not as a recommendation. Measured against 5,000+
+        # out-of-sample games, neither the model's disagreement with the
+        # closing line nor the comparables' cover rate predicted covering -
+        # every band came back at 50%. So the difference is reported as
+        # information about where this forecast sits relative to the market,
+        # and nothing is dressed up as a play.
         raw_edge = round(margin - market_margin, 1) if market_margin is not None else None
         total_edge = round(total - float(ou), 1) if pd.notna(ou) else None
-
-        # The edge worth believing, after shrinking by how much of a claimed
-        # disagreement of this size has historically materialised.
-        edge = (round(float(calibration.shrink(raw_edge)), 1)
-                if raw_edge is not None else None)
-        tier, bucket = (calibration.tier(raw_edge) if raw_edge is not None
-                        else (None, None))
-        flags = confidence_flags(r) if raw_edge is not None else []
+        flags = confidence_flags(r)
 
         # NaN is not valid JSON, so unavailable readings go out as null.
         def _j(v):
@@ -224,32 +220,9 @@ def run(target_dates: list[date], api_key: str | None = None,
             "is_dome": int(r["is_dome"]),
         }
 
-        # --- the headline: what happened in games like this one -------------
+        # --- comparable games, as context for the forecast ------------------
         assess = comps_cal.assess(r.get("comp_home_cover_rate"))
         comps = _comp_summary(r, assess)
-
-        play = None
-        if assess["side"] and market_margin is not None and assess["tier"]:
-            if assess["side"] == "home":
-                play = {"team": r["home_team"], "line": f"{float(spread):+.1f}"}
-            else:
-                play = {"team": r["away_team"], "line": f"{-float(spread):+.1f}"}
-            play["tier"] = assess["tier"]
-            play["expected_rate"] = (
-                round(assess["bucket"]["realized"] if assess["side"] == "home"
-                      else 1 - assess["bucket"]["realized"], 3)
-                if assess["bucket"] else None)
-            play["sample"] = assess["bucket"]["n"] if assess["bucket"] else None
-
-        over_rate = r.get("comp_over_rate")
-        total_play = None
-        if pd.notna(ou) and over_rate is not None and not pd.isna(over_rate):
-            if abs(float(over_rate) - 0.5) >= 0.06:
-                total_play = {
-                    "side": "Over" if float(over_rate) > 0.5 else "Under",
-                    "line": round(float(ou), 1),
-                    "rate": round(float(over_rate), 3),
-                }
 
         records.append({
             "game_id": None if pd.isna(r["game_id"]) else int(r["game_id"]),
@@ -260,46 +233,32 @@ def run(target_dates: list[date], api_key: str | None = None,
             "home_team": r["home_team"], "away_team": r["away_team"],
             "neutral_site": bool(r["neutral_site"]),
 
-            # What the card leads with.
+            # The forecast is the headline now.
+            "forecast": {
+                "home_points": round(float(r["pred_home_points"])),
+                "away_points": round(float(r["pred_away_points"])),
+                "margin": round(margin, 1),
+                "total": round(total, 1),
+                "home_win_prob": round(prob, 4),
+            },
             "comps": comps,
             "comp_examples": (comps_engine.examples(r, k=5)
                               if comps_engine is not None
                               and comps_engine.available else []),
-            "play": play,
-            "total_play": total_play,
             "confidence_flags": flags,
+            "vs_market": {"margin": raw_edge, "total": total_edge},
 
             # The market, for reference.
             "market_spread": None if market_margin is None else round(float(spread), 1),
             "market_total": None if pd.isna(ou) else round(float(ou), 1),
 
-            # The model still does the work of describing each team - it is
-            # what makes two games "similar" - but it no longer fronts the
-            # card. Kept here so the numbers stay inspectable.
-            "model": {
-                "margin": round(margin, 1),
-                "total": round(total, 1),
-                "home_win_prob": round(prob, 4),
-                "home_points": round(float(r["pred_home_points"]), 1),
-                "away_points": round(float(r["pred_away_points"]), 1),
-                "raw_edge": raw_edge,
-                "shrunk_edge": edge,
-                "edge_tier": tier,
-            },
             "weather": wx,
             "weather_text": describe(wx),
             "games_played": int(min(r["home_played"], r["away_played"])),
         })
 
-    def _rank(x):
-        """Tiered plays first, then by how decisive the comparables were."""
-        p = x.get("play") or {}
-        order = {"Strong": 0, "Lean": 1, "Slight": 2}.get(p.get("tier"), 3)
-        c = x.get("comps") or {}
-        conf = c.get("confidence") or 0.0
-        return (order, -conf, x["kickoff_utc"] or "")
-
-    records.sort(key=_rank)
+    # A preview tool reads like a schedule: earliest kickoff first.
+    records.sort(key=lambda x: (x["kickoff_utc"] or "", x["home_team"]))
 
     metrics = {}
     if (config.MODELS / "metrics.json").exists():

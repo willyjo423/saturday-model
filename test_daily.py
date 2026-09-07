@@ -218,11 +218,21 @@ def main() -> int:
     check(len(with_line) == len(games), "market lines joined to the whole slate",
           f"{len(with_line)}/{len(games)}")
 
-    check(all(0 <= g["model"]["home_win_prob"] <= 1 for g in games),
-          "model probabilities still in range (kept in the payload)")
-    check(bool(games) and all(g["model"]["total"] > 10 for g in games),
-          "model totals are plausible",
-          f"min {min((g['model']['total'] for g in games), default=0):.1f}")
+    check(all(0 <= g["forecast"]["home_win_prob"] <= 1 for g in games),
+          "forecast probabilities in range")
+    check(bool(games) and all(g["forecast"]["total"] > 10 for g in games),
+          "forecast totals are plausible",
+          f"min {min((g['forecast']['total'] for g in games), default=0):.1f}")
+    check(all(g["forecast"]["home_points"] + g["forecast"]["away_points"]
+              == round(g["forecast"]["total"]) or
+              abs(g["forecast"]["home_points"] + g["forecast"]["away_points"]
+                  - g["forecast"]["total"]) <= 1.0
+              for g in games),
+          "projected score reconciles with the projected total")
+
+    # No recommendation should survive anywhere in the payload.
+    check(not any("play" in g for g in games),
+          "payload carries no play recommendations")
 
     # --- comparables are now the headline -------------------------------
     with_comps = [g for g in games if g.get("comps")]
@@ -238,42 +248,10 @@ def main() -> int:
           "cover rate present and in range", f"{c['cover_rate']:.0%}")
     check(c["n"] >= 20, "sample size reported", f"{c['n']} comps")
 
-    # Every offered play must name a real side, at that side's real price,
-    # and must carry a tier.
-    consistent = True
-    for g in games:
-        play = g.get("play")
-        if not play:
-            continue
-        if play["team"] not in (g["home_team"], g["away_team"]):
-            consistent = False
-        if not play.get("tier"):
-            consistent = False
-        # The side must match which way the comparables leaned.
-        side_team = (g["home_team"] if g["comps"]["side"] == "home"
-                     else g["away_team"])
-        if play["team"] != side_team:
-            consistent = False
-        # And the quoted number must be that team's own line.
-        expected = (f'{g["market_spread"]:+.1f}' if play["team"] == g["home_team"]
-                    else f'{-g["market_spread"]:+.1f}')
-        if play["line"] != expected:
-            consistent = False
-    check(consistent, "each play names the right side at the right price")
 
-    # A calibrated rate must never be more confident than the raw one.
-    tamed = all(
-        abs(g["comps"]["calibrated_rate"] - 0.5) <= abs(g["comps"]["cover_rate"] - 0.5) + 1e-6
-        for g in with_comps
-        if g["comps"].get("calibrated_rate") is not None
-        and g["comps"].get("cover_rate") is not None)
-    check(tamed, "calibration never increases confidence beyond the raw rate")
 
-    keys = [({"Strong": 0, "Lean": 1, "Slight": 2}.get(
-                (g.get("play") or {}).get("tier"), 3),
-             -((g.get("comps") or {}).get("confidence") or 0.0))
-            for g in games]
-    check(keys == sorted(keys), "slate ordered by tier, then by confidence")
+    kicks = [g["kickoff_utc"] or "" for g in games]
+    check(kicks == sorted(kicks), "slate reads in kickoff order")
 
     check(all(g["weather_text"] for g in games), "weather attached to every game")
 
@@ -303,14 +281,13 @@ def main() -> int:
           "precedent line column names this game's own number")
 
     # Colour is only meaningful when there is a side to support.
-    no_play = [g for g in games if not g.get("play")]
-    if no_play:
-        from dashboard import _precedents
-        frag = _precedents(no_play[0])
-        check('class="rs yes"' not in frag and 'class="rs no"' not in frag,
-              "no-play cards leave precedent results uncoloured")
-        check("this pick needs" not in frag,
-              "no-play cards drop the pick-relative legend")
+    from dashboard import _precedents
+    frag = _precedents(games[0])
+    check('class="rs yes"' not in frag and 'class="rs no"' not in frag,
+          "precedent results are reported, never scored for a pick")
+    check("this pick needs" not in frag, "no pick-relative legend anywhere")
+    check("no play" not in html.lower() and "Strong &middot;" not in html,
+          "dashboard contains no play/no-play language")
     out = config.DOCS / "sample_daily.html"
     out.write_text(html)
     print(f"\n  wrote {out}")
