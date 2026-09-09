@@ -222,9 +222,11 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 }
 .band .zero { position: absolute; top: 1px; width: 1px; height: 21px;
               background: var(--faint); opacity: .5; }
+.band-labels { flex: 0 1 auto; }
 .band-label {
   font-size: 12.5px; color: var(--muted); flex: 0 1 auto;
 }
+.band-label.total { margin-top: 3px; }
 .band-label b {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums;
@@ -461,6 +463,17 @@ def _band(g: dict) -> str:
             f'<span>&#8592; {_e(away)} wins</span>'
             f'<span>{_e(home)} wins &#8594;</span></div>')
 
+    # The same statement for the combined score, sitting under the margin one.
+    # There is no direction to get wrong here, so it needs none of the careful
+    # naming the line above does: a total is just a number, and 48 to 63 reads
+    # the same way round for both teams.
+    t25, t75 = c.get("total_p25"), c.get("total_p75")
+    total_label = ""
+    if t25 is not None and t75 is not None:
+        total_label = (f'<div class="band-label total">and the two scores '
+                       f'added up to between <b>{t25:.0f} and {t75:.0f}</b>'
+                       f'</div>')
+
     return (
         '<div class="band-row">'
         f'<div class="band-wrap">'
@@ -470,7 +483,11 @@ def _band(g: dict) -> str:
         f'<div class="zero" style="left:{pos(0.0):.1f}%"></div>'
         f'<div class="med" style="left:{pos(med):.1f}%"></div></div>'
         f'{ends}</div>'
-        f'<div class="band-label">{label}</div>'
+        # The two sentences are wrapped together so they stack, rather than
+        # becoming a third item in the row's flex layout and landing beside
+        # the margin line instead of under it.
+        f'<div class="band-labels">'
+        f'<div class="band-label">{label}</div>{total_label}</div>'
         '</div>')
 
 

@@ -309,6 +309,27 @@ def main() -> int:
     check("wins &#8594;" in band and "&#8592;" in band,
           "band carries direction labels at both ends")
 
+    # The total range, stated the same way and sitting under the margin one.
+    totals = {"home_team": "Alabama", "away_team": "East Carolina",
+              "comps": {"margin_p25": 14.0, "margin_p75": 35.0,
+                        "margin_median": 24.0,
+                        "total_p25": 48.0, "total_p75": 63.0}}
+    plain_totals = _plain(totals)
+    check("added up to between 48 and 63" in plain_totals,
+          "total range is shown", plain_totals[-52:])
+    check(_band(totals).index("band-label total")
+          > _band(totals).index("Half finished"),
+          "total line sits under the margin line, not beside it")
+    tail = plain_totals.split("added up to")[-1]
+    check("Alabama" not in tail and "East Carolina" not in tail,
+          "no team named on the total line - a total has no direction")
+
+    no_totals = dict(totals)
+    no_totals["comps"] = {k: v for k, v in totals["comps"].items()
+                          if not k.startswith("total_")}
+    check("added up to" not in _plain(no_totals),
+          "an absent total range is omitted, not invented")
+
     from dashboard import _comps_table
     tbl = _comps_table(with_comps[0])
     check("Spread" in tbl and "Total" in tbl and "Moneyline" in tbl,

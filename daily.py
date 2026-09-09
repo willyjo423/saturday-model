@@ -85,6 +85,8 @@ def _comp_summary(r, assess: dict) -> dict | None:
         "margin_p25": val("comp_margin_p25"),
         "margin_p75": val("comp_margin_p75"),
         "total_median": val("comp_total_median"),
+        "total_p25": val("comp_total_p25"),
+        "total_p75": val("comp_total_p75"),
         "home_win_rate": val("comp_home_win_rate", 3),
         "over_rate": val("comp_over_rate", 3),
         "agreement": val("comp_agreement", 3),

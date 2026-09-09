@@ -84,6 +84,15 @@ COMP_EXTRA = [
     # you - the cover rate alone cannot tell them apart.
     "comp_home_cover_by", "comp_away_cover_by",
     "comp_home_blowout", "comp_away_blowout",
+    # Where the combined score landed in the middle half of the comparables,
+    # so the card can state a range for the total the way it already does for
+    # the margin. `comp_total_median` and `comp_total_sd` are already features,
+    # but a standard deviation describes a symmetric bell and scoring totals
+    # are not one - they have a floor at zero and a long tail upward - so the
+    # quartiles are what the page should show. These live here rather than in
+    # COMP_FEATURES precisely so this stays a presentation change and does not
+    # force a retrain.
+    "comp_total_p25", "comp_total_p75",
 ]
 
 COMP_FEATURES = [
@@ -257,6 +266,8 @@ class CompsEngine:
             cols["comp_margin_p75"][i] = float(np.percentile(margins, 75))
             cols["comp_total_median"][i] = float(np.median(totals))
             cols["comp_total_sd"][i] = float(np.std(totals))
+            cols["comp_total_p25"][i] = float(np.percentile(totals, 25))
+            cols["comp_total_p75"][i] = float(np.percentile(totals, 75))
             cols["comp_home_win_rate"][i] = float(np.mean(margins > 0))
             # How consistently the comparables broke the same way as their
             # own median - a direct read on how much to trust them.
