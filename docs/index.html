@@ -208,9 +208,11 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 }
 .band .zero { position: absolute; top: 1px; width: 1px; height: 21px;
               background: var(--faint); opacity: .5; }
+.band-labels { flex: 0 1 auto; }
 .band-label {
   font-size: 12.5px; color: var(--muted); flex: 0 1 auto;
 }
+.band-label.total { margin-top: 3px; }
 .band-label b {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums;
@@ -360,7 +362,7 @@ details.prec[open] > summary::after { content: "  ▴"; }
   <header class="masthead">
     <h1>Saturday Model</h1>
     <span class="date">Wednesday, September 9, 2026</span>
-    <span class="stamp">Built Sep 9, 2026 · 7:08 AM ET</span>
+    <span class="stamp">Built Sep 9, 2026 · 2:21 PM ET</span>
   </header>
   
   <p class="lede">A projected score and win probability for every game, with the outcomes of the most similar matchups of the last decade for context. No picks: the model does not beat the closing line, and the page says so rather than pretending otherwise.</p>
