@@ -1,355 +1,110 @@
 {
-  "generated_at": "2026-09-18T15:55:14.158199-04:00",
+  "generated_at": "2026-09-18T15:56:56.585165-04:00",
   "season": 2026,
   "dates": [
-    "2026-09-18"
+    "2026-09-17"
   ],
   "games": [
     {
-      "game_id": 401858226,
-      "kickoff_utc": "2026-09-18T23:30:00+00:00",
-      "kickoff_et": "Fri 7:30 PM ET",
+      "game_id": 401858225,
+      "kickoff_utc": "2026-09-17T23:30:00+00:00",
+      "kickoff_et": "Thu 7:30 PM ET",
       "week": 3,
-      "home_team": "Wake Forest",
-      "away_team": "Miami",
-      "neutral_site": false,
-      "forecast": {
-        "home_points": 21,
-        "away_points": 35,
-        "margin": -13.4,
-        "total": 55.8,
-        "home_win_prob": 0.2011
-      },
-      "comps": {
-        "n": 200,
-        "cover_rate": 0.474,
-        "home_cover_by": 13.2,
-        "away_cover_by": 14.4,
-        "home_blowout": 0.04,
-        "away_blowout": 0.555,
-        "cover_n": 196,
-        "over_n": 197,
-        "calibrated_rate": 0.474,
-        "side": "away",
-        "confidence": 0.526,
-        "historical_rate": null,
-        "historical_n": null,
-        "margin_median": -16.0,
-        "margin_p25": -32.0,
-        "margin_p75": -5.5,
-        "total_median": 59.0,
-        "total_p25": 48.0,
-        "total_p75": 70.0,
-        "home_win_rate": 0.17,
-        "over_rate": 0.457,
-        "agreement": 0.83,
-        "price_spread": 4.8
-      },
-      "comp_examples": [
-        {
-          "season": 2018,
-          "week": 2,
-          "home_team": "Colorado State",
-          "away_team": "Arkansas",
-          "home_points": 34,
-          "away_points": 27,
-          "margin": 7.0,
-          "home_spread": 14.0,
-          "home_covered": true,
-          "distance": 1.601
-        },
-        {
-          "season": 2018,
-          "week": 2,
-          "home_team": "UTSA",
-          "away_team": "Baylor",
-          "home_points": 20,
-          "away_points": 37,
-          "margin": -17.0,
-          "home_spread": 17.0,
-          "home_covered": null,
-          "distance": 1.626
-        },
-        {
-          "season": 2021,
-          "week": 3,
-          "home_team": "Buffalo",
-          "away_team": "Coastal Carolina",
-          "home_points": 25,
-          "away_points": 28,
-          "margin": -3.0,
-          "home_spread": 14.0,
-          "home_covered": true,
-          "distance": 1.763
-        },
-        {
-          "season": 2018,
-          "week": 3,
-          "home_team": "Iowa State",
-          "away_team": "Oklahoma",
-          "home_points": 27,
-          "away_points": 37,
-          "margin": -10.0,
-          "home_spread": 18.5,
-          "home_covered": true,
-          "distance": 1.802
-        },
-        {
-          "season": 2016,
-          "week": 3,
-          "home_team": "Miami (OH)",
-          "away_team": "Western Kentucky",
-          "home_points": 24,
-          "away_points": 31,
-          "margin": -7.0,
-          "home_spread": 17.5,
-          "home_covered": true,
-          "distance": 1.861
-        }
-      ],
-      "confidence_flags": [
-        "Ratings still mostly preseason - few games played",
-        "Efficiency based on very few games"
-      ],
-      "vs_market": {
-        "margin": 6.8,
-        "total": 0.3
-      },
-      "market_spread": 20.2,
-      "market_total": 55.5,
-      "weather": {
-        "temp_f": 86.7,
-        "wind_mph": 7.8,
-        "precip_in": 0.0,
-        "humidity": 43.0,
-        "is_dome": 0
-      },
-      "weather_text": "87\u00b0F, 8 mph wind",
-      "games_played": 2
-    },
-    {
-      "game_id": 401856811,
-      "kickoff_utc": "2026-09-19T00:00:00+00:00",
-      "kickoff_et": "Fri 8:00 PM ET",
-      "week": 3,
-      "home_team": "Texas Tech",
-      "away_team": "Houston",
+      "home_team": "Pittsburgh",
+      "away_team": "Syracuse",
       "neutral_site": false,
       "forecast": {
         "home_points": 31,
-        "away_points": 20,
-        "margin": 11.3,
-        "total": 50.9,
-        "home_win_prob": 0.7858
+        "away_points": 17,
+        "margin": 13.2,
+        "total": 48.0,
+        "home_win_prob": 0.8188
       },
       "comps": {
         "n": 200,
-        "cover_rate": 0.447,
-        "home_cover_by": 10.7,
-        "away_cover_by": 12.3,
-        "home_blowout": 0.31,
-        "away_blowout": 0.09,
-        "cover_n": 197,
+        "cover_rate": 0.51,
+        "home_cover_by": 12.6,
+        "away_cover_by": 11.9,
+        "home_blowout": 0.475,
+        "away_blowout": 0.035,
+        "cover_n": 198,
         "over_n": 198,
-        "calibrated_rate": 0.447,
-        "side": "away",
-        "confidence": 0.553,
+        "calibrated_rate": 0.51,
+        "side": "home",
+        "confidence": 0.51,
         "historical_rate": null,
         "historical_n": null,
-        "margin_median": 6.0,
-        "margin_p25": -3.2,
-        "margin_p75": 16.0,
+        "margin_median": 11.0,
+        "margin_p25": 2.0,
+        "margin_p75": 24.0,
         "total_median": 52.0,
-        "total_p25": 42.8,
-        "total_p75": 66.2,
-        "home_win_rate": 0.67,
-        "over_rate": 0.48,
-        "agreement": 0.67,
-        "price_spread": 3.6
+        "total_p25": 41.8,
+        "total_p75": 64.0,
+        "home_win_rate": 0.79,
+        "over_rate": 0.495,
+        "agreement": 0.79,
+        "price_spread": 3.8
       },
       "comp_examples": [
         {
-          "season": 2015,
-          "week": 3,
-          "home_team": "Kansas State",
-          "away_team": "Louisiana Tech",
-          "home_points": 39,
-          "away_points": 33,
-          "margin": 6.0,
-          "home_spread": -10.0,
-          "home_covered": false,
-          "distance": 1.353
-        },
-        {
           "season": 2025,
-          "week": 4,
-          "home_team": "Oklahoma State",
-          "away_team": "Tulsa",
-          "home_points": 12,
-          "away_points": 19,
-          "margin": -7.0,
-          "home_spread": -10.0,
-          "home_covered": false,
-          "distance": 1.359
+          "week": 7,
+          "home_team": "Boise State",
+          "away_team": "New Mexico",
+          "home_points": 41,
+          "away_points": 25,
+          "margin": 16.0,
+          "home_spread": -14.5,
+          "home_covered": true,
+          "distance": 1.138
         },
         {
           "season": 2023,
           "week": 3,
-          "home_team": "Eastern Michigan",
-          "away_team": "Massachusetts",
-          "home_points": 19,
-          "away_points": 17,
-          "margin": 2.0,
-          "home_spread": -7.5,
-          "home_covered": false,
-          "distance": 1.472
-        },
-        {
-          "season": 2017,
-          "week": 12,
-          "home_team": "Florida",
-          "away_team": "UAB",
-          "home_points": 36,
-          "away_points": 7,
-          "margin": 29.0,
-          "home_spread": -10.5,
+          "home_team": "Nebraska",
+          "away_team": "Northern Illinois",
+          "home_points": 35,
+          "away_points": 11,
+          "margin": 24.0,
+          "home_spread": -11.5,
           "home_covered": true,
-          "distance": 1.499
+          "distance": 1.381
         },
         {
-          "season": 2022,
-          "week": 3,
-          "home_team": "Houston",
-          "away_team": "Kansas",
-          "home_points": 30,
-          "away_points": 48,
-          "margin": -18.0,
-          "home_spread": -8.5,
+          "season": 2024,
+          "week": 7,
+          "home_team": "Liberty",
+          "away_team": "Florida International",
+          "home_points": 31,
+          "away_points": 24,
+          "margin": 7.0,
+          "home_spread": -15.5,
           "home_covered": false,
-          "distance": 1.528
-        }
-      ],
-      "confidence_flags": [
-        "Ratings still mostly preseason - few games played",
-        "Efficiency based on very few games",
-        "Line moved 3.5 pts since opening"
-      ],
-      "vs_market": {
-        "margin": 3.8,
-        "total": -1.4
-      },
-      "market_spread": -7.5,
-      "market_total": 52.2,
-      "weather": {
-        "temp_f": 90.2,
-        "wind_mph": 10.3,
-        "precip_in": 0.0,
-        "humidity": 27.0,
-        "is_dome": 0
-      },
-      "weather_text": "90\u00b0F, 10 mph wind",
-      "games_played": 2
-    },
-    {
-      "game_id": 401858455,
-      "kickoff_utc": "2026-09-19T02:30:00+00:00",
-      "kickoff_et": "Fri 10:30 PM ET",
-      "week": 3,
-      "home_team": "Oregon",
-      "away_team": "__FCS__",
-      "neutral_site": false,
-      "forecast": {
-        "home_points": 61,
-        "away_points": 8,
-        "margin": 53.7,
-        "total": 69.0,
-        "home_win_prob": 0.995
-      },
-      "comps": {
-        "n": 200,
-        "cover_rate": 0.472,
-        "home_cover_by": 11.6,
-        "away_cover_by": 11.7,
-        "home_blowout": 0.965,
-        "away_blowout": 0.0,
-        "cover_n": 199,
-        "over_n": 156,
-        "calibrated_rate": 0.472,
-        "side": "away",
-        "confidence": 0.528,
-        "historical_rate": null,
-        "historical_n": null,
-        "margin_median": 44.0,
-        "margin_p25": 34.8,
-        "margin_p75": 54.0,
-        "total_median": 62.0,
-        "total_p25": 51.0,
-        "total_p75": 73.0,
-        "home_win_rate": 1.0,
-        "over_rate": 0.654,
-        "agreement": 1.0,
-        "price_spread": 6.8
-      },
-      "comp_examples": [
+          "distance": 1.421
+        },
         {
-          "season": 2025,
-          "week": 13,
-          "home_team": "Alabama",
-          "away_team": "__FCS__",
-          "home_points": 56,
-          "away_points": 0,
-          "margin": 56.0,
-          "home_spread": -50.5,
+          "season": 2024,
+          "week": 3,
+          "home_team": "Oklahoma",
+          "away_team": "Tulane",
+          "home_points": 34,
+          "away_points": 19,
+          "margin": 15.0,
+          "home_spread": -13.5,
           "home_covered": true,
-          "distance": 1.94
+          "distance": 1.431
         },
         {
-          "season": 2025,
-          "week": 11,
-          "home_team": "Ole Miss",
-          "away_team": "__FCS__",
-          "home_points": 49,
-          "away_points": 0,
-          "margin": 49.0,
-          "home_spread": -51.5,
-          "home_covered": false,
-          "distance": 2.1
-        },
-        {
-          "season": 2025,
-          "week": 13,
-          "home_team": "Texas A&M",
-          "away_team": "__FCS__",
-          "home_points": 48,
-          "away_points": 0,
-          "margin": 48.0,
-          "home_spread": -54.5,
-          "home_covered": false,
-          "distance": 2.132
-        },
-        {
-          "season": 2025,
+          "season": 2024,
           "week": 3,
-          "home_team": "Penn State",
-          "away_team": "__FCS__",
-          "home_points": 52,
-          "away_points": 6,
-          "margin": 46.0,
-          "home_spread": -47.5,
+          "home_team": "Missouri",
+          "away_team": "Boston College",
+          "home_points": 27,
+          "away_points": 21,
+          "margin": 6.0,
+          "home_spread": -14.5,
           "home_covered": false,
-          "distance": 2.617
-        },
-        {
-          "season": 2025,
-          "week": 4,
-          "home_team": "LSU",
-          "away_team": "__FCS__",
-          "home_points": 56,
-          "away_points": 10,
-          "margin": 46.0,
-          "home_spread": -48.8,
-          "home_covered": false,
-          "distance": 2.623
+          "distance": 1.438
         }
       ],
       "confidence_flags": [
@@ -357,19 +112,19 @@
         "Efficiency based on very few games"
       ],
       "vs_market": {
-        "margin": -4.3,
-        "total": -1.8
+        "margin": 2.7,
+        "total": -3.5
       },
-      "market_spread": -58.0,
-      "market_total": 70.8,
+      "market_spread": -10.5,
+      "market_total": 51.5,
       "weather": {
-        "temp_f": 67.3,
-        "wind_mph": 5.0,
+        "temp_f": 79.6,
+        "wind_mph": 2.3,
         "precip_in": 0.0,
-        "humidity": 55.0,
+        "humidity": 83.0,
         "is_dome": 0
       },
-      "weather_text": "67\u00b0F, 5 mph wind",
+      "weather_text": "80\u00b0F, 2 mph wind",
       "games_played": 2
     }
   ],
@@ -588,5 +343,5 @@
       ]
     }
   },
-  "api_calls": 9
+  "api_calls": 0
 }
