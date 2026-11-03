@@ -1,0 +1,463 @@
+{
+  "generated_at": "2026-11-03T13:13:29.639049-05:00",
+  "season": 2026,
+  "dates": [
+    "2026-11-03"
+  ],
+  "games": [
+    {
+      "game_id": 401866453,
+      "kickoff_utc": "2026-11-04T00:00:00+00:00",
+      "kickoff_et": "Tue 7:00 PM ET",
+      "week": 10,
+      "home_team": "Akron",
+      "away_team": "Ohio",
+      "neutral_site": false,
+      "forecast": {
+        "home_points": 20,
+        "away_points": 31,
+        "margin": -11.4,
+        "total": 50.7,
+        "home_win_prob": 0.2446
+      },
+      "comps": {
+        "n": 200,
+        "cover_rate": 0.467,
+        "home_cover_by": 14.2,
+        "away_cover_by": 14.8,
+        "home_blowout": 0.055,
+        "away_blowout": 0.495,
+        "cover_n": 199,
+        "over_n": 200,
+        "calibrated_rate": 0.467,
+        "side": "away",
+        "confidence": 0.533,
+        "historical_rate": null,
+        "historical_n": null,
+        "margin_median": -12.5,
+        "margin_p25": -27.0,
+        "margin_p75": -2.8,
+        "total_median": 55.0,
+        "total_p25": 41.0,
+        "total_p75": 65.2,
+        "home_win_rate": 0.215,
+        "over_rate": 0.49,
+        "agreement": 0.785,
+        "price_spread": 3.5
+      },
+      "comp_examples": [
+        {
+          "season": 2019,
+          "week": 6,
+          "home_team": "Stanford",
+          "away_team": "Washington",
+          "home_points": 23,
+          "away_points": 13,
+          "margin": 10.0,
+          "home_spread": 13.2,
+          "home_covered": true,
+          "distance": 0.696
+        },
+        {
+          "season": 2017,
+          "week": 13,
+          "home_team": "Georgia Tech",
+          "away_team": "Georgia",
+          "home_points": 7,
+          "away_points": 38,
+          "margin": -31.0,
+          "home_spread": 11.5,
+          "home_covered": false,
+          "distance": 0.775
+        },
+        {
+          "season": 2024,
+          "week": 14,
+          "home_team": "Massachusetts",
+          "away_team": "UConn",
+          "home_points": 42,
+          "away_points": 47,
+          "margin": -5.0,
+          "home_spread": 9.5,
+          "home_covered": true,
+          "distance": 1.033
+        },
+        {
+          "season": 2023,
+          "week": 4,
+          "home_team": "Stanford",
+          "away_team": "Arizona",
+          "home_points": 20,
+          "away_points": 21,
+          "margin": -1.0,
+          "home_spread": 13.0,
+          "home_covered": true,
+          "distance": 1.041
+        },
+        {
+          "season": 2019,
+          "week": 13,
+          "home_team": "UConn",
+          "away_team": "East Carolina",
+          "home_points": 24,
+          "away_points": 31,
+          "margin": -7.0,
+          "home_spread": 15.5,
+          "home_covered": true,
+          "distance": 1.089
+        }
+      ],
+      "confidence_flags": [],
+      "vs_market": {
+        "margin": 2.1,
+        "total": -0.8
+      },
+      "market_spread": 13.5,
+      "market_total": 51.5,
+      "weather": {
+        "temp_f": 62.4,
+        "wind_mph": 5.7,
+        "precip_in": 0.0,
+        "humidity": 66.0,
+        "is_dome": 0
+      },
+      "weather_text": "62\u00b0F, 6 mph wind",
+      "games_played": 8
+    },
+    {
+      "game_id": 401866454,
+      "kickoff_utc": "2026-11-04T01:00:00+00:00",
+      "kickoff_et": "Tue 8:00 PM ET",
+      "week": 10,
+      "home_team": "Miami (OH)",
+      "away_team": "Buffalo",
+      "neutral_site": false,
+      "forecast": {
+        "home_points": 31,
+        "away_points": 21,
+        "margin": 9.9,
+        "total": 51.2,
+        "home_win_prob": 0.7668
+      },
+      "comps": {
+        "n": 200,
+        "cover_rate": 0.523,
+        "home_cover_by": 13.3,
+        "away_cover_by": 11.2,
+        "home_blowout": 0.375,
+        "away_blowout": 0.055,
+        "cover_n": 199,
+        "over_n": 198,
+        "calibrated_rate": 0.523,
+        "side": "home",
+        "confidence": 0.523,
+        "historical_rate": null,
+        "historical_n": null,
+        "margin_median": 7.0,
+        "margin_p25": -2.0,
+        "margin_p75": 20.2,
+        "total_median": 55.0,
+        "total_p25": 42.0,
+        "total_p75": 66.2,
+        "home_win_rate": 0.715,
+        "over_rate": 0.525,
+        "agreement": 0.715,
+        "price_spread": 3.0
+      },
+      "comp_examples": [
+        {
+          "season": 2021,
+          "week": 12,
+          "home_team": "Tulane",
+          "away_team": "South Florida",
+          "home_points": 45,
+          "away_points": 14,
+          "margin": 31.0,
+          "home_spread": -5.5,
+          "home_covered": true,
+          "distance": 1.059
+        },
+        {
+          "season": 2024,
+          "week": 11,
+          "home_team": "Pittsburgh",
+          "away_team": "Virginia",
+          "home_points": 19,
+          "away_points": 24,
+          "margin": -5.0,
+          "home_spread": -7.5,
+          "home_covered": false,
+          "distance": 1.232
+        },
+        {
+          "season": 2017,
+          "week": 4,
+          "home_team": "Navy",
+          "away_team": "Cincinnati",
+          "home_points": 42,
+          "away_points": 32,
+          "margin": 10.0,
+          "home_spread": -8.0,
+          "home_covered": true,
+          "distance": 1.28
+        },
+        {
+          "season": 2018,
+          "week": 6,
+          "home_team": "Cincinnati",
+          "away_team": "Tulane",
+          "home_points": 37,
+          "away_points": 21,
+          "margin": 16.0,
+          "home_spread": -7.0,
+          "home_covered": true,
+          "distance": 1.291
+        },
+        {
+          "season": 2022,
+          "week": 7,
+          "home_team": "Southern Miss",
+          "away_team": "Arkansas State",
+          "home_points": 20,
+          "away_points": 19,
+          "margin": 1.0,
+          "home_spread": -4.5,
+          "home_covered": false,
+          "distance": 1.334
+        }
+      ],
+      "confidence_flags": [],
+      "vs_market": {
+        "margin": 4.2,
+        "total": 6.7
+      },
+      "market_spread": -5.8,
+      "market_total": 44.5,
+      "weather": {
+        "temp_f": 62.1,
+        "wind_mph": 5.5,
+        "precip_in": 0.0,
+        "humidity": 67.0,
+        "is_dome": 0
+      },
+      "weather_text": "62\u00b0F, 6 mph wind",
+      "games_played": 8
+    }
+  ],
+  "model_metrics": {
+    "n_games": 5398,
+    "margin_mae": 12.744968057017855,
+    "total_mae": 13.210317824727621,
+    "win_logloss": 0.5118878595612271,
+    "win_accuracy": 0.7334197851055947,
+    "win_brier": 0.17225308567810396,
+    "win_ece": 0.012855313010815298,
+    "calibration_table": [
+      {
+        "bin": "(0.0, 0.1]",
+        "predicted": 0.0666,
+        "observed": 0.0769,
+        "n": 117
+      },
+      {
+        "bin": "(0.1, 0.2]",
+        "predicted": 0.1536,
+        "observed": 0.1388,
+        "n": 317
+      },
+      {
+        "bin": "(0.2, 0.3]",
+        "predicted": 0.2524,
+        "observed": 0.2793,
+        "n": 376
+      },
+      {
+        "bin": "(0.3, 0.4]",
+        "predicted": 0.3527,
+        "observed": 0.3355,
+        "n": 459
+      },
+      {
+        "bin": "(0.4, 0.5]",
+        "predicted": 0.4506,
+        "observed": 0.4742,
+        "n": 620
+      },
+      {
+        "bin": "(0.5, 0.6]",
+        "predicted": 0.5522,
+        "observed": 0.5448,
+        "n": 703
+      },
+      {
+        "bin": "(0.6, 0.7]",
+        "predicted": 0.6467,
+        "observed": 0.6328,
+        "n": 659
+      },
+      {
+        "bin": "(0.7, 0.8]",
+        "predicted": 0.7515,
+        "observed": 0.7705,
+        "n": 597
+      },
+      {
+        "bin": "(0.8, 0.9]",
+        "predicted": 0.8527,
+        "observed": 0.858,
+        "n": 690
+      },
+      {
+        "bin": "(0.9, 1.0]",
+        "predicted": 0.9564,
+        "observed": 0.9581,
+        "n": 860
+      }
+    ],
+    "market_margin_mae": 12.182869080779945,
+    "model_margin_mae_on_lined": 12.744038784130279,
+    "mae_vs_market": 0.561169703350334,
+    "ats_n": 5286,
+    "ats_win_pct": 0.4958380628074158,
+    "ats_by_tier": {
+      "Strong": {
+        "threshold": 6.0,
+        "n": 910,
+        "ats_win_pct": 0.4857142857142857
+      },
+      "Lean": {
+        "threshold": 3.5,
+        "n": 2130,
+        "ats_win_pct": 0.49577464788732395
+      },
+      "Slight": {
+        "threshold": 2.0,
+        "n": 3299,
+        "ats_win_pct": 0.49590785086389816
+      }
+    },
+    "breakeven_at_minus_110": 0.5238,
+    "market_total_mae": 12.694697251114412,
+    "model_total_mae_on_lined": 13.208343888938021,
+    "margin_mae_by_season": {
+      "2019": 13.17,
+      "2020": 13.05,
+      "2021": 13.136,
+      "2022": 12.629,
+      "2023": 12.677,
+      "2024": 12.547,
+      "2025": 12.146
+    },
+    "comps_calibration": {
+      "slope": -0.6270215036363266,
+      "intercept": -0.0022516532163110517,
+      "n_fitted": 5286,
+      "buckets": [
+        {
+          "lo": 0.4,
+          "hi": 0.45,
+          "n": 858,
+          "predicted": 0.4321911673948384,
+          "realized": 0.5151515151515151,
+          "se": 0.017061879413600895
+        },
+        {
+          "lo": 0.45,
+          "hi": 0.5,
+          "n": 2500,
+          "predicted": 0.4762938464945838,
+          "realized": 0.5012,
+          "se": 0.009999971199958529
+        },
+        {
+          "lo": 0.5,
+          "hi": 0.55,
+          "n": 1655,
+          "predicted": 0.5190846729619819,
+          "realized": 0.5027190332326285,
+          "se": 0.012290359419381149
+        },
+        {
+          "lo": 0.55,
+          "hi": 0.6,
+          "n": 222,
+          "predicted": 0.5627415543843319,
+          "realized": 0.45495495495495497,
+          "se": 0.03342134398643873
+        }
+      ]
+    },
+    "edge_calibration": {
+      "a": 0.11217505382268866,
+      "b": -0.0042381960104812995,
+      "intercept": 0.13382015403081202,
+      "n_fitted": 5385,
+      "buckets": [
+        {
+          "lo": 0.0,
+          "hi": 1.5,
+          "n": 1522,
+          "ats": 0.47897503285151116,
+          "se": 0.0128049645112472,
+          "realized_fraction": -0.18014484859555743,
+          "mean_edge": 0.7413000923711501
+        },
+        {
+          "lo": 1.5,
+          "hi": 3.0,
+          "n": 1285,
+          "ats": 0.511284046692607,
+          "se": 0.013944656321135453,
+          "realized_fraction": 0.3399881438354972,
+          "mean_edge": 2.2242707419225503
+        },
+        {
+          "lo": 3.0,
+          "hi": 4.5,
+          "n": 938,
+          "ats": 0.5245202558635395,
+          "se": 0.016305935615694794,
+          "realized_fraction": 0.22438733693990243,
+          "mean_edge": 3.7070854312128003
+        },
+        {
+          "lo": 4.5,
+          "hi": 6.0,
+          "n": 631,
+          "ats": 0.47702060221870046,
+          "se": 0.019883653157317976,
+          "realized_fraction": -0.08958569395547585,
+          "mean_edge": 5.227444899350705
+        },
+        {
+          "lo": 6.0,
+          "hi": 9.0,
+          "n": 580,
+          "ats": 0.4844827586206897,
+          "se": 0.020751369511098922,
+          "realized_fraction": 0.10174923158456155,
+          "mean_edge": 7.256684472863864
+        },
+        {
+          "lo": 9.0,
+          "hi": 13.0,
+          "n": 239,
+          "ats": 0.4811715481171548,
+          "se": 0.03231937184803326,
+          "realized_fraction": 0.02442448958121821,
+          "mean_edge": 10.535416712662505
+        },
+        {
+          "lo": 13.0,
+          "hi": 99.0,
+          "n": 91,
+          "ats": 0.5054945054945055,
+          "se": 0.052411077011539936,
+          "realized_fraction": 0.09044855224314002,
+          "mean_edge": 16.61438702421273
+        }
+      ]
+    }
+  },
+  "api_calls": 9
+}
