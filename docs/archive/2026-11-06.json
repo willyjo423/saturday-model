@@ -1,0 +1,820 @@
+{
+  "generated_at": "2026-11-06T12:47:49.565163-05:00",
+  "season": 2026,
+  "dates": [
+    "2026-11-06"
+  ],
+  "games": [
+    {
+      "game_id": 401858288,
+      "kickoff_utc": "2026-11-07T00:00:00+00:00",
+      "kickoff_et": "Fri 7:00 PM ET",
+      "week": 10,
+      "home_team": "SMU",
+      "away_team": "Virginia Tech",
+      "neutral_site": false,
+      "forecast": {
+        "home_points": 35,
+        "away_points": 25,
+        "margin": 10.7,
+        "total": 59.7,
+        "home_win_prob": 0.7818
+      },
+      "comps": {
+        "n": 200,
+        "cover_rate": 0.495,
+        "home_cover_by": 14.2,
+        "away_cover_by": 10.9,
+        "home_blowout": 0.39,
+        "away_blowout": 0.085,
+        "cover_n": 194,
+        "over_n": 194,
+        "calibrated_rate": 0.495,
+        "side": "away",
+        "confidence": 0.505,
+        "historical_rate": null,
+        "historical_n": null,
+        "margin_median": 7.0,
+        "margin_p25": -1.0,
+        "margin_p75": 20.0,
+        "total_median": 58.0,
+        "total_p25": 46.0,
+        "total_p75": 69.0,
+        "home_win_rate": 0.73,
+        "over_rate": 0.495,
+        "agreement": 0.73,
+        "price_spread": 2.8
+      },
+      "comp_examples": [
+        {
+          "season": 2025,
+          "week": 8,
+          "home_team": "Georgia Southern",
+          "away_team": "Georgia State",
+          "home_points": 41,
+          "away_points": 24,
+          "margin": 17.0,
+          "home_spread": -6.5,
+          "home_covered": true,
+          "distance": 1.091
+        },
+        {
+          "season": 2015,
+          "week": 2,
+          "home_team": "Maryland",
+          "away_team": "Bowling Green",
+          "home_points": 27,
+          "away_points": 48,
+          "margin": -21.0,
+          "home_spread": -7.0,
+          "home_covered": false,
+          "distance": 1.146
+        },
+        {
+          "season": 2025,
+          "week": 13,
+          "home_team": "Texas",
+          "away_team": "Arkansas",
+          "home_points": 52,
+          "away_points": 37,
+          "margin": 15.0,
+          "home_spread": -8.5,
+          "home_covered": true,
+          "distance": 1.157
+        },
+        {
+          "season": 2016,
+          "week": 8,
+          "home_team": "Marshall",
+          "away_team": "Charlotte",
+          "home_points": 24,
+          "away_points": 27,
+          "margin": -3.0,
+          "home_spread": -8.5,
+          "home_covered": false,
+          "distance": 1.171
+        },
+        {
+          "season": 2019,
+          "week": 8,
+          "home_team": "Stanford",
+          "away_team": "UCLA",
+          "home_points": 16,
+          "away_points": 34,
+          "margin": -18.0,
+          "home_spread": -4.2,
+          "home_covered": false,
+          "distance": 1.174
+        }
+      ],
+      "confidence_flags": [],
+      "vs_market": {
+        "margin": 4.5,
+        "total": 3.2
+      },
+      "market_spread": -6.2,
+      "market_total": 56.5,
+      "weather": {
+        "temp_f": 67.8,
+        "wind_mph": 9.6,
+        "precip_in": 0.0,
+        "humidity": 55.0,
+        "is_dome": 0
+      },
+      "weather_text": "68\u00b0F, 10 mph wind",
+      "games_played": 8
+    },
+    {
+      "game_id": 401862818,
+      "kickoff_utc": "2026-11-07T00:30:00+00:00",
+      "kickoff_et": "Fri 7:30 PM ET",
+      "week": 10,
+      "home_team": "East Carolina",
+      "away_team": "South Florida",
+      "neutral_site": false,
+      "forecast": {
+        "home_points": 25,
+        "away_points": 24,
+        "margin": 0.5,
+        "total": 48.8,
+        "home_win_prob": 0.5408
+      },
+      "comps": {
+        "n": 200,
+        "cover_rate": 0.487,
+        "home_cover_by": 12.8,
+        "away_cover_by": 12.6,
+        "home_blowout": 0.255,
+        "away_blowout": 0.145,
+        "cover_n": 197,
+        "over_n": 198,
+        "calibrated_rate": 0.487,
+        "side": "away",
+        "confidence": 0.513,
+        "historical_rate": null,
+        "historical_n": null,
+        "margin_median": 3.0,
+        "margin_p25": -7.0,
+        "margin_p75": 14.0,
+        "total_median": 48.0,
+        "total_p25": 37.0,
+        "total_p75": 60.0,
+        "home_win_rate": 0.55,
+        "over_rate": 0.515,
+        "agreement": 0.55,
+        "price_spread": 2.5
+      },
+      "comp_examples": [
+        {
+          "season": 2025,
+          "week": 11,
+          "home_team": "Ohio",
+          "away_team": "Miami (OH)",
+          "home_points": 24,
+          "away_points": 20,
+          "margin": 4.0,
+          "home_spread": -2.5,
+          "home_covered": true,
+          "distance": 0.751
+        },
+        {
+          "season": 2023,
+          "week": 11,
+          "home_team": "Arkansas",
+          "away_team": "Auburn",
+          "home_points": 10,
+          "away_points": 48,
+          "margin": -38.0,
+          "home_spread": -2.5,
+          "home_covered": false,
+          "distance": 0.794
+        },
+        {
+          "season": 2015,
+          "week": 10,
+          "home_team": "Washington",
+          "away_team": "Utah",
+          "home_points": 23,
+          "away_points": 34,
+          "margin": -11.0,
+          "home_spread": -3.0,
+          "home_covered": false,
+          "distance": 0.82
+        },
+        {
+          "season": 2016,
+          "week": 9,
+          "home_team": "Tulane",
+          "away_team": "SMU",
+          "home_points": 31,
+          "away_points": 35,
+          "margin": -4.0,
+          "home_spread": 1.5,
+          "home_covered": false,
+          "distance": 0.861
+        },
+        {
+          "season": 2023,
+          "week": 9,
+          "home_team": "Sam Houston",
+          "away_team": "UTEP",
+          "home_points": 34,
+          "away_points": 37,
+          "margin": -3.0,
+          "home_spread": -4.0,
+          "home_covered": false,
+          "distance": 0.884
+        }
+      ],
+      "confidence_flags": [],
+      "vs_market": {
+        "margin": -1.5,
+        "total": 9.6
+      },
+      "market_spread": -2.0,
+      "market_total": 39.2,
+      "weather": {
+        "temp_f": 65.9,
+        "wind_mph": 6.5,
+        "precip_in": 0.0,
+        "humidity": 94.0,
+        "is_dome": 0
+      },
+      "weather_text": "66\u00b0F, 6 mph wind",
+      "games_played": 8
+    },
+    {
+      "game_id": 401858510,
+      "kickoff_utc": "2026-11-07T01:00:00+00:00",
+      "kickoff_et": "Fri 8:00 PM ET",
+      "week": 10,
+      "home_team": "Illinois",
+      "away_team": "Nebraska",
+      "neutral_site": false,
+      "forecast": {
+        "home_points": 26,
+        "away_points": 28,
+        "margin": -2.2,
+        "total": 53.8,
+        "home_win_prob": 0.4694
+      },
+      "comps": {
+        "n": 200,
+        "cover_rate": 0.503,
+        "home_cover_by": 11.0,
+        "away_cover_by": 11.4,
+        "home_blowout": 0.1,
+        "away_blowout": 0.25,
+        "cover_n": 193,
+        "over_n": 199,
+        "calibrated_rate": 0.503,
+        "side": "home",
+        "confidence": 0.503,
+        "historical_rate": null,
+        "historical_n": null,
+        "margin_median": -3.0,
+        "margin_p25": -13.2,
+        "margin_p75": 3.0,
+        "total_median": 60.0,
+        "total_p25": 48.0,
+        "total_p75": 76.0,
+        "home_win_rate": 0.355,
+        "over_rate": 0.518,
+        "agreement": 0.645,
+        "price_spread": 3.0
+      },
+      "comp_examples": [
+        {
+          "season": 2024,
+          "week": 10,
+          "home_team": "App State",
+          "away_team": "Old Dominion",
+          "home_points": 28,
+          "away_points": 20,
+          "margin": 8.0,
+          "home_spread": 2.5,
+          "home_covered": true,
+          "distance": 0.681
+        },
+        {
+          "season": 2022,
+          "week": 5,
+          "home_team": "North Texas",
+          "away_team": "Florida Atlantic",
+          "home_points": 45,
+          "away_points": 28,
+          "margin": 17.0,
+          "home_spread": 3.0,
+          "home_covered": true,
+          "distance": 1.149
+        },
+        {
+          "season": 2024,
+          "week": 10,
+          "home_team": "Oklahoma State",
+          "away_team": "Arizona State",
+          "home_points": 21,
+          "away_points": 42,
+          "margin": -21.0,
+          "home_spread": 5.0,
+          "home_covered": false,
+          "distance": 1.167
+        },
+        {
+          "season": 2023,
+          "week": 9,
+          "home_team": "Western Kentucky",
+          "away_team": "Liberty",
+          "home_points": 29,
+          "away_points": 42,
+          "margin": -13.0,
+          "home_spread": 4.0,
+          "home_covered": false,
+          "distance": 1.204
+        },
+        {
+          "season": 2024,
+          "week": 13,
+          "home_team": "West Virginia",
+          "away_team": "UCF",
+          "home_points": 31,
+          "away_points": 21,
+          "margin": 10.0,
+          "home_spread": 3.0,
+          "home_covered": true,
+          "distance": 1.219
+        }
+      ],
+      "confidence_flags": [],
+      "vs_market": {
+        "margin": 2.1,
+        "total": 3.3
+      },
+      "market_spread": 4.2,
+      "market_total": 50.5,
+      "weather": {
+        "temp_f": 39.9,
+        "wind_mph": 6.4,
+        "precip_in": 0.0,
+        "humidity": 71.0,
+        "is_dome": 0
+      },
+      "weather_text": "40\u00b0F, 6 mph wind",
+      "games_played": 8
+    },
+    {
+      "game_id": 401864533,
+      "kickoff_utc": "2026-11-07T02:00:00+00:00",
+      "kickoff_et": "Fri 9:00 PM ET",
+      "week": 10,
+      "home_team": "Nevada",
+      "away_team": "New Mexico",
+      "neutral_site": false,
+      "forecast": {
+        "home_points": 19,
+        "away_points": 27,
+        "margin": -8.0,
+        "total": 45.5,
+        "home_win_prob": 0.3187
+      },
+      "comps": {
+        "n": 200,
+        "cover_rate": 0.46,
+        "home_cover_by": 12.7,
+        "away_cover_by": 13.4,
+        "home_blowout": 0.075,
+        "away_blowout": 0.435,
+        "cover_n": 198,
+        "over_n": 199,
+        "calibrated_rate": 0.46,
+        "side": "away",
+        "confidence": 0.54,
+        "historical_rate": null,
+        "historical_n": null,
+        "margin_median": -10.0,
+        "margin_p25": -24.0,
+        "margin_p75": -1.0,
+        "total_median": 48.0,
+        "total_p25": 38.0,
+        "total_p75": 60.2,
+        "home_win_rate": 0.24,
+        "over_rate": 0.503,
+        "agreement": 0.76,
+        "price_spread": 3.9
+      },
+      "comp_examples": [
+        {
+          "season": 2025,
+          "week": 6,
+          "home_team": "Houston",
+          "away_team": "Texas Tech",
+          "home_points": 11,
+          "away_points": 35,
+          "margin": -24.0,
+          "home_spread": 13.0,
+          "home_covered": false,
+          "distance": 1.368
+        },
+        {
+          "season": 2017,
+          "week": 13,
+          "home_team": "Virginia",
+          "away_team": "Virginia Tech",
+          "home_points": 0,
+          "away_points": 10,
+          "margin": -10.0,
+          "home_spread": 7.0,
+          "home_covered": false,
+          "distance": 1.368
+        },
+        {
+          "season": 2016,
+          "week": 10,
+          "home_team": "LSU",
+          "away_team": "Alabama",
+          "home_points": 0,
+          "away_points": 10,
+          "margin": -10.0,
+          "home_spread": 7.0,
+          "home_covered": false,
+          "distance": 1.464
+        },
+        {
+          "season": 2024,
+          "week": 9,
+          "home_team": "Duke",
+          "away_team": "SMU",
+          "home_points": 27,
+          "away_points": 28,
+          "margin": -1.0,
+          "home_spread": 11.5,
+          "home_covered": true,
+          "distance": 1.533
+        },
+        {
+          "season": 2015,
+          "week": 7,
+          "home_team": "Utah State",
+          "away_team": "Boise State",
+          "home_points": 52,
+          "away_points": 26,
+          "margin": 26.0,
+          "home_spread": 7.5,
+          "home_covered": true,
+          "distance": 1.562
+        }
+      ],
+      "confidence_flags": [],
+      "vs_market": {
+        "margin": 2.0,
+        "total": 7.0
+      },
+      "market_spread": 10.0,
+      "market_total": 38.5,
+      "weather": {
+        "temp_f": 48.4,
+        "wind_mph": 6.6,
+        "precip_in": 0.0,
+        "humidity": 38.0,
+        "is_dome": 0
+      },
+      "weather_text": "48\u00b0F, 7 mph wind",
+      "games_played": 8
+    },
+    {
+      "game_id": 401856855,
+      "kickoff_utc": "2026-11-07T03:15:00+00:00",
+      "kickoff_et": "Fri 10:15 PM ET",
+      "week": 10,
+      "home_team": "Arizona",
+      "away_team": "TCU",
+      "neutral_site": false,
+      "forecast": {
+        "home_points": 29,
+        "away_points": 17,
+        "margin": 11.2,
+        "total": 46.0,
+        "home_win_prob": 0.7901
+      },
+      "comps": {
+        "n": 200,
+        "cover_rate": 0.566,
+        "home_cover_by": 12.9,
+        "away_cover_by": 11.9,
+        "home_blowout": 0.395,
+        "away_blowout": 0.05,
+        "cover_n": 198,
+        "over_n": 197,
+        "calibrated_rate": 0.566,
+        "side": "home",
+        "confidence": 0.566,
+        "historical_rate": null,
+        "historical_n": null,
+        "margin_median": 9.0,
+        "margin_p25": -3.0,
+        "margin_p75": 21.0,
+        "total_median": 50.0,
+        "total_p25": 37.0,
+        "total_p75": 59.0,
+        "home_win_rate": 0.705,
+        "over_rate": 0.482,
+        "agreement": 0.705,
+        "price_spread": 2.8
+      },
+      "comp_examples": [
+        {
+          "season": 2024,
+          "week": 9,
+          "home_team": "East Carolina",
+          "away_team": "Temple",
+          "home_points": 56,
+          "away_points": 34,
+          "margin": 22.0,
+          "home_spread": -8.5,
+          "home_covered": true,
+          "distance": 0.872
+        },
+        {
+          "season": 2018,
+          "week": 8,
+          "home_team": "Duke",
+          "away_team": "Virginia",
+          "home_points": 14,
+          "away_points": 28,
+          "margin": -14.0,
+          "home_spread": -6.5,
+          "home_covered": false,
+          "distance": 0.947
+        },
+        {
+          "season": 2024,
+          "week": 5,
+          "home_team": "SMU",
+          "away_team": "Florida State",
+          "home_points": 42,
+          "away_points": 16,
+          "margin": 26.0,
+          "home_spread": -6.0,
+          "home_covered": true,
+          "distance": 1.003
+        },
+        {
+          "season": 2024,
+          "week": 14,
+          "home_team": "James Madison",
+          "away_team": "Marshall",
+          "home_points": 33,
+          "away_points": 35,
+          "margin": -2.0,
+          "home_spread": -3.5,
+          "home_covered": false,
+          "distance": 1.045
+        },
+        {
+          "season": 2025,
+          "week": 8,
+          "home_team": "Ohio",
+          "away_team": "Northern Illinois",
+          "home_points": 48,
+          "away_points": 21,
+          "margin": 27.0,
+          "home_spread": -10.5,
+          "home_covered": true,
+          "distance": 1.052
+        }
+      ],
+      "confidence_flags": [],
+      "vs_market": {
+        "margin": 3.9,
+        "total": -0.5
+      },
+      "market_spread": -7.2,
+      "market_total": 46.5,
+      "weather": {
+        "temp_f": 65.9,
+        "wind_mph": 8.9,
+        "precip_in": 0.0,
+        "humidity": 52.0,
+        "is_dome": 0
+      },
+      "weather_text": "66\u00b0F, 9 mph wind",
+      "games_played": 8
+    }
+  ],
+  "model_metrics": {
+    "n_games": 5398,
+    "margin_mae": 12.744968057017855,
+    "total_mae": 13.210317824727621,
+    "win_logloss": 0.5118878595612271,
+    "win_accuracy": 0.7334197851055947,
+    "win_brier": 0.17225308567810396,
+    "win_ece": 0.012855313010815298,
+    "calibration_table": [
+      {
+        "bin": "(0.0, 0.1]",
+        "predicted": 0.0666,
+        "observed": 0.0769,
+        "n": 117
+      },
+      {
+        "bin": "(0.1, 0.2]",
+        "predicted": 0.1536,
+        "observed": 0.1388,
+        "n": 317
+      },
+      {
+        "bin": "(0.2, 0.3]",
+        "predicted": 0.2524,
+        "observed": 0.2793,
+        "n": 376
+      },
+      {
+        "bin": "(0.3, 0.4]",
+        "predicted": 0.3527,
+        "observed": 0.3355,
+        "n": 459
+      },
+      {
+        "bin": "(0.4, 0.5]",
+        "predicted": 0.4506,
+        "observed": 0.4742,
+        "n": 620
+      },
+      {
+        "bin": "(0.5, 0.6]",
+        "predicted": 0.5522,
+        "observed": 0.5448,
+        "n": 703
+      },
+      {
+        "bin": "(0.6, 0.7]",
+        "predicted": 0.6467,
+        "observed": 0.6328,
+        "n": 659
+      },
+      {
+        "bin": "(0.7, 0.8]",
+        "predicted": 0.7515,
+        "observed": 0.7705,
+        "n": 597
+      },
+      {
+        "bin": "(0.8, 0.9]",
+        "predicted": 0.8527,
+        "observed": 0.858,
+        "n": 690
+      },
+      {
+        "bin": "(0.9, 1.0]",
+        "predicted": 0.9564,
+        "observed": 0.9581,
+        "n": 860
+      }
+    ],
+    "market_margin_mae": 12.182869080779945,
+    "model_margin_mae_on_lined": 12.744038784130279,
+    "mae_vs_market": 0.561169703350334,
+    "ats_n": 5286,
+    "ats_win_pct": 0.4958380628074158,
+    "ats_by_tier": {
+      "Strong": {
+        "threshold": 6.0,
+        "n": 910,
+        "ats_win_pct": 0.4857142857142857
+      },
+      "Lean": {
+        "threshold": 3.5,
+        "n": 2130,
+        "ats_win_pct": 0.49577464788732395
+      },
+      "Slight": {
+        "threshold": 2.0,
+        "n": 3299,
+        "ats_win_pct": 0.49590785086389816
+      }
+    },
+    "breakeven_at_minus_110": 0.5238,
+    "market_total_mae": 12.694697251114412,
+    "model_total_mae_on_lined": 13.208343888938021,
+    "margin_mae_by_season": {
+      "2019": 13.17,
+      "2020": 13.05,
+      "2021": 13.136,
+      "2022": 12.629,
+      "2023": 12.677,
+      "2024": 12.547,
+      "2025": 12.146
+    },
+    "comps_calibration": {
+      "slope": -0.6270215036363266,
+      "intercept": -0.0022516532163110517,
+      "n_fitted": 5286,
+      "buckets": [
+        {
+          "lo": 0.4,
+          "hi": 0.45,
+          "n": 858,
+          "predicted": 0.4321911673948384,
+          "realized": 0.5151515151515151,
+          "se": 0.017061879413600895
+        },
+        {
+          "lo": 0.45,
+          "hi": 0.5,
+          "n": 2500,
+          "predicted": 0.4762938464945838,
+          "realized": 0.5012,
+          "se": 0.009999971199958529
+        },
+        {
+          "lo": 0.5,
+          "hi": 0.55,
+          "n": 1655,
+          "predicted": 0.5190846729619819,
+          "realized": 0.5027190332326285,
+          "se": 0.012290359419381149
+        },
+        {
+          "lo": 0.55,
+          "hi": 0.6,
+          "n": 222,
+          "predicted": 0.5627415543843319,
+          "realized": 0.45495495495495497,
+          "se": 0.03342134398643873
+        }
+      ]
+    },
+    "edge_calibration": {
+      "a": 0.11217505382268866,
+      "b": -0.0042381960104812995,
+      "intercept": 0.13382015403081202,
+      "n_fitted": 5385,
+      "buckets": [
+        {
+          "lo": 0.0,
+          "hi": 1.5,
+          "n": 1522,
+          "ats": 0.47897503285151116,
+          "se": 0.0128049645112472,
+          "realized_fraction": -0.18014484859555743,
+          "mean_edge": 0.7413000923711501
+        },
+        {
+          "lo": 1.5,
+          "hi": 3.0,
+          "n": 1285,
+          "ats": 0.511284046692607,
+          "se": 0.013944656321135453,
+          "realized_fraction": 0.3399881438354972,
+          "mean_edge": 2.2242707419225503
+        },
+        {
+          "lo": 3.0,
+          "hi": 4.5,
+          "n": 938,
+          "ats": 0.5245202558635395,
+          "se": 0.016305935615694794,
+          "realized_fraction": 0.22438733693990243,
+          "mean_edge": 3.7070854312128003
+        },
+        {
+          "lo": 4.5,
+          "hi": 6.0,
+          "n": 631,
+          "ats": 0.47702060221870046,
+          "se": 0.019883653157317976,
+          "realized_fraction": -0.08958569395547585,
+          "mean_edge": 5.227444899350705
+        },
+        {
+          "lo": 6.0,
+          "hi": 9.0,
+          "n": 580,
+          "ats": 0.4844827586206897,
+          "se": 0.020751369511098922,
+          "realized_fraction": 0.10174923158456155,
+          "mean_edge": 7.256684472863864
+        },
+        {
+          "lo": 9.0,
+          "hi": 13.0,
+          "n": 239,
+          "ats": 0.4811715481171548,
+          "se": 0.03231937184803326,
+          "realized_fraction": 0.02442448958121821,
+          "mean_edge": 10.535416712662505
+        },
+        {
+          "lo": 13.0,
+          "hi": 99.0,
+          "n": 91,
+          "ats": 0.5054945054945055,
+          "se": 0.052411077011539936,
+          "realized_fraction": 0.09044855224314002,
+          "mean_edge": 16.61438702421273
+        }
+      ]
+    }
+  },
+  "api_calls": 9
+}
