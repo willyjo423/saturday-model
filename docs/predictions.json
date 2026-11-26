@@ -1,9 +1,344 @@
 {
-  "generated_at": "2026-11-25T15:21:34.492775-05:00",
+  "generated_at": "2026-11-26T14:58:06.677113-05:00",
   "season": 2026,
   "dates": [
-    "2026-11-25"
+    "2026-11-26"
   ],
-  "games": [],
-  "note": "No games scheduled."
+  "games": [
+    {
+      "game_id": 401856879,
+      "kickoff_utc": "2026-11-27T01:00:00+00:00",
+      "kickoff_et": "Thu 8:00 PM ET",
+      "week": 13,
+      "home_team": "Texas Tech",
+      "away_team": "TCU",
+      "neutral_site": false,
+      "forecast": {
+        "home_points": 30,
+        "away_points": 13,
+        "margin": 16.8,
+        "total": 43.5,
+        "home_win_prob": 0.8729
+      },
+      "comps": {
+        "n": 200,
+        "cover_rate": 0.503,
+        "home_cover_by": 13.1,
+        "away_cover_by": 11.6,
+        "home_blowout": 0.51,
+        "away_blowout": 0.02,
+        "cover_n": 199,
+        "over_n": 199,
+        "calibrated_rate": 0.503,
+        "side": "home",
+        "confidence": 0.503,
+        "historical_rate": null,
+        "historical_n": null,
+        "margin_median": 14.0,
+        "margin_p25": 3.8,
+        "margin_p75": 25.0,
+        "total_median": 51.0,
+        "total_p25": 38.0,
+        "total_p75": 62.0,
+        "home_win_rate": 0.84,
+        "over_rate": 0.538,
+        "agreement": 0.84,
+        "price_spread": 3.4
+      },
+      "comp_examples": [
+        {
+          "season": 2025,
+          "week": 8,
+          "home_team": "Ohio",
+          "away_team": "Northern Illinois",
+          "home_points": 48,
+          "away_points": 21,
+          "margin": 27.0,
+          "home_spread": -10.5,
+          "home_covered": true,
+          "distance": 1.166
+        },
+        {
+          "season": 2020,
+          "week": 15,
+          "home_team": "Penn State",
+          "away_team": "Michigan State",
+          "home_points": 39,
+          "away_points": 24,
+          "margin": 15.0,
+          "home_spread": -14.5,
+          "home_covered": true,
+          "distance": 1.201
+        },
+        {
+          "season": 2019,
+          "week": 8,
+          "home_team": "Cincinnati",
+          "away_team": "Tulsa",
+          "home_points": 24,
+          "away_points": 13,
+          "margin": 11.0,
+          "home_spread": -16.0,
+          "home_covered": false,
+          "distance": 1.242
+        },
+        {
+          "season": 2018,
+          "week": 11,
+          "home_team": "Marshall",
+          "away_team": "Charlotte",
+          "home_points": 30,
+          "away_points": 13,
+          "margin": 17.0,
+          "home_spread": -12.5,
+          "home_covered": true,
+          "distance": 1.305
+        },
+        {
+          "season": 2022,
+          "week": 6,
+          "home_team": "Pittsburgh",
+          "away_team": "Virginia Tech",
+          "home_points": 45,
+          "away_points": 29,
+          "margin": 16.0,
+          "home_spread": -14.5,
+          "home_covered": true,
+          "distance": 1.352
+        }
+      ],
+      "confidence_flags": [],
+      "vs_market": {
+        "margin": 2.8,
+        "total": -3.3
+      },
+      "market_spread": -14.0,
+      "market_total": 46.8,
+      "weather": {
+        "temp_f": 44.8,
+        "wind_mph": 5.6,
+        "precip_in": 0.0,
+        "humidity": 49.0,
+        "is_dome": 0
+      },
+      "weather_text": "45\u00b0F, 6 mph wind",
+      "games_played": 11
+    }
+  ],
+  "model_metrics": {
+    "n_games": 5398,
+    "margin_mae": 12.741783821914956,
+    "total_mae": 13.203656073948222,
+    "win_logloss": 0.5112004058463836,
+    "win_accuracy": 0.7371248610596517,
+    "win_brier": 0.17215200152418617,
+    "win_ece": 0.016798109980705928,
+    "calibration_table": [
+      {
+        "bin": "(0.0, 0.1]",
+        "predicted": 0.068,
+        "observed": 0.0714,
+        "n": 112
+      },
+      {
+        "bin": "(0.1, 0.2]",
+        "predicted": 0.1537,
+        "observed": 0.1331,
+        "n": 293
+      },
+      {
+        "bin": "(0.2, 0.3]",
+        "predicted": 0.2536,
+        "observed": 0.3,
+        "n": 390
+      },
+      {
+        "bin": "(0.3, 0.4]",
+        "predicted": 0.3545,
+        "observed": 0.3233,
+        "n": 467
+      },
+      {
+        "bin": "(0.4, 0.5]",
+        "predicted": 0.4499,
+        "observed": 0.4475,
+        "n": 619
+      },
+      {
+        "bin": "(0.5, 0.6]",
+        "predicted": 0.5518,
+        "observed": 0.5704,
+        "n": 689
+      },
+      {
+        "bin": "(0.6, 0.7]",
+        "predicted": 0.6477,
+        "observed": 0.6199,
+        "n": 684
+      },
+      {
+        "bin": "(0.7, 0.8]",
+        "predicted": 0.7505,
+        "observed": 0.7778,
+        "n": 567
+      },
+      {
+        "bin": "(0.8, 0.9]",
+        "predicted": 0.8523,
+        "observed": 0.8484,
+        "n": 706
+      },
+      {
+        "bin": "(0.9, 1.0]",
+        "predicted": 0.9563,
+        "observed": 0.9564,
+        "n": 871
+      }
+    ],
+    "market_margin_mae": 12.182869080779945,
+    "model_margin_mae_on_lined": 12.739335907276368,
+    "mae_vs_market": 0.5564668264964236,
+    "ats_n": 5286,
+    "ats_win_pct": 0.4948921679909194,
+    "ats_by_tier": {
+      "Strong": {
+        "threshold": 6.0,
+        "n": 931,
+        "ats_win_pct": 0.4865735767991407
+      },
+      "Lean": {
+        "threshold": 3.5,
+        "n": 2075,
+        "ats_win_pct": 0.48626506024096383
+      },
+      "Slight": {
+        "threshold": 2.0,
+        "n": 3252,
+        "ats_win_pct": 0.5009225092250923
+      }
+    },
+    "breakeven_at_minus_110": 0.5238,
+    "market_total_mae": 12.694697251114412,
+    "model_total_mae_on_lined": 13.199830017302038,
+    "margin_mae_by_season": {
+      "2019": 13.254,
+      "2020": 13.068,
+      "2021": 13.054,
+      "2022": 12.648,
+      "2023": 12.676,
+      "2024": 12.451,
+      "2025": 12.188
+    },
+    "comps_calibration": {
+      "slope": -0.6276972187306376,
+      "intercept": -0.002254742019304479,
+      "n_fitted": 5286,
+      "buckets": [
+        {
+          "lo": 0.4,
+          "hi": 0.45,
+          "n": 857,
+          "predicted": 0.4322155501073418,
+          "realized": 0.514585764294049,
+          "se": 0.017072405881042252
+        },
+        {
+          "lo": 0.45,
+          "hi": 0.5,
+          "n": 2500,
+          "predicted": 0.4762958057568032,
+          "realized": 0.502,
+          "se": 0.009999919999679998
+        },
+        {
+          "lo": 0.5,
+          "hi": 0.55,
+          "n": 1656,
+          "predicted": 0.519053490634413,
+          "realized": 0.5018115942028986,
+          "se": 0.01228674903166726
+        },
+        {
+          "lo": 0.55,
+          "hi": 0.6,
+          "n": 222,
+          "predicted": 0.5627189186833044,
+          "realized": 0.45495495495495497,
+          "se": 0.03342134398643873
+        }
+      ]
+    },
+    "edge_calibration": {
+      "a": 0.1196794415337153,
+      "b": -0.004318345907450765,
+      "intercept": 0.13431331150459067,
+      "n_fitted": 5385,
+      "buckets": [
+        {
+          "lo": 0.0,
+          "hi": 1.5,
+          "n": 1549,
+          "ats": 0.4803098773402195,
+          "se": 0.012694256847896348,
+          "realized_fraction": -0.553656358327232,
+          "mean_edge": 0.7348879812658833
+        },
+        {
+          "lo": 1.5,
+          "hi": 3.0,
+          "n": 1309,
+          "ats": 0.5118411000763942,
+          "se": 0.013815873897165685,
+          "realized_fraction": 0.15883208745002467,
+          "mean_edge": 2.2209000501644565
+        },
+        {
+          "lo": 3.0,
+          "hi": 4.5,
+          "n": 927,
+          "ats": 0.5134843581445523,
+          "se": 0.01641618153753749,
+          "realized_fraction": 0.2581345046614749,
+          "mean_edge": 3.7046991484760396
+        },
+        {
+          "lo": 4.5,
+          "hi": 6.0,
+          "n": 570,
+          "ats": 0.4789473684210526,
+          "se": 0.020924123017259422,
+          "realized_fraction": -0.17659049961647896,
+          "mean_edge": 5.188433535016391
+        },
+        {
+          "lo": 6.0,
+          "hi": 9.0,
+          "n": 612,
+          "ats": 0.4722222222222222,
+          "se": 0.02018008770157719,
+          "realized_fraction": 0.08048027201106721,
+          "mean_edge": 7.217698678519585
+        },
+        {
+          "lo": 9.0,
+          "hi": 13.0,
+          "n": 230,
+          "ats": 0.5130434782608696,
+          "se": 0.03295780356725315,
+          "realized_fraction": 0.1598431161531455,
+          "mean_edge": 10.547026395570027
+        },
+        {
+          "lo": 13.0,
+          "hi": 99.0,
+          "n": 89,
+          "ats": 0.5168539325842697,
+          "se": 0.052969775668224965,
+          "realized_fraction": 0.08548037906941836,
+          "mean_edge": 16.660633924122315
+        }
+      ]
+    }
+  },
+  "api_calls": 9
 }
